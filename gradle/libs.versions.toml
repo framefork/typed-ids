@@ -1,0 +1,43 @@
+[versions]
+kotlin = "2.0.20"
+googleAutoService = "1.1.1"
+errorProne = "2.35.1"
+jetbrainsAnnotations = "26.0.1"
+ateoClassindex = "3.13"
+junit-jupiter = "5.10.3"
+jackson = "2.18.1"
+testcontainers = "1.20.3"
+
+[libraries]
+uuidGenerator = "com.fasterxml.uuid:java-uuid-generator:5.1.0"
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
+autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref = "googleAutoService" }
+autoService-annotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "googleAutoService" }
+errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
+jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrainsAnnotations" }
+ateoClassindex = { group = "org.atteo.classindex", name = "classindex", version.ref = "ateoClassindex" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
+testcontainers-base = { module = "org.testcontainers:testcontainers" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
+datasource-hikaricp = { module = "com.zaxxer:HikariCP", version = "4.0.3" }
+datasource-proxy = { module = "net.ttddyy:datasource-proxy", version = "1.10" }
+postgresql = { module = "org.postgresql:postgresql", version = "42.7.4" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
+hibernate-orm-v55 = { group = "org.hibernate", name = "hibernate-core", version = "5.5.9.Final" }
+hibernate-orm-v56 = { group = "org.hibernate", name = "hibernate-core", version = "5.6.15.Final" }
+hibernate-orm-v60 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.0.2.Final" }
+hibernate-orm-v61 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.1.7.Final" }
+hibernate-orm-v62 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.2.32.Final" }
+hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.3.2.Final" }
+hibernate-orm-v64 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.4.10.Final" }
+hibernate-orm-v65 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.3.Final" }
+hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.2.Final" }
+hypersistence-utils-hibernate55 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hypersistence-utils-hibernate60 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+
+

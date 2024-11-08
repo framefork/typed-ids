@@ -1,0 +1,68 @@
+plugins {
+    id("framefork.java")
+    `maven-publish`
+    `signing`
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenStaging") {
+            from(components["java"])
+        }
+
+        withType<MavenPublication> {
+            pom {
+                name = project.name
+                url = "https://github.com/framefork/typed-ids"
+                inceptionYear = "2024"
+                licenses {
+                    license {
+                        name = "Apache-2.0"
+                        url = "https://spdx.org/licenses/Apache-2.0.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "fprochazka"
+                        name = "Filip Procházka"
+                        url = "https://filip-prochazka.com/"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/framefork/typed-ids.git"
+                    developerConnection = "scm:git:ssh://github.com/framefork/typed-ids.git"
+                    url = "https://github.com/framefork/typed-ids"
+                }
+                issueManagement {
+                    system = "GitHub"
+                    url = "https://github.com/framefork/typed-ids/issues"
+                }
+
+                withXml {
+                    // for some reason doesn't get picked up unless we do it like this
+                    asNode().appendNode("description", project.description)
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri(rootProject.layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+}
+
+tasks.named("publish") {
+    dependsOn(rootProject.tasks.named("cleanAllPublications"))
+}
+
+val publishTask = tasks.named("publish")
+rootProject.tasks.named("jreleaserFullRelease") {
+    dependsOn(publishTask)
+}
