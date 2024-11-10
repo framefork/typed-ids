@@ -6,10 +6,9 @@ dependencies {
     api(project(":typed-ids"))
     api(libs.hibernate.orm.v63)
     api(libs.hypersistence.utils.hibernate63)
+    api(libs.ateoClassindex)
 
-    compileOnly(libs.errorprone.annotations)
     compileOnly(libs.jetbrains.annotations)
-    compileOnly(libs.ateoClassindex)
 
     compileOnly(libs.autoService.annotations)
     annotationProcessor(libs.autoService.processor)

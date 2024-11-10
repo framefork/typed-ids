@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     api(libs.uuidGenerator)
+    api(libs.errorprone.annotations)
 
-    compileOnly(libs.errorprone.annotations)
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.ateoClassindex)
 

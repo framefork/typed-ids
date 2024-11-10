@@ -14,3 +14,8 @@ file("${rootProject.projectDir}/modules").toPath().listDirectoryEntries().forEac
     include("${moduleDir.fileName}")
     project(":${moduleDir.fileName}").projectDir = moduleDir.toFile()
 }
+
+file("${rootProject.projectDir}/testing").toPath().listDirectoryEntries().forEach { moduleDir ->
+    include("${moduleDir.fileName}")
+    project(":${moduleDir.fileName}").projectDir = moduleDir.toFile()
+}
