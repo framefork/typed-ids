@@ -45,10 +45,17 @@ jreleaser {
                     applyMavenCentralRules = true
                     sign = true
                     namespace.set("org.framefork")
-                    retryDelay = 20
+                    retryDelay = 30
                     maxRetries = 100
                 }
             }
+        }
+    }
+    release {
+        github {
+            enabled = true
+            tagName = "v{{projectVersion}}"
+            releaseName = "{{tagName}}"
         }
     }
 }

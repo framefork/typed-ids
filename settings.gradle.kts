@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "framefork-typed-ids"
+rootProject.name = "typed-ids"
 
 file("${rootProject.projectDir}/modules").toPath().listDirectoryEntries().forEach { moduleDir ->
     include("${moduleDir.fileName}")
