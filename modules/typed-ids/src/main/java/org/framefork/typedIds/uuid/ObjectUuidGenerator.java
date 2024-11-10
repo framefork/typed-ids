@@ -2,6 +2,7 @@ package org.framefork.typedIds.uuid;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.NoArgGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +11,7 @@ import java.util.function.Function;
 final class ObjectUuidGenerator
 {
 
+    @NotNull
     static UUID randomUUid(final Function<?, ?> constructor)
     {
         // TODO: service-loaded impls?

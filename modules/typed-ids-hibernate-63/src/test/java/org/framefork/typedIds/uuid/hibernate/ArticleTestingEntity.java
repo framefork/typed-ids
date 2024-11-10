@@ -54,14 +54,14 @@ public class ArticleTestingEntity
             return ObjectUuid.randomUUID(Id::new);
         }
 
-        public static Id fromString(final String name)
+        public static Id fromString(final String value)
         {
-            return ObjectUuid.fromString(Id::new, name);
+            return ObjectUuid.fromString(Id::new, value);
         }
 
-        public static Id fromUuid(final UUID uuid)
+        public static Id fromUuid(final UUID value)
         {
-            return ObjectUuid.fromUuid(Id::new, uuid);
+            return ObjectUuid.fromUuid(Id::new, value);
         }
 
     }

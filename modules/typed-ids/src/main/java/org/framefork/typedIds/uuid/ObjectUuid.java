@@ -41,6 +41,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         this.inner = inner;
     }
 
+    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType randomUUID(
         final Function<UUID, SelfType> constructor
     )
@@ -48,6 +49,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return constructor.apply(ObjectUuidGenerator.randomUUid(constructor));
     }
 
+    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromString(
         final Function<UUID, SelfType> constructor,
         final String name
@@ -56,6 +58,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return fromUuid(constructor, UUID.fromString(name));
     }
 
+    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromUuid(
         final Function<UUID, SelfType> constructor,
         final UUID uuid
@@ -64,6 +67,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return constructor.apply(uuid);
     }
 
+    @NotNull
     public UUID toNativeUuid()
     {
         return inner;
