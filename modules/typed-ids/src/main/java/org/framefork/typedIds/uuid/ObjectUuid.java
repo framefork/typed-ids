@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -46,7 +48,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         final Function<UUID, SelfType> constructor
     )
     {
-        return constructor.apply(ObjectUuidGenerator.randomUUid(constructor));
+        return constructor.apply(Generators.randomUuid(constructor));
     }
 
     @NotNull
@@ -209,6 +211,45 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     private void readObject(final ObjectInputStream stream)
     {
         throw new UnsupportedOperationException("Java Serialization is not supported. Do you have properly configured mapping for this type?");
+    }
+
+    /**
+     * This class exists for two reasons: 1) to allow reusing generator instances per-type 2) to allow configuring a different generators factory.
+     * This could be useful, if you want e.g. deterministic IDs in your tests.
+     */
+    public static final class Generators
+    {
+
+        private static final AtomicReference<UuidGenerator.Factory> FACTORY = new AtomicReference<>(new UuidGenerator.Factory.DefaultUuidV7GeneratorFactory());
+
+        private static final ConcurrentHashMap<Function<?, ?>, UuidGenerator> GENERATORS = new ConcurrentHashMap<>();
+
+        private Generators()
+        {
+        }
+
+        static UUID randomUuid(final Function<?, ?> constructor)
+        {
+            return getGenerator(constructor).generate();
+        }
+
+        static UuidGenerator getGenerator(final Function<?, ?> constructor)
+        {
+            return GENERATORS.computeIfAbsent(
+                constructor,
+                c -> FACTORY.get().getGenerator(c)
+            );
+        }
+
+        /**
+         * Replaces the factory with provided implementation and throws away any pre-existing generators.
+         */
+        static void setFactory(final UuidGenerator.Factory factory)
+        {
+            FACTORY.set(factory);
+            GENERATORS.clear();
+        }
+
     }
 
 }
