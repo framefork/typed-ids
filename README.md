@@ -12,7 +12,7 @@ Contributions for other ORMs or alternative JPA implementations are welcome.
 
 For seamless type support in Hibernate ORM, you should pick one of the following variants:
 
-| Hibernate Version             | Artefact                                                                                                             |
+| Hibernate Version             | Artifact                                                                                                             |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | 6.6, 6.5, 6.4, and 6.3        | [org.framefork:typed-ids-hibernate-63](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-63)   |
 | 6.2                           | TBD                                                                                                                  |
@@ -38,6 +38,35 @@ In some cases, that means changing the default DDL that Hibernate uses for the `
 
 The library only sets the type if there is no JDBC type for `SqlTypes.UUID` already set,
 which means that if you want to use something different you should be able to do so using a custom `org.hibernate.boot.model.TypeContributor`.
+
+## UUID as an application-generated identifier
+
+One of the goals of this library is to enable generated typed IDs _in application code_ - specifically in entity constructors.
+Being able to generate identifiers in app code solves many problems around application design and architecture by getting rid of the dependency of entity on the database.
+The classic approach is to let the database generate the identifiers, which is perfectly fine if you prefer that, but it breaks entity state because until you persist them they're invalid and incomplete.
+But when you generate the ID at construction time, the entity is valid from the first moment.
+
+The only way to do this reliably is to generate random identifiers so that you don't get conflicts when persisting the entities, but using perfectly random values has its problems...
+
+## UUID as a primary key
+
+The `ObjectUuid.randomUUID()` generates [UUIDv7](https://www.toomanyafterthoughts.com/uuids-are-bad-for-database-index-performance-uuid7/#uuid-7-time-ordered) instead of Java's default UUIDv4.
+The UUIDv4 is not well suited to be used in indexes and primary keys due to performance reasons.
+The UUIDv7, while still larger than plain `long`, does not suffer from the performance problems that UUIDv4 has, and can be safely used for primary keys.
+
+In case you don't like the default generator, you can opt to replace it using `ObjectUuid.Generators.setFactory(UuidGenerator.Factory)`.
+It might come in handy in tests where you might want to use a deterministic generator.
+
+Some additional resources:
+
+* [UUID vs Bigint Battle! - Scaling Postgres 302](https://www.scalingpostgres.com/episodes/302-uuid-vs-bigint-battle/)
+* [Illustrating Primary Key models in InnoDB and their impact on disk usage - Percona Blog](https://www.percona.com/blog/illustrating-primary-key-models-in-innodb-and-their-impact-on-disk-usage/)
+* [GUID/UUID Performance Breakthrough - Rick James](https://mysql.rjweb.org/doc.php/uuid)
+* [MySQL InnoDB Primary Key Choice: GUID/UUID vs Integer Insert Performance - KCCoder](https://kccoder.com/mysql/uuid-vs-int-insert-performance/)
+* [Unreasonable Defaults: Primary Key as Clustering Key - Use The Index, Luke](https://use-the-index-luke.com/blog/2014-01/unreasonable-defaults-primary-key-clustering-key)
+* [SQL server full-text index and its stop words - Jiangong Sun](https://jiangong-sun.medium.com/sql-server-full-text-index-and-its-stop-words-492b0b589bff)
+* [MySQL UUIDs – Bad For Performance - Percona Blog](https://www.percona.com/blog/uuids-are-popular-but-bad-for-performance-lets-discuss/)
+* [Choose the right primary key to save a large amount of disk I/O - Too Many Afterthoughts](https://www.toomanyafterthoughts.com/primary-key-random-sequential-performance/)
 
 ## Usage: ObjectUUID
 
@@ -95,10 +124,6 @@ data class User(id: Id) {
 
 }
 ```
-
-The `ObjectUuid.randomUUID()` generates [UUIDv7](https://www.toomanyafterthoughts.com/uuids-are-bad-for-database-index-performance-uuid7/#uuid-7-time-ordered)
-using [com.fasterxml.uuid:java-uuid-generator](https://github.com/cowtowncoder/java-uuid-generator). If desired, this library could be improved to allow configuring the used generator,
-but given the goal of having typed PK IDs for tables/entities I doubt the need for anything other than UUIDv7.
 
 ## Usage: Enabling automatic type registration with Hibernate ORM
 
