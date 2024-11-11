@@ -2,9 +2,18 @@ package org.framefork.typedIds.uuid.hibernate;
 
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.Size;
+import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.BasicJavaType;
+import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
+import org.hibernate.type.descriptor.java.MutabilityPlan;
 import org.hibernate.type.descriptor.java.UUIDJavaType;
+import org.hibernate.type.descriptor.jdbc.AdjustableJdbcType;
+import org.hibernate.type.descriptor.jdbc.JdbcType;
+import org.hibernate.type.descriptor.jdbc.JdbcTypeIndicators;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import org.hibernate.usertype.DynamicParameterizedType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +29,8 @@ import java.util.UUID;
 
 public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, DynamicParameterizedType, Serializable
 {
+
+    public static final int UUID_BYTE_LENGTH = 16;
 
     private final UUIDJavaType inner;
 
@@ -58,7 +69,7 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     @Override
     public Type getJavaType()
     {
-        return Objects.requireNonNull(identifierClass, "identifierClass must not be null");
+        return getJavaTypeClass();
     }
 
     @Override
@@ -80,6 +91,25 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     )
     {
         return Objects.equals(one, another);
+    }
+
+    @Override
+    public JdbcType getRecommendedJdbcType(final JdbcTypeIndicators indicators)
+    {
+        final JdbcType descriptor = indicators.getJdbcType(indicators.resolveJdbcTypeCode(SqlTypes.UUID));
+        return descriptor instanceof AdjustableJdbcType
+            ? ((AdjustableJdbcType) descriptor).resolveIndicatedType(indicators, this)
+            : descriptor;
+    }
+
+    @Override
+    public long getDefaultSqlLength(final Dialect dialect, final JdbcType jdbcType)
+    {
+        if (jdbcType instanceof VarbinaryJdbcType) {
+            return UUID_BYTE_LENGTH;
+        }
+
+        return Size.DEFAULT_LENGTH;
     }
 
     @Nullable
@@ -118,12 +148,24 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
         return (string == null) ? null : wrapUuidToIdentifier(UUID.fromString(string.toString()));
     }
 
+    @Override
+    public MutabilityPlan<ObjectUuid<?>> getMutabilityPlan()
+    {
+        return ImmutableMutabilityPlan.instance();
+    }
+
     private ObjectUuid<?> wrapUuidToIdentifier(final UUID uuid)
     {
         return ObjectUuidTypeUtils.wrapUuidToIdentifier(
             uuid,
             Objects.requireNonNull(constructor, "constructor was not yet initialized")
         );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "object-uuid(%s)".formatted(identifierClass != null ? identifierClass.getName() : "???");
     }
 
     @SuppressWarnings("unused")

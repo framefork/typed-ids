@@ -10,10 +10,12 @@ dependencies {
 
     api(platform(libs.testcontainers.bom))
     api(libs.testcontainers.postgresql)
+    api(libs.testcontainers.mysql)
     api(libs.testcontainers.base)
     api(libs.datasource.proxy)
     api(libs.datasource.hikaricp)
     api(libs.logback.classic)
 
     api(libs.postgresql)
+    api(libs.mysql)
 }

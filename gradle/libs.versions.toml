@@ -21,10 +21,12 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jun
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
 testcontainers-base = { module = "org.testcontainers:testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
+testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
 datasource-hikaricp = { module = "com.zaxxer:HikariCP", version = "4.0.3" }
 datasource-proxy = { module = "net.ttddyy:datasource-proxy", version = "1.10" }
 postgresql = { module = "org.postgresql:postgresql", version = "42.7.4" }
+mysql = { module = "com.mysql:mysql-connector-j", version = "8.3.0" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
 hibernate-orm-v55 = { group = "org.hibernate", name = "hibernate-core", version = "5.5.9.Final" }
 hibernate-orm-v56 = { group = "org.hibernate", name = "hibernate-core", version = "5.6.15.Final" }

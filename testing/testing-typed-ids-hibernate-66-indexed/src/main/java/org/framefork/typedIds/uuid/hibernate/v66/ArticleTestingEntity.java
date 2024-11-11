@@ -8,9 +8,11 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "article")
+@Table(name = ArticleTestingEntity.TABLE_NAME)
 public class ArticleTestingEntity
 {
+
+    public static final String TABLE_NAME = "article";
 
     @jakarta.persistence.Id
     @Column(nullable = false)

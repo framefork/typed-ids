@@ -9,9 +9,11 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "article")
-public class ArticleTestingEntity
+@Table(name = ArticleDefaultExplicitMapping.TABLE_NAME)
+public class ArticleDefaultExplicitMapping
 {
+
+    public static final String TABLE_NAME = "article_default_explicit_mapping";
 
     @jakarta.persistence.Id
     @Column(nullable = false)
@@ -21,13 +23,13 @@ public class ArticleTestingEntity
     @Column(nullable = false)
     private String title;
 
-    public ArticleTestingEntity(final String title)
+    public ArticleDefaultExplicitMapping(final String title)
     {
         this.id = Id.random();
         this.title = title;
     }
 
-    protected ArticleTestingEntity()
+    protected ArticleDefaultExplicitMapping()
     {
     }
 

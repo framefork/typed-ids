@@ -1,17 +1,17 @@
-package org.framefork.typedIds.uuid.hibernate.postgresql;
+package org.framefork.typedIds.uuid.hibernate.jdbc;
 
 import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.jdbc.UUIDJdbcType;
 
-public class PostgresUUIDJdbcType extends UUIDJdbcType
+public class NativeUuidJdbcType extends UUIDJdbcType
 {
 
-    public static final PostgresUUIDJdbcType INSTANCE = new PostgresUUIDJdbcType();
+    public static final NativeUuidJdbcType INSTANCE = new NativeUuidJdbcType();
 
     @Override
     public String getFriendlyName()
     {
-        return "pg-uuid";
+        return "uuid";
     }
 
     @Override
@@ -24,6 +24,12 @@ public class PostgresUUIDJdbcType extends UUIDJdbcType
     public int getDefaultSqlTypeCode()
     {
         return SqlTypes.UUID;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "uuid-native";
     }
 
 }

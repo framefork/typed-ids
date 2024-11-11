@@ -23,6 +23,22 @@ Find the latest version in this project's GitHub releases or on Maven Central.
 
 If you want just the plain classes, you can install only the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
 
+## Hibernate type mapping
+
+The library tries to make sure your data is stored with the types best fit for the job.
+In some cases, that means changing the default DDL that Hibernate uses for the `SqlTypes.UUID` jdbc type.
+
+| Database            | Database Type for UUID                         |
+|---------------------|------------------------------------------------|
+| PostgreSQL          | `uuid`                                         |
+| MySQL               | `binary(16)`                                   |
+| MariaDB 10.7+       | `uuid`                                         |
+| MariaDB before 10.7 | `binary(16)`                                   |
+| other               | whatever Hibernate uses as the dialect default |
+
+The library only sets the type if there is no JDBC type for `SqlTypes.UUID` already set,
+which means that if you want to use something different you should be able to do so using a custom `org.hibernate.boot.model.TypeContributor`.
+
 ## Usage: ObjectUUID
 
 The base type is designed to wrap a native UUID, and allows you to expose any utility functions you may need.
@@ -64,7 +80,7 @@ public record User(Id id)
 var user = new User(Id.random());
 ```
 
-With Kotlin, the boilerplate is visibly shorter
+With Kotlin, the standard boilerplate should look like the following snippet
 
 ```kt
 data class User(id: Id) {

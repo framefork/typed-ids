@@ -1,15 +1,16 @@
-package org.framefork.typedIds.uuid.hibernate.v64;
+package org.framefork.typedIds.uuid.hibernate.v63;
 
 import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import jakarta.persistence.Tuple;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-final class ObjectUuidTypeWithHibernate64Test extends AbstractPostgreSQLIntegrationTest
+final class ObjectUuidTypeIndexedHibernate63PostgreSQLTest extends AbstractPostgreSQLIntegrationTest
 {
 
     @Override
@@ -18,6 +19,19 @@ final class ObjectUuidTypeWithHibernate64Test extends AbstractPostgreSQLIntegrat
         return new Class<?>[]{
             ArticleTestingEntity.class,
         };
+    }
+
+    @Test
+    public void testSchema()
+    {
+        doInJPA(em -> {
+            var result = (Tuple) em.createNativeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table_name AND column_name = :column_name", Tuple.class)
+                .setParameter("table_name", ArticleTestingEntity.TABLE_NAME)
+                .setParameter("column_name", "id")
+                .getSingleResult();
+
+            Assertions.assertEquals("uuid", result.get("data_type", String.class).toLowerCase());
+        });
     }
 
     @Test
