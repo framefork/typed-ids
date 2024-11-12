@@ -13,11 +13,8 @@ publishing {
     publications {
         create<MavenPublication>("mavenStaging") {
             from(components["java"])
-        }
 
-        withType<MavenPublication> {
             pom {
-                name = "${project.group}:${project.name}"
                 url = "https://github.com/framefork/typed-ids"
                 inceptionYear = "2024"
                 licenses {
@@ -46,11 +43,11 @@ publishing {
                     system = "GitHub"
                     url = "https://github.com/framefork/typed-ids/issues"
                 }
+            }
 
-                withXml {
-                    // for some reason doesn't get picked up unless we do it like this
-                    asNode().appendNode("description", project.description)
-                }
+            afterEvaluate {
+                pom.name = "${project.group}:${project.name}"
+                pom.description = project.description
             }
         }
     }
