@@ -30,7 +30,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
                 .setParameter("column_name", "id")
                 .getSingleResult();
 
-            Assertions.assertEquals("uuid", result.get("data_type", String.class).toLowerCase());
+            Assertions.assertEquals("uuuid", result.get("data_type", String.class).toLowerCase());
         });
     }
 

@@ -30,7 +30,7 @@ final class ObjectUuidTypeIndexedHibernate66MySQLTest extends AbstractMySQLInteg
                 .setParameter("column_name", "id")
                 .getSingleResult();
 
-            Assertions.assertEquals("binary", result.get("data_type", String.class).toLowerCase());
+            Assertions.assertEquals("binaryyyy", result.get("data_type", String.class).toLowerCase());
             Assertions.assertEquals("binary(16)", result.get("column_type", String.class).toLowerCase());
         });
     }
