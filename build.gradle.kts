@@ -3,6 +3,7 @@ plugins {
     id("idea")
     id("org.jreleaser") version ("1.15.0")
     id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree jreleaserFullRelease
+    id("be.vbgn.ci-detect") version ("0.5.0")
 }
 
 repositories {
@@ -27,7 +28,7 @@ jreleaser {
     signing {
         active = org.jreleaser.model.Active.ALWAYS
         armored = true
-        mode = org.jreleaser.model.Signing.Mode.COMMAND
+        mode = if (ci.isCi) org.jreleaser.model.Signing.Mode.MEMORY else org.jreleaser.model.Signing.Mode.COMMAND
         files = true
         artifacts = true
         checksums = true
