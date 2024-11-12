@@ -2,6 +2,7 @@ plugins {
     id("base")
     id("idea")
     id("org.jreleaser") version ("1.15.0")
+    id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree jreleaserFullRelease
 }
 
 repositories {
