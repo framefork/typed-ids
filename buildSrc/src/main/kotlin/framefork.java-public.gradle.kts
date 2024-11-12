@@ -1,7 +1,7 @@
 plugins {
     id("framefork.java")
     `maven-publish`
-    `signing`
+    signing
 }
 
 java {
@@ -17,7 +17,7 @@ publishing {
 
         withType<MavenPublication> {
             pom {
-                name = project.name
+                name = "${project.group}:${project.name}"
                 url = "https://github.com/framefork/typed-ids"
                 inceptionYear = "2024"
                 licenses {
@@ -25,6 +25,10 @@ publishing {
                         name = "Apache-2.0"
                         url = "https://spdx.org/licenses/Apache-2.0.html"
                     }
+                }
+                organization {
+                    name = "Framefork"
+                    url = "https://github.com/framefork"
                 }
                 developers {
                     developer {
@@ -63,6 +67,6 @@ tasks.named("publish") {
 }
 
 val publishTask = tasks.named("publish")
-rootProject.tasks.named("jreleaserFullRelease") {
+rootProject.tasks.matching({ it.name.startsWith("jreleaser") }).configureEach {
     dependsOn(publishTask)
 }
