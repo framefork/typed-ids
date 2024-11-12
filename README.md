@@ -59,7 +59,6 @@ It might come in handy in tests where you might want to use a deterministic gene
 
 Some additional resources:
 
-* [UUID vs Bigint Battle! - Scaling Postgres 302](https://www.scalingpostgres.com/episodes/302-uuid-vs-bigint-battle/)
 * [Illustrating Primary Key models in InnoDB and their impact on disk usage - Percona Blog](https://www.percona.com/blog/illustrating-primary-key-models-in-innodb-and-their-impact-on-disk-usage/)
 * [GUID/UUID Performance Breakthrough - Rick James](https://mysql.rjweb.org/doc.php/uuid)
 * [MySQL InnoDB Primary Key Choice: GUID/UUID vs Integer Insert Performance - KCCoder](https://kccoder.com/mysql/uuid-vs-int-insert-performance/)
@@ -67,6 +66,7 @@ Some additional resources:
 * [SQL server full-text index and its stop words - Jiangong Sun](https://jiangong-sun.medium.com/sql-server-full-text-index-and-its-stop-words-492b0b589bff)
 * [MySQL UUIDs – Bad For Performance - Percona Blog](https://www.percona.com/blog/uuids-are-popular-but-bad-for-performance-lets-discuss/)
 * [Choose the right primary key to save a large amount of disk I/O - Too Many Afterthoughts](https://www.toomanyafterthoughts.com/primary-key-random-sequential-performance/)
+* [UUID vs Bigint Battle! - Scaling Postgres 302](https://www.scalingpostgres.com/episodes/302-uuid-vs-bigint-battle/)
 
 ## Usage: ObjectUUID
 
