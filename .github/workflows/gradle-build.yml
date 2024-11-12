@@ -24,7 +24,7 @@ jobs:
           add-job-summary-as-pr-comment: on-failure
 
       - name: Execute Gradle build
-        run: ./gradlew --console=plain build
+        run: ./gradlew --console=plain --no-daemon --stacktrace build
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3

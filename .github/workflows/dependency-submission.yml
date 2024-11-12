@@ -20,3 +20,6 @@ jobs:
 
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@v4
+      with:
+        dependency-graph-exclude-projects: ':(typed-ids-testing|testing-*)'
+        dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
