@@ -19,7 +19,16 @@ jobs:
         java-version: 21
 
     - name: Generate and submit dependency graph
+      id: dependency-submission
       uses: gradle/actions/dependency-submission@v4
       with:
+        additional-arguments: ' --console=plain '
         dependency-graph-exclude-projects: ':(typed-ids-testing|testing-*)'
         dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
+
+    - name: Also upload the raw dependency graph as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: gradle-dependency-graph-file
+        path: ${{ steps.dependency-submission.outputs.dependency-graph-file }}
+        retention-days: 1
