@@ -25,4 +25,3 @@ jobs:
           commit: ${{github.event.workflow_run.head_sha}}
           report_paths: '**/build/test-results/test/TEST-*.xml'
           detailed_summary: true
-          include_passed: true
