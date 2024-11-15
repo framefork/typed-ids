@@ -15,7 +15,7 @@ For seamless type support in Hibernate ORM, you should pick one of the following
 | Hibernate Version             | Artifact                                                                                                             |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | 6.6, 6.5, 6.4, and 6.3        | [org.framefork:typed-ids-hibernate-63](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-63)   |
-| 6.2                           | TBD                                                                                                                  |
+| 6.2                           | [org.framefork:typed-ids-hibernate-62](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-62)   |
 | 6.1 and 6.0                   | TBD                                                                                                                  |
 | 5.6 and 5.5                   | TBD                                                                                                                  |
 
