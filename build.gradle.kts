@@ -1,8 +1,7 @@
 plugins {
     id("base")
     id("idea")
-    id("org.jreleaser") version ("1.15.0")
-    id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree jreleaserFullRelease
+    id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree publish
     id("be.vbgn.ci-detect") version ("0.5.0")
 }
 
@@ -23,47 +22,8 @@ tasks.withType<Wrapper> {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-jreleaser {
-    strict = true
-    signing {
-        active = org.jreleaser.model.Active.ALWAYS
-        armored = true
-        mode = if (ci.isCi) org.jreleaser.model.Signing.Mode.MEMORY else org.jreleaser.model.Signing.Mode.COMMAND
-        files = true
-        artifacts = true
-        checksums = true
-    }
-    deploy {
-        maven {
-            pomchecker {
-                version = "1.14.0"
-                failOnWarning = true
-                failOnError = true
-            }
-            mavenCentral {
-                create("sonatype") {
-                    active = org.jreleaser.model.Active.ALWAYS
-                    url = "https://central.sonatype.com/api/v1/publisher"
-                    stagingRepository("build/staging-deploy")
-                    applyMavenCentralRules = true
-                    sign = true
-                    namespace.set("org.framefork")
-                    retryDelay = 30
-                    maxRetries = 100
-                }
-            }
-        }
-    }
-    release {
-        github {
-            enabled = true
-            tagName = "v{{projectVersion}}"
-            releaseName = "{{tagName}}"
-        }
-    }
-}
-
 tasks.register<Delete>("cleanAllPublications") {
+    outputs.upToDateWhen { false }
     setDelete(rootProject.layout.buildDirectory.dir("staging-deploy"))
 }
 

@@ -1,7 +1,6 @@
 plugins {
     id("framefork.java")
     `maven-publish`
-    signing
 }
 
 java {
@@ -61,9 +60,4 @@ publishing {
 
 tasks.named("publish") {
     dependsOn(rootProject.tasks.named("cleanAllPublications"))
-}
-
-val publishTask = tasks.named("publish")
-rootProject.tasks.matching({ it.name.startsWith("jreleaser") }).configureEach {
-    dependsOn(publishTask)
 }

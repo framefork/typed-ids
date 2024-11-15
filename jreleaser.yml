@@ -1,0 +1,43 @@
+project:
+  vendor: Framefork
+  name: typed-ids
+  java:
+    groupId: "org.framefork"
+    multiProject: true
+
+checksum:
+  individual: true
+
+signing:
+  active: ALWAYS
+  mode: MEMORY
+  armored: true
+  checksums: false
+
+deploy:
+  maven:
+    pomchecker:
+      version: "1.14.0"
+      failOnError: true
+      failOnWarning: true
+    mavenCentral:
+      sonatype:
+        active: RELEASE
+        url: https://central.sonatype.com/api/v1/publisher
+        applyMavenCentralRules: true
+        sign: true
+        retryDelay: 30
+        maxRetries: 100
+        namespace: "org.framefork"
+        stagingRepositories:
+          - build/staging-deploy
+
+release:
+  github:
+    enabled: true
+    overwrite: true
+    tagName: "v{{projectVersion}}"
+    releaseName: "{{tagName}}"
+    commitAuthor:
+      name: 'Framefork BOT'
+      email: 'bot@framefork.org'

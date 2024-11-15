@@ -6,6 +6,9 @@ on:
       - master
   pull_request:
 
+env:
+  GRADLE_OPTS: "-Dorg.gradle.console=plain -Dorg.gradle.daemon=false -Dorg.gradle.stacktrace=always"
+
 jobs:
   gradle:
     strategy:
@@ -28,7 +31,7 @@ jobs:
           add-job-summary-as-pr-comment: on-failure
 
       - name: Execute Gradle build
-        run: ./gradlew --console=plain --no-daemon --stacktrace --continue build
+        run: ./gradlew --continue build
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
