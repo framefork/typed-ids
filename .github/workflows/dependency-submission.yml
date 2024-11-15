@@ -22,7 +22,7 @@ jobs:
       id: dependency-submission
       uses: gradle/actions/dependency-submission@v4
       with:
-        additional-arguments: ' --console=plain '
+        additional-arguments: ' --console=plain --no-daemon '
         dependency-graph-exclude-projects: ':(typed-ids-testing|testing-*)'
         dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
 
