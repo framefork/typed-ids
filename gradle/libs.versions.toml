@@ -37,9 +37,7 @@ hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hibernate-orm-v64 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.4.10.Final" }
 hibernate-orm-v65 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.3.Final" }
 hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.2.Final" }
-hypersistence-utils-hibernate55 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
-hypersistence-utils-hibernate60 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
-hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hypersistence-utils-hibernate55 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-55", version = "3.8.3" }
+hypersistence-utils-hibernate60 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.8.3" }
+hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.8.3" }
 hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
-
-
