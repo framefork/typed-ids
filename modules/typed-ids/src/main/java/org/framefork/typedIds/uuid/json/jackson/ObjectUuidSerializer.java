@@ -7,13 +7,12 @@ import org.framefork.typedIds.uuid.ObjectUuid;
 
 import java.io.IOException;
 
-@SuppressWarnings("rawtypes")
-public class ObjectUuidSerializer extends JsonSerializer<ObjectUuid>
+public class ObjectUuidSerializer extends JsonSerializer<ObjectUuid<?>>
 {
 
     @Override
     public void serialize(
-        final ObjectUuid uuid,
+        final ObjectUuid<?> uuid,
         final JsonGenerator jsonGenerator,
         final SerializerProvider serializerProvider
     ) throws

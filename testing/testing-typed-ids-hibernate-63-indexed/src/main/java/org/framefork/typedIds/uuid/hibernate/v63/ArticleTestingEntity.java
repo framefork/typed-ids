@@ -27,6 +27,7 @@ public class ArticleTestingEntity
         this.title = title;
     }
 
+    @SuppressWarnings("NullAway")
     protected ArticleTestingEntity()
     {
     }

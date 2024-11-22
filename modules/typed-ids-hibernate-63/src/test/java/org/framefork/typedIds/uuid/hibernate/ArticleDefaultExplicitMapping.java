@@ -29,6 +29,7 @@ public class ArticleDefaultExplicitMapping
         this.title = title;
     }
 
+    @SuppressWarnings("NullAway")
     protected ArticleDefaultExplicitMapping()
     {
     }

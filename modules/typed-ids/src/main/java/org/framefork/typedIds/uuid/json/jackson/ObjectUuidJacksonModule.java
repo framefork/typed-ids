@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import com.google.auto.service.AutoService;
-import org.framefork.typedIds.uuid.ObjectUuid;
+import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
 
 @AutoService(Module.class)
 public class ObjectUuidJacksonModule extends Module
@@ -34,7 +34,7 @@ public class ObjectUuidJacksonModule extends Module
     {
         var serializers = new SimpleSerializers();
 
-        serializers.addSerializer(ObjectUuid.class, new ObjectUuidSerializer());
+        serializers.addSerializer(ObjectUuidTypeUtils.getObjectUuidRawClass(), new ObjectUuidSerializer());
 
         return serializers;
     }

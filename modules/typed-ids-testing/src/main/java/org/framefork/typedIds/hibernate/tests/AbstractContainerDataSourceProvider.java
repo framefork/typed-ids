@@ -4,6 +4,7 @@ import io.hypersistence.utils.test.providers.DataSourceProvider;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractContainerDataSourceProvider implements DataSourceProvider
@@ -21,7 +22,7 @@ public abstract class AbstractContainerDataSourceProvider implements DataSourceP
             }
         }
 
-        return container.get();
+        return Objects.requireNonNull(container.get(), "database container must not be null");
     }
 
     private JdbcDatabaseContainer<?> initContainer()

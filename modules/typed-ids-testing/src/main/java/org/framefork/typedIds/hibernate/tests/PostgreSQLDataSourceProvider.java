@@ -33,6 +33,7 @@ public final class PostgreSQLDataSourceProvider extends AbstractContainerDataSou
         return PostgreSQLDialect.class.getName();
     }
 
+    @Override
     protected DataSource newDataSource()
     {
         var dataSource = new PGSimpleDataSource();

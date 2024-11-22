@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 @AutoService(TypeContributor.class)
 public class ObjectUuidTypesContributor implements TypeContributor
 {
@@ -36,11 +37,12 @@ public class ObjectUuidTypesContributor implements TypeContributor
     private static final boolean CLASS_INDEX_PRESENT;
 
     static {
-        boolean found = false;
+        boolean found;
         try {
             Class.forName("org.atteo.classindex.ClassIndex");
             found = true;
         } catch (ClassNotFoundException ignored) {
+            found = false;
         }
 
         CLASS_INDEX_PRESENT = found;

@@ -179,7 +179,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     @Override
     public boolean equals(@Nullable final Object o)
     {
-        if (!(o instanceof ObjectUuid)) {
+        if (!(o instanceof ObjectUuid<?>)) {
             return false;
         }
         if (!this.getClass().isInstance(o)) {
@@ -233,7 +233,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         {
             return GENERATORS.computeIfAbsent(
                 constructor,
-                c -> FACTORY.get().getGenerator(c)
+                c -> Objects.requireNonNull(FACTORY.get(), "generator factory must not be null").getGenerator(c)
             );
         }
 

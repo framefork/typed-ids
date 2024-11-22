@@ -33,6 +33,7 @@ public final class MySQLDataSourceProvider extends AbstractContainerDataSourcePr
         return MySQLDialect.class.getName();
     }
 
+    @Override
     protected DataSource newDataSource()
     {
         var dataSource = new MysqlDataSource();
