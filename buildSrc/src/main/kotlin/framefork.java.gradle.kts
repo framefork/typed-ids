@@ -1,11 +1,9 @@
-import com.adarshr.gradle.testlogger.theme.ThemeType
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `java-library`
     id("idea")
     id("com.adarshr.test-logger")
+    id("io.github.joselion.strict-null-check")
 }
 
 repositories {
@@ -19,6 +17,18 @@ java {
 
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    api("org.jspecify:jspecify:1.0.0")
+
+}
+
+strictNullCheck {
+    packageInfo {
+        imports.set(setOf("org.jspecify.annotations.NullMarked"))
+        annotations.set(setOf("@NullMarked"))
     }
 }
 

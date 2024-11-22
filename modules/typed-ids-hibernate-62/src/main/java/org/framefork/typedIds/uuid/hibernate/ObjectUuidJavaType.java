@@ -15,8 +15,8 @@ import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcTypeIndicators;
 import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import org.hibernate.usertype.DynamicParameterizedType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -48,7 +48,7 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     @Override
     public void setParameterValues(final Properties parameters)
     {
-        @Nullable var parameterType = (ParameterType) parameters.get(PARAMETER_TYPE);
+        var parameterType = (ParameterType) parameters.get(PARAMETER_TYPE);
         if (parameterType != null) {
             this.identifierClass = (Class<ObjectUuid<?>>) parameterType.getReturnedClass();
 
@@ -116,8 +116,8 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     @Override
     public <X> X unwrap(
         @Nullable final ObjectUuid<?> value,
-        @NotNull final Class<X> type,
-        @NotNull final WrapperOptions options
+        @NonNull final Class<X> type,
+        @NonNull final WrapperOptions options
     )
     {
         if (value == null) {
@@ -131,7 +131,7 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     @Override
     public <X> ObjectUuid<?> wrap(
         @Nullable final X value,
-        @NotNull final WrapperOptions options
+        @NonNull final WrapperOptions options
     )
     {
         if (value == null) {

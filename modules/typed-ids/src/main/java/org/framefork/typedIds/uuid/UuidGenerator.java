@@ -1,7 +1,6 @@
 package org.framefork.typedIds.uuid;
 
 import com.fasterxml.uuid.Generators;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Function;
@@ -9,7 +8,6 @@ import java.util.function.Function;
 public interface UuidGenerator
 {
 
-    @NotNull
     UUID generate();
 
     /**
@@ -18,7 +16,6 @@ public interface UuidGenerator
     interface Factory
     {
 
-        @NotNull
         UuidGenerator getGenerator(final Function<?, ?> constructor);
 
         final class DefaultUuidV7GeneratorFactory implements Factory

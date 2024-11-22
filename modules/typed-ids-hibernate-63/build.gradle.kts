@@ -8,8 +8,6 @@ dependencies {
     api(libs.hypersistence.utils.hibernate63)
     api(libs.ateoClassindex)
 
-    compileOnly(libs.jetbrains.annotations)
-
     compileOnly(libs.autoService.annotations)
     annotationProcessor(libs.autoService.processor)
 

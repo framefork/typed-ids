@@ -1,7 +1,5 @@
 package org.framefork.typedIds.uuid;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
@@ -16,7 +14,6 @@ public final class ObjectUuidTypeUtils
     }
 
     @SuppressWarnings("unchecked")
-    @NotNull
     public static Class<ObjectUuid<?>> readIdentifierClass(
         final String className,
         final String propertyName
@@ -38,7 +35,6 @@ public final class ObjectUuidTypeUtils
         }
     }
 
-    @NotNull
     public static MethodHandle getMainConstructor(final Class<?> type)
     {
         try {
@@ -51,7 +47,6 @@ public final class ObjectUuidTypeUtils
         }
     }
 
-    @NotNull
     public static ObjectUuid<?> wrapUuidToIdentifier(final UUID uuid, MethodHandle mainConstructor)
     {
         try {
@@ -67,7 +62,6 @@ public final class ObjectUuidTypeUtils
     }
 
     @SuppressWarnings("unchecked")
-    @NotNull
     public static Class<ObjectUuid<?>> getObjectUuidRawClass()
     {
         return (Class<ObjectUuid<?>>) (Class<?>) ObjectUuid.class;

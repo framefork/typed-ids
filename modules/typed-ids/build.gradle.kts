@@ -6,7 +6,6 @@ dependencies {
     api(libs.uuidGenerator)
     api(libs.errorprone.annotations)
 
-    compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.ateoClassindex)
 
     compileOnly(libs.autoService.annotations)

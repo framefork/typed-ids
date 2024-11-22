@@ -3,8 +3,8 @@ package org.framefork.typedIds.uuid;
 import com.google.errorprone.annotations.Immutable;
 import org.atteo.classindex.IndexSubclasses;
 import org.framefork.typedIds.TypedId;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,7 +43,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         this.inner = inner;
     }
 
-    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType randomUUID(
         final Function<UUID, SelfType> constructor
     )
@@ -51,7 +50,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return constructor.apply(Generators.randomUuid(constructor));
     }
 
-    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromString(
         final Function<UUID, SelfType> constructor,
         final String name
@@ -60,7 +58,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return fromUuid(constructor, UUID.fromString(name));
     }
 
-    @NotNull
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromUuid(
         final Function<UUID, SelfType> constructor,
         final UUID uuid
@@ -69,7 +66,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         return constructor.apply(uuid);
     }
 
-    @NotNull
     public UUID toNativeUuid()
     {
         return inner;
@@ -145,7 +141,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
      * @return -1, 0 or 1 as this {@code ObjectUuid} is less than, equal to, or greater than {@code other}
      */
     @Override
-    public int compareTo(@NotNull final SelfType other)
+    public int compareTo(@NonNull final SelfType other)
     {
         return this.toNativeUuid().compareTo(other.toNativeUuid());
     }
