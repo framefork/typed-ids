@@ -15,6 +15,7 @@ dependencies {
     compileOnly(libs.jackson.databind)
 
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -7,5 +7,6 @@ dependencies {
 
     testImplementation(libs.logback.classic)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.assertj)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(libs.junit.jupiter)
+    api(libs.assertj)
 
     implementation(libs.hibernate.orm.v63)
     implementation(libs.hypersistence.utils.hibernate63)

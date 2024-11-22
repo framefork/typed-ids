@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTest
 {
 
@@ -30,7 +32,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
                 .setParameter("column_name", "id")
                 .getSingleResult();
 
-            Assertions.assertEquals("uuid", result.get("data_type", String.class).toLowerCase());
+            assertThat(result.get("data_type", String.class)).isEqualToIgnoringCase("uuid");
         });
     }
 
@@ -40,7 +42,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
         Map<String, ArticleDefaultExplicitMapping.Id> idsByTitle = new HashMap<>();
 
         doInJPA(em -> {
-            List<ArticleDefaultExplicitMapping> articles = List.of(
+            var articles = List.of(
                 new ArticleDefaultExplicitMapping("one"),
                 new ArticleDefaultExplicitMapping("two"),
                 new ArticleDefaultExplicitMapping("three")
