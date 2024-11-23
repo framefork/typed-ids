@@ -40,3 +40,4 @@ jobs:
           name: junit-test-results
           path: '**/build/test-results/test/TEST-*.xml'
           retention-days: 1
+          overwrite: true
