@@ -8,7 +8,7 @@ jackson = "2.18.1"
 testcontainers = "1.20.3"
 
 [libraries]
-uuidGenerator = "com.fasterxml.uuid:java-uuid-generator:5.1.0"
+uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "5.1.0" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }

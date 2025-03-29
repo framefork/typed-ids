@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(project(":typed-ids"))
 
+    testImplementation(libs.uuidGenerator)
     testImplementation(libs.logback.classic)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.assertj)

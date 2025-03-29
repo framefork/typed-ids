@@ -23,6 +23,14 @@ Find the latest version in this project's GitHub releases or on Maven Central.
 
 If you want just the plain classes, you can install only the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
 
+### Application-generated (random) IDs
+
+This library supports several libraries for generating the IDs in the JVM but does not pull them in, instead it expects you to pick one and add it yourself.
+
+* UUIDs with [`com.fasterxml.uuid:java-uuid-generator`](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator/versions)
+
+If you want to use a different library, the `$Generators.setFactory()` extension point should hopefully be self-explanatory.
+
 ## Hibernate type mapping
 
 The library tries to make sure your data is stored with the types best fit for the job.

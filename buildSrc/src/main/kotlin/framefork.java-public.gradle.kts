@@ -47,6 +47,18 @@ publishing {
             afterEvaluate {
                 pom.name = "${project.group}:${project.name}"
                 pom.description = project.description
+                pom.withXml {
+                    val dependenciesNode = (asNode().get("dependencies") as groovy.util.NodeList).first() as groovy.util.Node
+                    configurations["compileOnly"].dependencies.forEach { dependency ->
+                        dependenciesNode.appendNode("dependency").apply {
+                            appendNode("groupId", dependency.group)
+                            appendNode("artifactId", dependency.name)
+                            appendNode("version", dependency.version)
+                            appendNode("scope", "compile")
+                            appendNode("optional", "true")
+                        }
+                    }
+                }
             }
         }
     }

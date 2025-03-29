@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    api(libs.uuidGenerator)
     api(libs.errorprone.annotations)
 
-    compileOnly(libs.ateoClassindex)
+    compileOnly(libs.uuidGenerator)
 
+    compileOnly(libs.ateoClassindex)
     compileOnly(libs.jetbrains.annotations)
 
     compileOnly(libs.autoService.annotations)
@@ -15,8 +15,7 @@ dependencies {
 
     compileOnly(libs.jackson.databind)
 
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.assertj)
+    testImplementation(project(":typed-ids-testing"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

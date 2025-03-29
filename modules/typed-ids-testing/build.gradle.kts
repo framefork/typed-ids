@@ -6,8 +6,9 @@ dependencies {
     api(libs.junit.jupiter)
     api(libs.assertj)
 
-    implementation(libs.hibernate.orm.v63)
-    implementation(libs.hypersistence.utils.hibernate63)
+    api(libs.uuidGenerator)
+    api(libs.hibernate.orm.v63)
+    api(libs.hypersistence.utils.hibernate63)
 
     api(platform(libs.testcontainers.bom))
     api(libs.testcontainers.postgresql)
