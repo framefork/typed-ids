@@ -9,7 +9,7 @@ final class ObjectUuidWithoutHibernateTypesTest
     @Test
     public void usage()
     {
-        var id = UserId.fromString("33a7641c-811e-40b7-986e-ad109cfcf220");
+        var id = UserId.from("33a7641c-811e-40b7-986e-ad109cfcf220");
         Assertions.assertEquals("33a7641c-811e-40b7-986e-ad109cfcf220", id.toString());
     }
 

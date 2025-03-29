@@ -15,12 +15,12 @@ public final class UserId extends ObjectUuid<UserId>
         return ObjectUuid.randomUUID(UserId::new);
     }
 
-    public static UserId fromString(final String value)
+    public static UserId from(final String value)
     {
         return ObjectUuid.fromString(UserId::new, value);
     }
 
-    public static UserId fromUuid(final UUID value)
+    public static UserId from(final UUID value)
     {
         return ObjectUuid.fromUuid(UserId::new, value);
     }

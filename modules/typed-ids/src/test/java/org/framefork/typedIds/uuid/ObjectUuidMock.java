@@ -15,12 +15,12 @@ public final class ObjectUuidMock extends ObjectUuid<ObjectUuidMock>
         return ObjectUuid.randomUUID(ObjectUuidMock::new);
     }
 
-    public static ObjectUuidMock fromString(final String value)
+    public static ObjectUuidMock from(final String value)
     {
         return ObjectUuid.fromString(ObjectUuidMock::new, value);
     }
 
-    public static ObjectUuidMock fromUuid(final UUID value)
+    public static ObjectUuidMock from(final UUID value)
     {
         return ObjectUuid.fromUuid(ObjectUuidMock::new, value);
     }

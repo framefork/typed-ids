@@ -23,8 +23,8 @@ final class ObjectUuidTest
             final String right
         )
         {
-            ObjectUuidMock leftId = ObjectUuidMock.fromString(left);
-            ObjectUuidMock rightId = ObjectUuidMock.fromString(right);
+            ObjectUuidMock leftId = ObjectUuidMock.from(left);
+            ObjectUuidMock rightId = ObjectUuidMock.from(right);
 
             Assertions.assertSame(expected, leftId.equals(rightId));
         }
@@ -49,8 +49,8 @@ final class ObjectUuidTest
         public static Stream<Arguments> data()
         {
             return Stream.of(
-                Arguments.arguments("33a7641c-811e-40b7-986e-ad109cfcf220", ObjectUuidMock.fromString("33A7641C-811E-40B7-986E-AD109CFCF220")),
-                Arguments.arguments("33a7641c-811e-40b7-986e-ad109cfcf220", ObjectUuidMock.fromString("33a7641c-811e-40b7-986e-ad109cfcf220"))
+                Arguments.arguments("33a7641c-811e-40b7-986e-ad109cfcf220", ObjectUuidMock.from("33A7641C-811E-40B7-986E-AD109CFCF220")),
+                Arguments.arguments("33a7641c-811e-40b7-986e-ad109cfcf220", ObjectUuidMock.from("33a7641c-811e-40b7-986e-ad109cfcf220"))
             );
         }
 
