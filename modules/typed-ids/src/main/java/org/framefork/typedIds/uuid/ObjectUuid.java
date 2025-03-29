@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 /**
  * Wraps {@link UUID}
@@ -44,14 +43,14 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     }
 
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType randomUUID(
-        final Function<UUID, SelfType> constructor
+        final Constructor<SelfType> constructor
     )
     {
         return constructor.apply(Generators.randomUuid(constructor));
     }
 
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromString(
-        final Function<UUID, SelfType> constructor,
+        final Constructor<SelfType> constructor,
         final String name
     )
     {
@@ -59,7 +58,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     }
 
     protected static <SelfType extends ObjectUuid<SelfType>> SelfType fromUuid(
-        final Function<UUID, SelfType> constructor,
+        final Constructor<SelfType> constructor,
         final UUID uuid
     )
     {
@@ -179,16 +178,13 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     @Override
     public boolean equals(@Nullable final Object o)
     {
-        if (!(o instanceof ObjectUuid<?>)) {
+        if (!(o instanceof ObjectUuid<?> that)) {
             return false;
         }
-        if (!this.getClass().isInstance(o)) {
+        if (!this.getClass().isInstance(o)) { // compare subtypes
             return false;
         }
-        @SuppressWarnings("unchecked")
-        var that = (ObjectUuid<SelfType>) o;
-
-        return inner.equals(that.inner);
+        return Objects.equals(this.toNativeUuid(), that.toNativeUuid());
     }
 
     @Override
@@ -209,6 +205,13 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         throw new UnsupportedOperationException("Java Serialization is not supported. Do you have properly configured mapping for this type?");
     }
 
+    public interface Constructor<SelfType extends ObjectUuid<SelfType>>
+    {
+
+        SelfType apply(UUID uuid);
+
+    }
+
     /**
      * This class exists for two reasons: 1) to allow reusing generator instances per-type 2) to allow configuring a different generators factory.
      * This could be useful, if you want e.g. deterministic IDs in your tests.
@@ -216,24 +219,24 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     public static final class Generators
     {
 
-        private static final AtomicReference<UuidGenerator.Factory> FACTORY = new AtomicReference<>(new UuidGenerator.Factory.DefaultUuidV7GeneratorFactory());
+        private static final AtomicReference<UuidGenerator.Factory> FACTORY = new AtomicReference<>();
 
-        private static final ConcurrentHashMap<Function<?, ?>, UuidGenerator> GENERATORS = new ConcurrentHashMap<>();
+        private static final ConcurrentHashMap<Constructor<?>, UuidGenerator> GENERATORS = new ConcurrentHashMap<>();
 
         private Generators()
         {
         }
 
-        static UUID randomUuid(final Function<?, ?> constructor)
+        static UUID randomUuid(final Constructor<?> constructor)
         {
-            return getGenerator(constructor).generate();
+            return getGenerator(constructor).generateRandom();
         }
 
-        static UuidGenerator getGenerator(final Function<?, ?> constructor)
+        static UuidGenerator getGenerator(final Constructor<?> constructor)
         {
             return GENERATORS.computeIfAbsent(
                 constructor,
-                c -> Objects.requireNonNull(FACTORY.get(), "generator factory must not be null").getGenerator(c)
+                c -> getFactory().getGenerator(c)
             );
         }
 
@@ -244,6 +247,17 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         {
             FACTORY.set(factory);
             GENERATORS.clear();
+        }
+
+        private static UuidGenerator.Factory getFactory()
+        {
+            var factory = FACTORY.get();
+            if (factory == null) {
+                factory = UuidGenerator.Factory.getDefault();
+                setFactory(factory);
+            }
+
+            return factory;
         }
 
     }

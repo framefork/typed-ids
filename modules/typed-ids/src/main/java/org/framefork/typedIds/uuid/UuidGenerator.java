@@ -1,14 +1,14 @@
 package org.framefork.typedIds.uuid;
 
-import com.fasterxml.uuid.Generators;
+import org.framefork.typedIds.common.ServiceLoaderUtils;
+import org.framefork.typedIds.uuid.random.FasterXmlUuidV7GeneratorFactory;
 
 import java.util.UUID;
-import java.util.function.Function;
 
 public interface UuidGenerator
 {
 
-    UUID generate();
+    UUID generateRandom();
 
     /**
      * This could be useful, if you want e.g. deterministic IDs in your tests. See {@link ObjectUuid.Generators}
@@ -16,17 +16,20 @@ public interface UuidGenerator
     interface Factory
     {
 
-        UuidGenerator getGenerator(final Function<?, ?> constructor);
+        UuidGenerator getGenerator(final ObjectUuid.Constructor<?> constructor);
 
-        final class DefaultUuidV7GeneratorFactory implements Factory
+        static Factory getDefault()
         {
-
-            @Override
-            public UuidGenerator getGenerator(final Function<?, ?> constructor)
-            {
-                return Generators.timeBasedEpochRandomGenerator()::generate;
+            Factory globalFactory = ServiceLoaderUtils.getSingleOrNull(Factory.class);
+            if (globalFactory != null) {
+                return globalFactory;
             }
 
+            if (FasterXmlUuidV7GeneratorFactory.AVAILABLE) {
+                return new FasterXmlUuidV7GeneratorFactory();
+            }
+
+            throw new IllegalStateException("Please provide your own implementation of %s, or install one of the supported libraries".formatted(Factory.class.getName()));
         }
 
     }
