@@ -8,6 +8,8 @@ dependencies {
 
     compileOnly(libs.ateoClassindex)
 
+    compileOnly(libs.jetbrains.annotations)
+
     compileOnly(libs.autoService.annotations)
     annotationProcessor(libs.autoService.processor)
 

@@ -2,6 +2,7 @@ package org.framefork.typedIds.uuid.hibernate;
 
 import com.google.auto.service.AutoService;
 import org.atteo.classindex.ClassIndex;
+import org.framefork.typedIds.common.ReflectionHacks;
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.hibernate.jdbc.BinaryUuidJdbcType;
 import org.framefork.typedIds.uuid.hibernate.jdbc.NativeUuidJdbcType;
@@ -34,19 +35,7 @@ public class ObjectUuidTypesContributor implements TypeContributor
      */
     private static final DatabaseVersion MARIADB_NATIVE_UUID_SINCE = DatabaseVersion.make(10, 7);
 
-    private static final boolean CLASS_INDEX_PRESENT;
-
-    static {
-        boolean found;
-        try {
-            Class.forName("org.atteo.classindex.ClassIndex");
-            found = true;
-        } catch (ClassNotFoundException ignored) {
-            found = false;
-        }
-
-        CLASS_INDEX_PRESENT = found;
-    }
+    private static final boolean CLASS_INDEX_PRESENT = ReflectionHacks.classExists("org.atteo.classindex.ClassIndex");
 
     @Override
     public void contribute(
