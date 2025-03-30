@@ -1,4 +1,4 @@
-package org.framefork.typedIds.uuid.hibernate.v63;
+package org.framefork.typedIds.uuid.hibernate.v62;
 
 import org.framefork.typedIds.uuid.ObjectUuid;
 

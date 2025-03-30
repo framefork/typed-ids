@@ -1,4 +1,4 @@
-package org.framefork.typedIds.uuid.hibernate.v63;
+package org.framefork.typedIds.uuid.hibernate.v62;
 
 import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-final class ObjectUuidTypeIndexedHibernate63MySQLTest extends AbstractMySQLIntegrationTest
+final class ObjectUuidTypeIndexedHibernate62MySQLTest extends AbstractMySQLIntegrationTest
 {
 
     @Override
