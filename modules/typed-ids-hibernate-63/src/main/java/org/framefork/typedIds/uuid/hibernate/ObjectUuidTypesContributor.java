@@ -1,8 +1,8 @@
 package org.framefork.typedIds.uuid.hibernate;
 
 import com.google.auto.service.AutoService;
-import org.atteo.classindex.ClassIndex;
 import org.framefork.typedIds.common.ReflectionHacks;
+import org.framefork.typedIds.common.ServiceLoaderUtils;
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.hibernate.jdbc.BinaryUuidJdbcType;
 import org.framefork.typedIds.uuid.hibernate.jdbc.NativeUuidJdbcType;
@@ -20,10 +20,6 @@ import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
 import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 import org.hibernate.type.spi.TypeConfiguration;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 @SuppressWarnings("rawtypes")
 @AutoService(TypeContributor.class)
@@ -77,7 +73,7 @@ public class ObjectUuidTypesContributor implements TypeContributor
         TypeConfiguration typeConfiguration = typeContributions.getTypeConfiguration();
         JdbcType uuidJdbcType = typeConfiguration.getJdbcTypeRegistry().getDescriptor(SqlTypes.UUID);
 
-        var idTypes = getIndexedSubclassesFor(ObjectUuid.class);
+        var idTypes = ServiceLoaderUtils.getIndexedSubclassesFor(ObjectUuid.class);
         for (var idType : idTypes) {
             var objectUuidType = new ObjectUuidType(idType, uuidJdbcType);
 
@@ -88,17 +84,6 @@ public class ObjectUuidTypesContributor implements TypeContributor
             typeContributions.contributeType(objectUuidArrayType);
             typeConfiguration.getBasicTypeRegistry().register(objectUuidArrayType, objectUuidArrayType.getRegistrationKeys());
         }
-    }
-
-    private <T> List<Class<? extends T>> getIndexedSubclassesFor(final Class<T> typeClass)
-    {
-        Iterable<Class<? extends T>> subclasses = ClassIndex.getSubclasses(typeClass);
-
-        List<Class<? extends T>> result = new ArrayList<>();
-        subclasses.forEach(result::add);
-        result.sort(Comparator.comparing(Class::getName));
-
-        return result;
     }
 
 }

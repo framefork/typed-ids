@@ -1,10 +1,14 @@
 package org.framefork.typedIds.common;
 
+import org.atteo.classindex.ClassIndex;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ServiceLoader;
 
 public final class ServiceLoaderUtils
@@ -29,6 +33,17 @@ public final class ServiceLoaderUtils
         }
 
         return first;
+    }
+
+    public static <T> List<Class<? extends T>> getIndexedSubclassesFor(final Class<T> type)
+    {
+        Iterable<Class<? extends T>> subclasses = ClassIndex.getSubclasses(type);
+
+        List<Class<? extends T>> result = new ArrayList<>();
+        subclasses.forEach(result::add);
+        result.sort(Comparator.comparing(Class::getName));
+
+        return result;
     }
 
 }
