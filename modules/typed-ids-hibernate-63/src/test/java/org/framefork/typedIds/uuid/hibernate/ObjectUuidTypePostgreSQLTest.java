@@ -1,10 +1,10 @@
 package org.framefork.typedIds.uuid.hibernate;
 
+import jakarta.persistence.Tuple;
 import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.persistence.Tuple;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
     protected Class<?>[] entities()
     {
         return new Class<?>[]{
-            ArticleDefaultExplicitMapping.class,
+            UuidAppGeneratedExplicitMappingEntity.class,
         };
     }
 
@@ -28,7 +28,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
     {
         doInJPA(em -> {
             var result = (Tuple) em.createNativeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table_name AND column_name = :column_name", Tuple.class)
-                .setParameter("table_name", ArticleDefaultExplicitMapping.TABLE_NAME)
+                .setParameter("table_name", UuidAppGeneratedExplicitMappingEntity.TABLE_NAME)
                 .setParameter("column_name", "id")
                 .getSingleResult();
 
@@ -39,36 +39,37 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
     @Test
     public void testUsage()
     {
-        Map<String, ArticleDefaultExplicitMapping.Id> idsByTitle = new HashMap<>();
+        Map<String, UuidAppGeneratedExplicitMappingEntity.Id> idsByTitle = new HashMap<>();
 
         doInJPA(em -> {
             var articles = List.of(
-                new ArticleDefaultExplicitMapping("one"),
-                new ArticleDefaultExplicitMapping("two"),
-                new ArticleDefaultExplicitMapping("three")
+                new UuidAppGeneratedExplicitMappingEntity("one"),
+                new UuidAppGeneratedExplicitMappingEntity("two"),
+                new UuidAppGeneratedExplicitMappingEntity("three")
             );
 
             articles.forEach(em::persist);
-            articles.forEach(article -> idsByTitle.put(article.getTitle(), article.getId()));
             em.flush();
+
+            articles.forEach(article -> idsByTitle.put(article.getTitle(), article.getId()));
         });
 
         var idOfTwo = Objects.requireNonNull(idsByTitle.get("two"), "id must not be null");
 
         doInJPA(em -> {
-            var article = em.find(ArticleDefaultExplicitMapping.class, idOfTwo);
+            var article = em.find(UuidAppGeneratedExplicitMappingEntity.class, idOfTwo);
             Assertions.assertEquals("two", article.getTitle());
         });
 
         doInJPA(em -> {
-            var article = em.createQuery("SELECT a FROM ArticleDefaultExplicitMapping a WHERE a.id = :id", ArticleDefaultExplicitMapping.class)
+            var article = em.createQuery("SELECT a FROM UuidAppGeneratedExplicitMappingEntity a WHERE a.id = :id", UuidAppGeneratedExplicitMappingEntity.class)
                 .setParameter("id", idOfTwo)
                 .getSingleResult();
             Assertions.assertEquals("two", article.getTitle());
         });
 
         doInJPA(em -> {
-            var articles = em.createQuery("SELECT a FROM ArticleDefaultExplicitMapping a WHERE a.id IN (:ids)", ArticleDefaultExplicitMapping.class)
+            var articles = em.createQuery("SELECT a FROM UuidAppGeneratedExplicitMappingEntity a WHERE a.id IN (:ids)", UuidAppGeneratedExplicitMappingEntity.class)
                 .setParameter("ids", List.copyOf(idsByTitle.values()))
                 .getResultList();
             Assertions.assertEquals(3, articles.size());

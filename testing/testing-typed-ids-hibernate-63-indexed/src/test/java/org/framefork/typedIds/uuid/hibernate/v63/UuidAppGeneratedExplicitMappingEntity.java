@@ -1,36 +1,34 @@
-package org.framefork.typedIds.uuid.hibernate;
-
-import org.framefork.typedIds.uuid.ObjectUuid;
-import org.hibernate.annotations.Type;
+package org.framefork.typedIds.uuid.hibernate.v63;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.framefork.typedIds.uuid.ObjectUuid;
+
 import java.util.UUID;
 
 @Entity
-@Table(name = ArticleDefaultExplicitMapping.TABLE_NAME)
-public class ArticleDefaultExplicitMapping
+@Table(name = UuidAppGeneratedExplicitMappingEntity.TABLE_NAME)
+public class UuidAppGeneratedExplicitMappingEntity
 {
 
-    public static final String TABLE_NAME = "article_default_explicit_mapping";
+    public static final String TABLE_NAME = "uuid_app_generated_explicit_mapping";
 
     @jakarta.persistence.Id
     @Column(nullable = false)
-    @Type(ObjectUuidType.class)
     private Id id;
 
     @Column(nullable = false)
     private String title;
 
-    public ArticleDefaultExplicitMapping(final String title)
+    public UuidAppGeneratedExplicitMappingEntity(final String title)
     {
         this.id = Id.random();
         this.title = title;
     }
 
     @SuppressWarnings("NullAway")
-    protected ArticleDefaultExplicitMapping()
+    protected UuidAppGeneratedExplicitMappingEntity()
     {
     }
 
