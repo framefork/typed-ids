@@ -1,7 +1,10 @@
 package org.framefork.typedIds.bigint;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.invoke.MethodHandle;
 
+@ApiStatus.Internal
 public final class ObjectBigIntIdTypeUtils
 {
 

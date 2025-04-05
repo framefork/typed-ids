@@ -1,6 +1,7 @@
 package org.framefork.typedIds.common;
 
 import org.atteo.classindex.ClassIndex;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
+@ApiStatus.Internal
 public final class ServiceLoaderUtils
 {
 

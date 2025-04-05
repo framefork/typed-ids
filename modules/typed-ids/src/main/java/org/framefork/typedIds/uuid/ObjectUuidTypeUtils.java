@@ -1,8 +1,11 @@
 package org.framefork.typedIds.uuid;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.invoke.MethodHandle;
 import java.util.UUID;
 
+@ApiStatus.Internal
 public final class ObjectUuidTypeUtils
 {
 

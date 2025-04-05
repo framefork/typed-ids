@@ -1,6 +1,7 @@
 package org.framefork.typedIds.common;
 
 import org.intellij.lang.annotations.Language;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -8,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+@ApiStatus.Internal
 public final class ReflectionHacks
 {
 
