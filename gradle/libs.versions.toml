@@ -28,17 +28,11 @@ datasource-proxy = { module = "net.ttddyy:datasource-proxy", version = "1.10" }
 postgresql = { module = "org.postgresql:postgresql", version = "42.7.4" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "8.3.0" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
-hibernate-orm-v55 = { group = "org.hibernate", name = "hibernate-core", version = "5.5.9.Final" }
-hibernate-orm-v56 = { group = "org.hibernate", name = "hibernate-core", version = "5.6.15.Final" }
-hibernate-orm-v60 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.0.2.Final" }
-hibernate-orm-v61 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.1.7.Final" }
-hibernate-orm-v62 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.2.32.Final" }
+hibernate-orm-v62 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.2.36.Final" }
 hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.3.2.Final" }
 hibernate-orm-v64 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.4.10.Final" }
 hibernate-orm-v65 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.3.Final" }
-hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.2.Final" }
-hypersistence-utils-hibernate55 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-55", version = "3.8.3" }
-hypersistence-utils-hibernate60 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.8.3" }
-hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.8.3" }
-hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.12.Final" }
+hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.9.4" }
+hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.9.9" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
