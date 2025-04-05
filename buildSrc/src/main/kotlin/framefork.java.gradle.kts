@@ -18,10 +18,6 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
-
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }
 
 dependencies {
@@ -51,6 +47,14 @@ idea {
     module {
         isDownloadJavadoc = true
         isDownloadSources = true
+    }
+}
+
+tasks.withType<JavaCompile>() {
+    doLast {
+        javaCompiler.getOrNull()?.also {
+            println("Used JDK: ${it.metadata.javaRuntimeVersion} ${it.metadata.vendor}")
+        }
     }
 }
 

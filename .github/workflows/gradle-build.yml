@@ -30,6 +30,9 @@ jobs:
         with:
           add-job-summary-as-pr-comment: on-failure
 
+      - name: Gradle build environment info
+        run: ./gradlew -q buildEnvironment
+
       - name: Execute Gradle build
         run: ./gradlew --continue build
 
