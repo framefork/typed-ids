@@ -59,8 +59,8 @@ This pattern is supported for both `ObjectUuid` and `ObjectBigIntId`.
 
 This library supports several libraries for generating the IDs in the JVM but does not pull them in, instead it expects you to pick one and add it yourself.
 
-* UUIDs with [`com.fasterxml.uuid:java-uuid-generator`](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator/versions)
-* BigInts/longs with [`io.hypersistence:hypersistence-tsid`](https://central.sonatype.com/artifact/io.hypersistence/hypersistence-tsid/versions)
+* UUIDs with [`com.fasterxml.uuid:java-uuid-generator`](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator/versions) (see [project homepage](https://github.com/cowtowncoder/java-uuid-generator))
+* BigInts/longs with [`io.hypersistence:hypersistence-tsid`](https://central.sonatype.com/artifact/io.hypersistence/hypersistence-tsid/versions) (see [project homepage](https://github.com/vladmihalcea/hypersistence-tsid))
 
 If you want to use a different library, the `$Generators.setFactory()` extension point should hopefully be self-explanatory.
 
