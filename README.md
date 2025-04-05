@@ -1,8 +1,8 @@
 # TypedIds
 
-This library provides base classes and tooling to create typed IDs.
-The original goal was to allow easy and safe creation of Value Objects (VOs) backed by UUIDv7 for Hibernate ORM entities.
-Contributions for other ORMs or alternative JPA implementations are welcome.
+This library provides base classes and tooling to easily and safely create immutable typed Value Object IDs (VO-IDs) internally backed by a UUIDv7 or bigint.
+
+Contributions for serialization libraries, other ORMs, alternative JPA implementations or anything else are welcome.
 
 ## Why?
 
@@ -16,21 +16,10 @@ For seamless type support in Hibernate ORM, you should pick one of the following
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | 6.6, 6.5, 6.4, and 6.3        | [org.framefork:typed-ids-hibernate-63](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-63)   |
 | 6.2                           | [org.framefork:typed-ids-hibernate-62](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-62)   |
-| 6.1 and 6.0                   | TBD                                                                                                                  |
-| 5.6 and 5.5                   | TBD                                                                                                                  |
 
 Find the latest version in this project's GitHub releases or on Maven Central.
 
-If you want just the plain classes, you can install only the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
-
-### Application-generated (random) IDs
-
-This library supports several libraries for generating the IDs in the JVM but does not pull them in, instead it expects you to pick one and add it yourself.
-
-* UUIDs with [`com.fasterxml.uuid:java-uuid-generator`](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator/versions)
-* BigInts/longs with [`io.hypersistence:hypersistence-tsid`](https://central.sonatype.com/artifact/io.hypersistence/hypersistence-tsid/versions)
-
-If you want to use a different library, the `$Generators.setFactory()` extension point should hopefully be self-explanatory.
+If you want just the plain base classes without ORM support, you can install just the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
 
 ## Hibernate type mapping
 
@@ -48,14 +37,32 @@ In some cases, that means changing the default DDL that Hibernate uses for the `
 The library only sets the type if there is no JDBC type for `SqlTypes.UUID` already set,
 which means that if you want to use something different you should be able to do so using a custom `org.hibernate.boot.model.TypeContributor`.
 
-## UUID as an application-generated identifier
+## Database-generated identifiers
 
-One of the goals of this library is to enable generated typed IDs _in application code_ - specifically in entity constructors.
+The library explicitly supports `AUTO`, `IDENTITY` and `SEQUENCE` strategies for generating bigint identifiers via the `@GeneratedValue` annotation for the VO-IDs.
+
+This pattern is supported only for `ObjectBigIntId`.
+
+## Application-generated identifiers
+
+One of the primary goals of this library is to enable generated typed IDs _in application code_ - specifically in entity constructors.
+
 Being able to generate identifiers in app code solves many problems around application design and architecture by getting rid of the dependency of entity on the database.
 The classic approach is to let the database generate the identifiers, which is perfectly fine if you prefer that, but it breaks entity state because until you persist them they're invalid and incomplete.
 But when you generate the ID at construction time, the entity is valid from the first moment.
+The only way to do this reliably is to generate random identifiers so that you don't get conflicts when persisting the entities,
+but using perfectly random values has its problems - see [UUID as a primary key](#uuid-as-a-primary-key) for a solution.
 
-The only way to do this reliably is to generate random identifiers so that you don't get conflicts when persisting the entities, but using perfectly random values has its problems...
+This pattern is supported for both `ObjectUuid` and `ObjectBigIntId`.
+
+### Supported random application-generated identifiers generation strategies
+
+This library supports several libraries for generating the IDs in the JVM but does not pull them in, instead it expects you to pick one and add it yourself.
+
+* UUIDs with [`com.fasterxml.uuid:java-uuid-generator`](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator/versions)
+* BigInts/longs with [`io.hypersistence:hypersistence-tsid`](https://central.sonatype.com/artifact/io.hypersistence/hypersistence-tsid/versions)
+
+If you want to use a different library, the `$Generators.setFactory()` extension point should hopefully be self-explanatory.
 
 ## UUID as a primary key
 
@@ -77,7 +84,7 @@ Some additional resources:
 * [Choose the right primary key to save a large amount of disk I/O - Too Many Afterthoughts](https://www.toomanyafterthoughts.com/primary-key-random-sequential-performance/)
 * [UUID vs Bigint Battle! - Scaling Postgres 302](https://www.scalingpostgres.com/episodes/302-uuid-vs-bigint-battle/)
 
-## Usage: ObjectUUID
+## Usage: ObjectUuid
 
 The base type is designed to wrap a native UUID, and allows you to expose any utility functions you may need.
 The following snippet is the standard boilerplate, but you may opt to skip some of the methods, or add a few custom ones.
