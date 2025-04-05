@@ -16,6 +16,7 @@ import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcTypeIndicators;
 import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import org.hibernate.usertype.DynamicParameterizedType;
+import org.jetbrains.annotations.Contract;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -113,12 +114,13 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
         return Size.DEFAULT_LENGTH;
     }
 
+    @Contract("null, _, _ -> null; !null, _, _ -> !null")
     @Nullable
     @Override
     public <X> X unwrap(
         @Nullable final ObjectUuid<?> value,
         @NonNull final Class<X> type,
-        @NonNull final WrapperOptions options
+        @Nullable final WrapperOptions options
     )
     {
         if (value == null) {
@@ -128,11 +130,12 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
         return inner.unwrap(value.toNativeUuid(), type, options);
     }
 
+    @Contract("null, _ -> null; !null, _ -> !null")
     @Nullable
     @Override
     public <X> ObjectUuid<?> wrap(
         @Nullable final X value,
-        @NonNull final WrapperOptions options
+        @Nullable final WrapperOptions options
     )
     {
         if (value == null) {

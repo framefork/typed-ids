@@ -8,6 +8,8 @@ import org.framefork.typedIds.uuid.ObjectUuid;
 import org.hibernate.HibernateException;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.DynamicParameterizedType;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.sql.Array;
 import java.sql.SQLException;
@@ -82,8 +84,8 @@ public class ObjectUuidArrayType<T extends ObjectUuid<T>> extends AbstractArrayT
         @Override
         public <X> X unwrap(
             final T[] value,
-            final Class<X> type,
-            final WrapperOptions options
+            @NonNull final Class<X> type,
+            @Nullable final WrapperOptions options
         )
         {
             if (value.length > 0) {
@@ -101,7 +103,7 @@ public class ObjectUuidArrayType<T extends ObjectUuid<T>> extends AbstractArrayT
         @Override
         public <X> T[] wrap(
             final X value,
-            final WrapperOptions options
+            @Nullable final WrapperOptions options
         )
         {
             if (value instanceof Array array) {

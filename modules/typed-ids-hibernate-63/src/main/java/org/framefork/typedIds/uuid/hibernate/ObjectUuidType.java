@@ -15,6 +15,7 @@ import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.hibernate.type.spi.TypeConfigurationAware;
 import org.hibernate.usertype.DynamicParameterizedType;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.sql.PreparedStatement;
@@ -97,6 +98,7 @@ public class ObjectUuidType extends ImmutableType<ObjectUuid<?>> implements
         return javaTypeDescriptor.getDefaultSqlLength(dialect, jdbcType);
     }
 
+    @NonNull
     @Override
     public JdbcType getJdbcType(final TypeConfiguration typeConfiguration)
     {
