@@ -171,3 +171,9 @@ public class User
 
 But with the class indexer installed, The system will know that the `User.Id` should be handled by `ObjectUuidType` and the `@Type(...)` can be dropped.
 This also simplifies usage on every other place, where Hibernate might need to resolve a type for the `Id` instance, like queries.
+
+## More examples
+
+To learn more you can explore the `testing/` directory of this library,
+for example the [testing/testing-typed-ids-hibernate-66-indexed](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-hibernate-66-indexed/src/test/java/org/framefork/typedIds)
+has several working use-cases written in the form of tests that you can study for inspiration.
