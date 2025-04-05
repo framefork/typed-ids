@@ -2,7 +2,6 @@ plugins {
     id("base")
     id("idea")
     id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree publish
-    id("be.vbgn.ci-detect") version ("0.5.0")
 }
 
 repositories {
