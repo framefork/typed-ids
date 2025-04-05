@@ -3,6 +3,7 @@ package org.framefork.typedIds.bigint;
 import com.google.errorprone.annotations.Immutable;
 import org.atteo.classindex.IndexSubclasses;
 import org.framefork.typedIds.TypedId;
+import org.framefork.typedIds.common.LazyValue;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -10,7 +11,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Wraps long
@@ -116,8 +116,7 @@ public abstract class ObjectBigIntId<SelfType extends ObjectBigIntId<SelfType>> 
     public static final class Generators
     {
 
-        private static final AtomicReference<BigIntGenerator.Factory> FACTORY = new AtomicReference<>();
-
+        private static final LazyValue<BigIntGenerator.Factory> FACTORY = new LazyValue<>(BigIntGenerator.Factory::getDefault);
         private static final ConcurrentHashMap<Constructor<?>, BigIntGenerator> GENERATORS = new ConcurrentHashMap<>();
 
         private Generators()
@@ -133,7 +132,7 @@ public abstract class ObjectBigIntId<SelfType extends ObjectBigIntId<SelfType>> 
         {
             return GENERATORS.computeIfAbsent(
                 constructor,
-                c -> getFactory().getGenerator(c)
+                c -> FACTORY.get().getGenerator(c)
             );
         }
 
@@ -144,17 +143,6 @@ public abstract class ObjectBigIntId<SelfType extends ObjectBigIntId<SelfType>> 
         {
             FACTORY.set(factory);
             GENERATORS.clear();
-        }
-
-        private static BigIntGenerator.Factory getFactory()
-        {
-            var factory = FACTORY.get();
-            if (factory == null) {
-                factory = BigIntGenerator.Factory.getDefault();
-                setFactory(factory);
-            }
-
-            return factory;
         }
 
     }

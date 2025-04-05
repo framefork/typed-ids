@@ -3,6 +3,7 @@ package org.framefork.typedIds.uuid;
 import com.google.errorprone.annotations.Immutable;
 import org.atteo.classindex.IndexSubclasses;
 import org.framefork.typedIds.TypedId;
+import org.framefork.typedIds.common.LazyValue;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -12,7 +13,6 @@ import java.io.Serial;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Wraps {@link UUID}
@@ -160,8 +160,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     public static final class Generators
     {
 
-        private static final AtomicReference<UuidGenerator.Factory> FACTORY = new AtomicReference<>();
-
+        private static final LazyValue<UuidGenerator.Factory> FACTORY = new LazyValue<>(UuidGenerator.Factory::getDefault);
         private static final ConcurrentHashMap<Constructor<?>, UuidGenerator> GENERATORS = new ConcurrentHashMap<>();
 
         private Generators()
@@ -177,7 +176,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         {
             return GENERATORS.computeIfAbsent(
                 constructor,
-                c -> getFactory().getGenerator(c)
+                c -> FACTORY.get().getGenerator(c)
             );
         }
 
@@ -188,17 +187,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         {
             FACTORY.set(factory);
             GENERATORS.clear();
-        }
-
-        private static UuidGenerator.Factory getFactory()
-        {
-            var factory = FACTORY.get();
-            if (factory == null) {
-                factory = UuidGenerator.Factory.getDefault();
-                setFactory(factory);
-            }
-
-            return factory;
         }
 
     }
