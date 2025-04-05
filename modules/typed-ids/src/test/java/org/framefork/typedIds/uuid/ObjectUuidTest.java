@@ -23,7 +23,7 @@ final class ObjectUuidTest
         {
             ObjectUuidMock id = ObjectUuidMock.random();
             Assertions.assertNotNull(id);
-            assertThat(id.version()).isEqualTo(7);
+            assertThat(id.toNativeUuid().version()).isEqualTo(7);
         }
 
     }

@@ -71,65 +71,6 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
     }
 
     /**
-     * Returns the least significant 64 bits of this UUID's 128 bit value.
-     *
-     * @return The least significant 64 bits of this UUID's 128 bit value
-     */
-    public long getLeastSignificantBits()
-    {
-        return inner.getLeastSignificantBits();
-    }
-
-    /**
-     * Returns the most significant 64 bits of this UUID's 128 bit value.
-     *
-     * @return The most significant 64 bits of this UUID's 128 bit value
-     */
-    public long getMostSignificantBits()
-    {
-        return inner.getMostSignificantBits();
-    }
-
-    /**
-     * The version number associated with this {@code ObjectUuid}.  The version
-     * number describes how this {@code ObjectUuid} was generated.
-     * <p>
-     * The version number has the following meaning:
-     * <ul>
-     * <li>1    Time-based UUID
-     * <li>2    DCE security UUID
-     * <li>3    Name-based UUID
-     * <li>4    Randomly generated UUID
-     * </ul>
-     *
-     * @return The version number of this {@code ObjectUuid}
-     */
-    public int version()
-    {
-        return inner.version();
-    }
-
-    /**
-     * The variant number associated with this {@code ObjectUuid}.  The variant
-     * number describes the layout of the {@code ObjectUuid}.
-     * <p>
-     * The variant number has the following meaning:
-     * <ul>
-     * <li>0    Reserved for NCS backward compatibility
-     * <li>2    <a href="http://www.ietf.org/rfc/rfc4122.txt">IETF&nbsp;RFC&nbsp;4122</a>
-     * (Leach-Salz), used by this class
-     * <li>6    Reserved, Microsoft Corporation backward compatibility
-     * <li>7    Reserved for future definition
-     * </ul>
-     *
-     * @return The variant number of this {@code ObjectUuid}
-     */
-    public int variant()
-    {
-        return inner.variant();
-    }
-
-    /**
      * Compares this UUID with the specified UUID.
      *
      * <p> The first of two UUIDs is greater than the second if the most
