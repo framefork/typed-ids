@@ -41,3 +41,4 @@ hypersistence-utils-hibernate55 = { group = "io.hypersistence", name = "hypersis
 hypersistence-utils-hibernate60 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.8.3" }
 hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.8.3" }
 hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.8.3" }
+hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }

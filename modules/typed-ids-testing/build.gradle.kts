@@ -7,6 +7,7 @@ dependencies {
     api(libs.assertj)
 
     api(libs.uuidGenerator)
+    api(libs.hypersistence.tsid)
     api(libs.hibernate.orm.v63)
     api(libs.hypersistence.utils.hibernate63)
 
