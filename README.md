@@ -37,13 +37,13 @@ In some cases, that means changing the default DDL that Hibernate uses for the `
 The library only sets the type if there is no JDBC type for `SqlTypes.UUID` already set,
 which means that if you want to use something different you should be able to do so using a custom `org.hibernate.boot.model.TypeContributor`.
 
-## Database-generated identifiers
+## Database-generated identifiers and ORM Entities
 
 The library explicitly supports `AUTO`, `IDENTITY` and `SEQUENCE` strategies for generating bigint identifiers via the `@GeneratedValue` annotation for the VO-IDs.
 
 This pattern is supported only for `ObjectBigIntId`.
 
-## Application-generated identifiers
+## Application-generated identifiers and ORM Entities
 
 One of the primary goals of this library is to enable generated typed IDs _in application code_ - specifically in entity constructors.
 
