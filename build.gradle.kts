@@ -30,7 +30,7 @@ tasks.register<Delete>("cleanAllPublications") {
 allprojects {
     apply(plugin = "project-report")
 
-    this.task("allDependencies", DependencyReportTask::class) {
+    this.tasks.register<DependencyReportTask>("allDependencies") {
         evaluationDependsOnChildren()
         this.setRenderer(org.gradle.api.tasks.diagnostics.internal.dependencies.AsciiDependencyReportRenderer().apply {
             outputFile = file(project.layout.buildDirectory.file("reports/dependencies.txt"))
