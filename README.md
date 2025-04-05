@@ -55,7 +55,7 @@ but using perfectly random values has its problems - see [UUID as a primary key]
 
 This pattern is supported for both `ObjectUuid` and `ObjectBigIntId`.
 
-### Supported random application-generated identifiers generation strategies
+### Supported random identifier generation strategies
 
 This library supports several libraries for generating the IDs in the JVM but does not pull them in, instead it expects you to pick one and add it yourself.
 
