@@ -1,9 +1,10 @@
 project:
   vendor: Framefork
   name: typed-ids
-  java:
-    groupId: "org.framefork"
-    multiProject: true
+  languages:
+    java:
+      groupId: "org.framefork"
+      multiProject: true
 
 checksum:
   individual: true
