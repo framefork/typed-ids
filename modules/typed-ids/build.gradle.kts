@@ -17,6 +17,7 @@ dependencies {
     compileOnly(libs.jackson.databind)
 
     testImplementation(project(":typed-ids-testing"))
+    testImplementation(libs.jackson.databind)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
