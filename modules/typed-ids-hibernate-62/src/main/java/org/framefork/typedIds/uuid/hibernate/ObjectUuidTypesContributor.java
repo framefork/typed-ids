@@ -1,9 +1,8 @@
 package org.framefork.typedIds.uuid.hibernate;
 
 import com.google.auto.service.AutoService;
+import org.framefork.typedIds.TypedIdsRegistry;
 import org.framefork.typedIds.common.ReflectionHacks;
-import org.framefork.typedIds.common.ServiceLoaderUtils;
-import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.hibernate.jdbc.BinaryUuidJdbcType;
 import org.framefork.typedIds.uuid.hibernate.jdbc.NativeUuidJdbcType;
 import org.hibernate.boot.model.TypeContributions;
@@ -73,7 +72,7 @@ public class ObjectUuidTypesContributor implements TypeContributor
         TypeConfiguration typeConfiguration = typeContributions.getTypeConfiguration();
         JdbcType uuidJdbcType = typeConfiguration.getJdbcTypeRegistry().getDescriptor(SqlTypes.UUID);
 
-        var idTypes = ServiceLoaderUtils.getIndexedSubclassesFor(ObjectUuid.class);
+        var idTypes = TypedIdsRegistry.getObjectUuidClasses();
         for (var idType : idTypes) {
             var objectUuidType = new ObjectUuidType(idType, uuidJdbcType);
 

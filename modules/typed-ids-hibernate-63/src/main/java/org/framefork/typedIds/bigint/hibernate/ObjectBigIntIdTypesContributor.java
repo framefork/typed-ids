@@ -1,9 +1,8 @@
 package org.framefork.typedIds.bigint.hibernate;
 
 import com.google.auto.service.AutoService;
-import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.TypedIdsRegistry;
 import org.framefork.typedIds.common.ReflectionHacks;
-import org.framefork.typedIds.common.ServiceLoaderUtils;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.service.ServiceRegistry;
@@ -36,7 +35,7 @@ public class ObjectBigIntIdTypesContributor implements TypeContributor
         TypeConfiguration typeConfiguration = typeContributions.getTypeConfiguration();
         JdbcType bigintJdbcType = typeConfiguration.getJdbcTypeRegistry().getDescriptor(SqlTypes.BIGINT);
 
-        var idTypes = ServiceLoaderUtils.getIndexedSubclassesFor(ObjectBigIntId.class);
+        var idTypes = TypedIdsRegistry.getObjectBigIntIdClasses();
         for (var idType : idTypes) {
             var objectBigIntIdType = new ObjectBigIntIdType(idType, bigintJdbcType);
 
