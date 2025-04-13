@@ -1,5 +1,7 @@
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
@@ -8,6 +10,7 @@ plugins {
     id("io.github.joselion.strict-null-check")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
+    id("org.jetbrains.kotlin.jvm")
 }
 
 repositories {
@@ -74,6 +77,19 @@ tasks.withType<Test> {
 
 nullaway {
     annotatedPackages.add("org.framefork")
+}
+
+tasks.withType<KotlinCompile>() {
+    dependsOn("generatePackageInfo")
+
+    compilerOptions {
+        freeCompilerArgs = listOf(
+            "-Xjsr305=strict",
+            "-Xjvm-default=all",
+            "-Xsuppress-version-warnings",
+        )
+        jvmTarget = JvmTarget.JVM_21 // This option specifies the target version of the generated JVM bytecode
+    }
 }
 
 tasks.withType<JavaCompile> {

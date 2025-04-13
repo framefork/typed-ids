@@ -227,6 +227,51 @@ But with the index, the `ObjectUuidTypesContributor` reads it, and registers the
 With the classes indexed, the system will know that the `User.Id` should be handled by `ObjectUuidType` and the `@Type(...)` can be dropped.
 This also simplifies usage on every other place, where Hibernate might need to resolve a type for the `Id` instance, like queries.
 
+## Usage: (de)serialization with Jackson
+
+This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
+
+## Usage: (de)serialization with Kotlin Serialization
+
+This library supports two mechanism for the standard Kotlin Serialization.
+
+### Kotlin Serialization: Explicit
+
+This mechanism requires explicit setup for each ID class
+
+```kotlin
+@Serializable(with = Id.Serializer::class)
+class UserId private constructor(id: UUID) : ObjectUuid<UserId>(id) {
+    // standard boilerplate ...
+
+    object Serializer : ObjectUuidSerializer<UserId>(::UserId)
+}
+```
+
+but in return every time you use it, it just works
+
+```kotlin
+@Serializable
+data class UserDto(val id: UserId)
+```
+
+### Kotlin Serialization: Contextual
+
+With contextual, the standard ID boiler can be used, but you have to register the module
+
+```kotlin
+val json = Json {
+    serializersModule = ObjectUuidKotlinxSerializationModule.fromIndex
+}
+```
+
+and then mark the type as `@Contextual` on every usage
+
+```kotlin
+@Serializable
+data class UserDto(@Contextual val id: UserId)
+```
+
 ## More examples
 
 To learn more you can explore the `testing/` directory of this library,

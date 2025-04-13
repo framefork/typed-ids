@@ -34,3 +34,4 @@ hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.9.4" }
 hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.9.9" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }

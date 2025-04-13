@@ -14,9 +14,11 @@ dependencies {
     annotationProcessor(libs.autoService.processor)
 
     compileOnly(libs.jackson.databind)
+    compileOnly(libs.kotlinx.serialization)
 
     testImplementation(project(":typed-ids-testing"))
     testImplementation(libs.jackson.databind)
+    testImplementation(libs.kotlinx.serialization)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
