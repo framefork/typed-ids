@@ -240,7 +240,7 @@ This library supports two mechanism for the standard Kotlin Serialization.
 This mechanism requires explicit setup for each ID class
 
 ```kotlin
-@Serializable(with = Id.Serializer::class)
+@Serializable(with = UserId.Serializer::class)
 class UserId private constructor(id: UUID) : ObjectUuid<UserId>(id) {
     // standard boilerplate ...
 
