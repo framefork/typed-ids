@@ -2,6 +2,7 @@ package org.framefork.typedIds.common;
 
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -17,16 +18,24 @@ public final class ReflectionHacks
     {
     }
 
-    public static boolean classExists(
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> classForName(
         @Language("jvm-class-name") final String className
     )
     {
         try {
-            Class.forName(className, false, ReflectionHacks.class.getClassLoader());
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
+            return (Class<T>) Class.forName(className, false, ReflectionHacks.class.getClassLoader());
+        } catch (ClassNotFoundException | NoClassDefFoundError ignored) {
+            return null;
         }
+    }
+
+    public static boolean classExists(
+        @Language("jvm-class-name") final String className
+    )
+    {
+        return classForName(className) != null;
     }
 
     public static Class<?> getFieldType(

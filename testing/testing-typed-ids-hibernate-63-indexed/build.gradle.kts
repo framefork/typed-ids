@@ -7,8 +7,8 @@ dependencies {
     implementation(libs.hibernate.orm.v63)
     implementation(libs.hypersistence.utils.hibernate63)
 
-    annotationProcessor(libs.ateoClassindex)
-    testAnnotationProcessor(libs.ateoClassindex)
+    annotationProcessor(project(":typed-ids-index-java-classes-processor"))
+    testAnnotationProcessor(project(":typed-ids-index-java-classes-processor"))
 
     testImplementation(project(":typed-ids-testing"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -2,7 +2,6 @@ package org.framefork.typedIds.uuid.hibernate;
 
 import com.google.auto.service.AutoService;
 import org.framefork.typedIds.TypedIdsRegistry;
-import org.framefork.typedIds.common.ReflectionHacks;
 import org.framefork.typedIds.uuid.hibernate.jdbc.BinaryUuidJdbcType;
 import org.framefork.typedIds.uuid.hibernate.jdbc.NativeUuidJdbcType;
 import org.hibernate.boot.model.TypeContributions;
@@ -29,8 +28,6 @@ public class ObjectUuidTypesContributor implements TypeContributor
      * <a href="https://mariadb.com/kb/en/uuid-data-type/">https://mariadb.com/kb/en/uuid-data-type/</a>
      */
     private static final DatabaseVersion MARIADB_NATIVE_UUID_SINCE = DatabaseVersion.make(10, 7);
-
-    private static final boolean CLASS_INDEX_PRESENT = ReflectionHacks.classExists("org.atteo.classindex.ClassIndex");
 
     @Override
     public void contribute(
@@ -65,10 +62,6 @@ public class ObjectUuidTypesContributor implements TypeContributor
 
     private void contributeIndexedTypes(final TypeContributions typeContributions)
     {
-        if (!CLASS_INDEX_PRESENT) {
-            return;
-        }
-
         TypeConfiguration typeConfiguration = typeContributions.getTypeConfiguration();
         JdbcType uuidJdbcType = typeConfiguration.getJdbcTypeRegistry().getDescriptor(SqlTypes.UUID);
 

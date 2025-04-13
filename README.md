@@ -141,16 +141,69 @@ data class User(id: Id) {
 }
 ```
 
-## Usage: Enabling automatic type registration with Hibernate ORM
+## Typed IDs indexing at compile time
 
-Install the [newest version](https://central.sonatype.com/artifact/org.atteo.classindex/classindex) of [org.atteo.classindex:classindex](https://github.com/atteo/classindex), and register it as an annotation processor.
-The classes of this library are annotated with `@IndexSubclasses`, so once the classindex library is correctly installed,
-you should see `META-INF/services/org.framefork.typedIds.uuid.ObjectUuid` being populated somewhere in your build output directory.
-The `ObjectUuidTypesContributor` should then read it, and register the types automatically when Hibernate ORM is initialized.
+This library provides a mechanism to index your ID classes at compile time, which is useful for pleasant integrations with various frameworks.
 
-When used with a Kotlin project, you might want to explicitly add also a `kapt("org.atteo.classindex:classindex")` dependency.
+### Setting up subtype indexing in a Java project
 
-Without the automatic registration, the field has to be annotated like this
+Set up the `org.framefork:typed-ids-index-java-classes-processor` as an annotation processor.
+
+It's based on [org.atteo.classindex:classindex](https://github.com/atteo/classindex), and when executed,
+it writes (somewhere in your build output directory) to `META-INF/services/org.framefork.typedIds.uuid.ObjectUuid` or `META-INF/services/org.framefork.typedIds.bigint.ObjectBigIntId`,
+which can be later read by the standard `java.util.ServiceLoader` mechanism.
+
+With Gradle, register the processor like this:
+
+```kotlin
+dependencies {
+    annotationProcessor("org.framefork:typed-ids-index-java-classes-processor")
+    testAnnotationProcessor("org.framefork:typed-ids-index-java-classes-processor")
+}
+```
+
+With Maven, you can register it as an optional dependency if annotation processors discovery works in your project
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.framefork</groupId>
+        <artifactId>typed-ids-index-java-classes-processor</artifactId>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+```
+
+Or if you want to be safe, you can register the processor explicitly
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.framefork</groupId>
+                <artifactId>typed-ids-index-java-classes-processor</artifactId>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+```
+
+### Setting up subtype indexing in a Kotlin project
+
+With Kotlin, you have to register the indexer as KAPT processor:
+
+```kotlin
+dependencies {
+    kapt("org.framefork:typed-ids-index-java-classes-processor") // instead of annotationProcessor(...)
+}
+```
+
+## Usage: Automatic type registration with Hibernate ORM
+
+Without the Typed IDs indexing at compile time, the field has to be annotated like this (the `@Type(...)` is the important part):
 
 ```java
 @Entity
@@ -169,7 +222,9 @@ public class User
         // ...
 ```
 
-But with the class indexer installed, The system will know that the `User.Id` should be handled by `ObjectUuidType` and the `@Type(...)` can be dropped.
+But with the index, the `ObjectUuidTypesContributor` reads it, and registers the types automatically when Hibernate ORM is initialized.
+
+With the classes indexed, the system will know that the `User.Id` should be handled by `ObjectUuidType` and the `@Type(...)` can be dropped.
 This also simplifies usage on every other place, where Hibernate might need to resolve a type for the `Id` instance, like queries.
 
 ## More examples

@@ -1,8 +1,6 @@
 [versions]
-kotlin = "2.0.20"
 googleAutoService = "1.1.1"
 errorProne = "2.35.1"
-ateoClassindex = "3.13"
 junit-jupiter = "5.10.3"
 jackson = "2.18.1"
 testcontainers = "1.20.3"
@@ -15,7 +13,7 @@ jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-an
 autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref = "googleAutoService" }
 autoService-annotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "googleAutoService" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
-ateoClassindex = { group = "org.atteo.classindex", name = "classindex", version.ref = "ateoClassindex" }
+ateoClassindex = { group = "org.atteo.classindex", name = "classindex", version = "3.13" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 assertj = { module = "org.assertj:assertj-core", version = "3.11.1" }
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }

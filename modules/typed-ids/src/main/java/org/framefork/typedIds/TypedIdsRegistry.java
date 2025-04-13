@@ -7,6 +7,11 @@ import org.framefork.typedIds.uuid.ObjectUuid;
 
 import java.util.List;
 
+/**
+ * This only works when the subtypes of the TypedIds are indexed in compile time.
+ * <p>
+ * Investigate the <code>typed-ids-index-java-classes-processor</code> module of this library.
+ */
 @SuppressWarnings("rawtypes")
 public final class TypedIdsRegistry
 {

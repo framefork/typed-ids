@@ -6,7 +6,6 @@ dependencies {
     api(project(":typed-ids"))
     api(libs.hibernate.orm.v62)
     api(libs.hypersistence.utils.hibernate62)
-    api(libs.ateoClassindex)
 
     compileOnly(libs.jetbrains.annotations)
 

@@ -8,7 +8,6 @@ dependencies {
     compileOnly(libs.uuidGenerator)
     compileOnly(libs.hypersistence.tsid)
 
-    compileOnly(libs.ateoClassindex)
     compileOnly(libs.jetbrains.annotations)
 
     compileOnly(libs.autoService.annotations)
