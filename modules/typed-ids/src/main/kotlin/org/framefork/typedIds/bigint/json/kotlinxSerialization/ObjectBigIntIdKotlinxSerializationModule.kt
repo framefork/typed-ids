@@ -8,13 +8,13 @@ import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils
 import org.framefork.typedIds.common.ReflectionHacks
 import java.util.concurrent.ConcurrentHashMap
 
-object ObjectBigIntIdKotlinxSerializationModule {
+public object ObjectBigIntIdKotlinxSerializationModule {
 
     /**
-     * Uses [org.framefork.typedIds.TypedIdsRegistry] to construct the module.
+     * Uses [TypedIdsRegistry] to construct the module.
      * This requires the ID types are indexed compile-time.
      */
-    val fromIndex = SerializersModule {
+    public val fromIndex: SerializersModule = SerializersModule {
         for (javaClass in TypedIdsRegistry.getObjectBigIntIdClasses()) {
             @Suppress("UNCHECKED_CAST")
             contextual(javaClass.kotlin, typedIdSerializerProvider(javaClass as Any as Class<out ObjectBigIntId<*>>))

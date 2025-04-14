@@ -1,6 +1,7 @@
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -23,13 +24,22 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
+    val kotlinVersion = project.getKotlinPluginVersion()
+
     api("org.jspecify:jspecify:1.0.0")
 
     compileOnly("org.checkerframework:checker-qual:3.48.2")
 
     errorprone("com.google.errorprone:error_prone_core:2.36.0")
     errorprone("com.uber.nullaway:nullaway:0.12.1")
+
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
 
     constraints {
         errorprone("org.checkerframework:checker-qual:3.48.2")

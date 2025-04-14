@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Encoder
 import org.framefork.typedIds.uuid.ObjectUuid
 import java.util.*
 
-open class ObjectUuidSerializer<T : ObjectUuid<*>>(
+public open class ObjectUuidSerializer<T : ObjectUuid<*>>(
     private val fromUuidConstructor: (UUID) -> T,
 ) : KSerializer<T> {
 

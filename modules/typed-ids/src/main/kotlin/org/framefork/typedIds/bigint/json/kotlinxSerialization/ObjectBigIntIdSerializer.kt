@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.framefork.typedIds.bigint.ObjectBigIntId
 
-open class ObjectBigIntIdSerializer<T : ObjectBigIntId<*>>(
+public open class ObjectBigIntIdSerializer<T : ObjectBigIntId<*>>(
     private val fromLongConstructor: (Long) -> T,
 ) : KSerializer<T> {
 

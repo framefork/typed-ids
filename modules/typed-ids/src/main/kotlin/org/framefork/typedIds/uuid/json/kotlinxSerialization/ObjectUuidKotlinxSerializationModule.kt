@@ -9,13 +9,13 @@ import org.framefork.typedIds.uuid.ObjectUuidTypeUtils
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-object ObjectUuidKotlinxSerializationModule {
+public object ObjectUuidKotlinxSerializationModule {
 
     /**
-     * Uses [org.framefork.typedIds.TypedIdsRegistry] to construct the module.
+     * Uses [TypedIdsRegistry] to construct the module.
      * This requires the ID types are indexed compile-time.
      */
-    val fromIndex = SerializersModule {
+    public val fromIndex: SerializersModule = SerializersModule {
         for (javaClass in TypedIdsRegistry.getObjectUuidClasses()) {
             @Suppress("UNCHECKED_CAST")
             contextual(javaClass.kotlin, typedIdSerializerProvider(javaClass as Any as Class<out ObjectUuid<*>>))
