@@ -86,7 +86,7 @@ Some additional resources:
 
 ## Usage: ObjectUuid
 
-The base type is designed to wrap a native UUID, and allows you to expose any utility functions you may need.
+This base type is designed to wrap a native UUID, and allows you to expose any utility functions you may need.
 The following snippet is the standard boilerplate, but you may opt to skip some of the methods, or add a few custom ones.
 
 ```java
@@ -135,6 +135,63 @@ data class User(id: Id) {
             fun random() = randomUUID(::Id)
             fun from(value: String) = fromString(::Id, value)
             fun from(value: UUID) = fromUuid(::Id, value)
+        }
+    }
+
+}
+```
+
+## Usage: ObjectBigIntId
+
+This base type is designed to wrap a native `long`, and allows you to expose any utility functions you may need.
+The following snippet is the standard boilerplate, but you may opt to skip some of the methods, or add a few custom ones.
+
+```java
+public record User(Id id)
+{
+
+    public static final class Id extends ObjectBigIntId<Id>
+    {
+
+        private Id(final UUID inner)
+        {
+            super(inner);
+        }
+
+        public static Id random()
+        {
+            return ObjectBigIntId.randomBigInt(Id::new);
+        }
+
+        public static Id from(final String value)
+        {
+            return ObjectBigIntId.fromString(Id::new, value);
+        }
+
+        public static Id from(final long value)
+        {
+            return ObjectBigIntId.fromLong(Id::new, value);
+        }
+
+    }
+
+}
+
+// ...
+
+var user = new User(Id.random());
+```
+
+With Kotlin, the standard boilerplate should look like the following snippet
+
+```kt
+data class User(id: Id) {
+
+    class Id private constructor(id: UUID) : ObjectBigIntId<Id>(id) {
+        companion object {
+            fun random() = randomBigInt(::Id)
+            fun from(value: String) = fromString(::Id, value)
+            fun from(value: Long) = fromLong(::Id, value)
         }
     }
 
