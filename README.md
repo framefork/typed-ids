@@ -153,7 +153,7 @@ public record User(Id id)
     public static final class Id extends ObjectBigIntId<Id>
     {
 
-        private Id(final UUID inner)
+        private Id(final long inner)
         {
             super(inner);
         }
