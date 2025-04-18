@@ -15,7 +15,11 @@ import org.jspecify.annotations.Nullable;
 import java.util.Objects;
 import java.util.Properties;
 
-public class ObjectBigIntIdIdentifierGenerator extends SequenceStyleGenerator
+/**
+ * This class handles making Hibernate think it's generating a primitive long type instead of a custom type,
+ * and once Hibernate internals do their job, it then handles wrapping the generated long value in an ObjectBigIntId.
+ */
+public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
 {
 
     @Nullable
@@ -24,25 +28,8 @@ public class ObjectBigIntIdIdentifierGenerator extends SequenceStyleGenerator
     @Override
     public Object generate(final SharedSessionContractImplementor session, final Object object)
     {
-        return wrapToCustomType(toLong(super.generate(session, object)));
-    }
-
-    private Object wrapToCustomType(final Long generatedId)
-    {
         var idType = Objects.requireNonNull(objectBigIntIdType, "objectBigIntIdType must not be null");
-        return idType.getExpressibleJavaType().wrap(generatedId, null);
-    }
-
-    private Long toLong(final Object value)
-    {
-        if (value instanceof Long longValue) {
-            return longValue;
-        }
-        if (value instanceof Number numberValue) {
-            return numberValue.longValue();
-        }
-
-        throw new HibernateException("Could not convert '%s' to 'Long'".formatted(value.getClass().getName()));
+        return idType.wrapJdbcValue(super.generate(session, object));
     }
 
     @Override

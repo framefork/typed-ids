@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.ImmutableType;
 import io.hypersistence.utils.hibernate.type.util.ParameterizedParameterType;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils;
+import org.hibernate.HibernateException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.metamodel.model.domain.DomainType;
@@ -143,6 +144,21 @@ public class ObjectBigIntIdType extends ImmutableType<ObjectBigIntId<?>> impleme
     public MutabilityPlan<ObjectBigIntId<?>> getExposedMutabilityPlan()
     {
         return javaTypeDescriptor.getMutabilityPlan();
+    }
+
+    public ObjectBigIntId<?> wrapJdbcValue(final Object value)
+    {
+        if (value instanceof Long longValue) {
+            return javaTypeDescriptor.wrap(longValue, null);
+        }
+        if (value instanceof Number numberValue) {
+            return wrapJdbcValue(numberValue.longValue());
+        }
+        if (getReturnedClass().isInstance(value)) {
+            return getReturnedClass().cast(value);
+        }
+
+        throw new HibernateException("Could not convert '%s' to '%s'".formatted(value.getClass().getName(), getReturnedClass()));
     }
 
     /**
