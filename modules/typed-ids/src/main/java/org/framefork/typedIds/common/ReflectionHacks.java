@@ -9,6 +9,8 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 @ApiStatus.Internal
 public final class ReflectionHacks
@@ -86,6 +88,17 @@ public final class ReflectionHacks
                 e
             );
         }
+    }
+
+    public static Class<?>[] getAllInterfaces(final Object object)
+    {
+        var interfaces = new HashSet<Class<?>>();
+        Class<?> classNode = object.getClass();
+        while (classNode != null && classNode != Object.class) {
+            Collections.addAll(interfaces, classNode.getInterfaces());
+            classNode = classNode.getSuperclass();
+        }
+        return interfaces.toArray(Class[]::new);
     }
 
 }

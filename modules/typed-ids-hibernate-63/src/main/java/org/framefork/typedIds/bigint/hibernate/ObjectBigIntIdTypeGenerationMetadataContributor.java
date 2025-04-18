@@ -2,6 +2,7 @@ package org.framefork.typedIds.bigint.hibernate;
 
 import com.google.auto.service.AutoService;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.bigint.hibernate.id.ObjectBigIntIdIdentityGenerator;
 import org.framefork.typedIds.bigint.hibernate.id.ObjectBigIntIdSequenceStyleGenerator;
 import org.hibernate.boot.ResourceStreamLocator;
 import org.hibernate.boot.spi.AdditionalMappingContributions;
@@ -48,6 +49,8 @@ public class ObjectBigIntIdTypeGenerationMetadataContributor implements Addition
     {
         var newIdentifierGeneratorStrategy = switch (identifier.getIdentifierGeneratorStrategy()) {
             case "org.hibernate.id.enhanced.SequenceStyleGenerator" -> ObjectBigIntIdSequenceStyleGenerator.class.getName();
+            case "org.hibernate.id.IdentityGenerator" -> ObjectBigIntIdIdentityGenerator.class.getName();
+            case "identity" -> ObjectBigIntIdIdentityGenerator.class.getName();
             default -> identifier.getIdentifierGeneratorStrategy();
         };
 
