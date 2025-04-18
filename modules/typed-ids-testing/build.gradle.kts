@@ -8,8 +8,6 @@ dependencies {
 
     api(libs.uuidGenerator)
     api(libs.hypersistence.tsid)
-    api(libs.hibernate.orm.v63)
-    api(libs.hypersistence.utils.hibernate63)
 
     api(platform(libs.testcontainers.bom))
     api(libs.testcontainers.postgresql)

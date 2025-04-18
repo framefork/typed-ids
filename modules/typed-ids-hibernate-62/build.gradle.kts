@@ -12,7 +12,7 @@ dependencies {
     compileOnly(libs.autoService.annotations)
     annotationProcessor(libs.autoService.processor)
 
-    testImplementation(project(":typed-ids-testing"))
+    testImplementation(project(":typed-ids-hibernate-62-testing"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
