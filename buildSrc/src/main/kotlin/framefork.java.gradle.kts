@@ -20,8 +20,8 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 kotlin {
@@ -98,13 +98,13 @@ tasks.withType<KotlinCompile>() {
             "-Xjvm-default=all",
             "-Xsuppress-version-warnings",
         )
-        jvmTarget = JvmTarget.JVM_21 // This option specifies the target version of the generated JVM bytecode
+        jvmTarget = JvmTarget.JVM_17 // This option specifies the target version of the generated JVM bytecode
     }
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
-    options.compilerArgs.add("-Xlint:all,-fallthrough,-processing,-serial,-classfile,-path,-this-escape")
+    options.compilerArgs.add("-Xlint:all,-fallthrough,-processing,-serial,-classfile,-path")
     options.compilerArgs.add("-parameters")
     options.compilerArgs.add("-Werror") // treat warnings as errors
 

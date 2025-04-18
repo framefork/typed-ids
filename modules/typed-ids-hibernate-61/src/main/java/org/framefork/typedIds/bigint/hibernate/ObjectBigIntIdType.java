@@ -59,6 +59,7 @@ public class ObjectBigIntIdType extends ImmutableType<ObjectBigIntId<?>> impleme
         this(implClass, null);
     }
 
+    @SuppressWarnings("this-escape")
     public ObjectBigIntIdType(final Class<?> implClass, @Nullable final JdbcType longJdbcType)
     {
         this(longJdbcType);

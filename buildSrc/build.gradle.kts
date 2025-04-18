@@ -20,12 +20,12 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21 // This option specifies the target version of the generated JVM bytecode
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17 // This option specifies the target version of the generated JVM bytecode
     }
 }

@@ -11,7 +11,7 @@ import javax.annotation.processing.Processor;
 public class TypedIdsClassIndexProcessor extends ClassIndexProcessor
 {
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "this-escape"})
     public TypedIdsClassIndexProcessor()
     {
         indexSubclasses(ObjectUuid.class);

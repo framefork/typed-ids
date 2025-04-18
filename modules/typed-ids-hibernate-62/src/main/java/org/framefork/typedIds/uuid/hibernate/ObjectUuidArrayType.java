@@ -20,6 +20,7 @@ import java.util.UUID;
 public class ObjectUuidArrayType<T extends ObjectUuid<T>> extends AbstractArrayType<T[]>
 {
 
+    @SuppressWarnings("this-escape")
     public ObjectUuidArrayType(
         final Class<T[]> arrayClass,
         final ObjectUuidType objectUuidType

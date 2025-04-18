@@ -58,6 +58,7 @@ public class ObjectUuidType extends ImmutableType<ObjectUuid<?>> implements
         this(implClass, null);
     }
 
+    @SuppressWarnings("this-escape")
     public ObjectUuidType(final Class<?> implClass, @Nullable final JdbcType uuidJdbcType)
     {
         this(uuidJdbcType);
