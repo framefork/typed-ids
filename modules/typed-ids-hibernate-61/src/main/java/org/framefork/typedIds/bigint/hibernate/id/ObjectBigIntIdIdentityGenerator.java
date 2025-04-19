@@ -62,7 +62,7 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
 
     private JdbcType toJdbcType(final ObjectBigIntIdType objectBigIntIdType)
     {
-        return objectBigIntIdType.getJdbcType();
+        return objectBigIntIdType.getJdbcType(null);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
 
     private JdbcType toJdbcType(final ObjectBigIntIdType objectBigIntIdType)
     {
-        return objectBigIntIdType.getJdbcType();
+        return objectBigIntIdType.getJdbcType(null);
     }
 
 }
