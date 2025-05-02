@@ -22,6 +22,10 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 kotlin {
@@ -60,28 +64,6 @@ idea {
     module {
         isDownloadJavadoc = true
         isDownloadSources = true
-    }
-}
-
-tasks.withType<JavaCompile>() {
-    doLast {
-        javaCompiler.getOrNull()?.also {
-            println("Used JDK: ${it.metadata.javaRuntimeVersion} ${it.metadata.vendor}")
-        }
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-
-    testlogger {
-        showExceptions = true
-        showStackTraces = true
-        showFullStackTraces = true
-        showCauses = true
-        showPassedStandardStreams = false
-        showSkippedStandardStreams = false
-        showFailedStandardStreams = true
     }
 }
 
@@ -181,6 +163,12 @@ tasks.withType<JavaCompile> {
             "com.github.rvesse.airline.annotations.Option"
         ))
     }
+
+    doLast {
+        javaCompiler.getOrNull()?.also {
+            println("Used JDK: ${it.metadata.javaRuntimeVersion} ${it.metadata.vendor}")
+        }
+    }
 }
 
 tasks.withType<Javadoc> {
@@ -189,7 +177,47 @@ tasks.withType<Javadoc> {
 }
 
 tasks.named("test") {
+    description = "Runs the tests against the default JDK"
+}
+
+for (javaVersion in listOf(21, 22, 23)) {
+    val testTask = tasks.register<Test>("test-jdk${javaVersion}") {
+        group = "Verification"
+        description = "Runs the tests against JDK $javaVersion"
+
+        javaLauncher.set(javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(javaVersion))
+        })
+
+        testClassesDirs = sourceSets.test.get().output.classesDirs
+        classpath = sourceSets.test.get().runtimeClasspath
+    }
+
+    tasks.named("check") {
+        dependsOn(testTask)
+    }
+}
+
+tasks.withType<Test>() {
     outputs.upToDateWhen { false }
+
+    useJUnitPlatform()
+
+    testlogger {
+        showExceptions = true
+        showStackTraces = true
+        showFullStackTraces = true
+        showCauses = true
+        showPassedStandardStreams = false
+        showSkippedStandardStreams = false
+        showFailedStandardStreams = true
+    }
+
+    doFirst {
+        javaLauncher.getOrNull()?.also {
+            println("Using JDK: ${it.metadata.javaRuntimeVersion} ${it.metadata.vendor}")
+        }
+    }
 }
 
 configurations.all {

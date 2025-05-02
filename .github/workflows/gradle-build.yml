@@ -11,9 +11,6 @@ env:
 
 jobs:
   gradle:
-    strategy:
-      matrix:
-        java: [17, 21, 22, 23]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,14 +18,21 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+          java-version: | # the last one is default
+            23
+            22
+            21
+            17
           cache: gradle
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           add-job-summary-as-pr-comment: on-failure
+
+      - name: Gradle toolchains info
+        run: ./gradlew -q javaToolchains
 
       - name: Gradle build environment info
         run: ./gradlew -q buildEnvironment
@@ -41,6 +45,8 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           name: junit-test-results
-          path: '**/build/test-results/test/TEST-*.xml'
+          path: |
+            **/build/test-results/test/TEST-*.xml
+            **/build/test-results/test-jdk*/TEST-*.xml
           retention-days: 1
           overwrite: true
