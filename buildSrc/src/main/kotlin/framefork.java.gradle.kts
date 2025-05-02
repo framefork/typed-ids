@@ -49,7 +49,7 @@ dependencies {
         errorprone("org.checkerframework:checker-qual:3.48.2")
         errorprone("org.checkerframework:dataflow-errorprone:3.48.2")
         errorprone("org.checkerframework:dataflow-nullaway:3.48.2")
-        errorprone("com.google.guava:guava:33.3.1-jre")
+        errorprone("com.google.guava:guava:33.4.8-jre")
     }
 }
 
@@ -180,7 +180,7 @@ tasks.named("test") {
     description = "Runs the tests against the default JDK"
 }
 
-for (javaVersion in listOf(21, 22, 23)) {
+for (javaVersion in listOf(21, 23, 24)) {
     val testTask = tasks.register<Test>("test-jdk${javaVersion}") {
         group = "Verification"
         description = "Runs the tests against JDK $javaVersion"

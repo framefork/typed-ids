@@ -20,8 +20,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: | # the last one is default
+            24
             23
-            22
             21
             17
           cache: gradle
