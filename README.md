@@ -22,6 +22,8 @@ Find the latest version in this project's GitHub releases or on Maven Central.
 
 If you want just the plain base classes without ORM support, you can install just the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
 
+Minimum supported Java is 17.
+
 ## Hibernate type mapping
 
 The library tries to make sure your data is stored with the types best fit for the job.
