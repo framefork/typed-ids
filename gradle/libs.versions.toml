@@ -10,6 +10,7 @@ uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
+gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref = "googleAutoService" }
 autoService-annotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "googleAutoService" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
