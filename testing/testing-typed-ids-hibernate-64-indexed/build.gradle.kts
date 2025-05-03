@@ -13,6 +13,5 @@ dependencies {
 
     constraints {
         implementation(libs.hibernate.orm.v64)
-        implementation(libs.hypersistence.utils.hibernate63)
     }
 }

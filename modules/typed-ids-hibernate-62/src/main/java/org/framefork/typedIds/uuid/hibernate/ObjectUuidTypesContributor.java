@@ -70,11 +70,6 @@ public class ObjectUuidTypesContributor implements TypeContributor
             var objectUuidType = new ObjectUuidType(idType, uuidJdbcType);
 
             typeContributions.contributeType(objectUuidType);
-
-            @SuppressWarnings("unchecked")
-            var objectUuidArrayType = (ObjectUuidArrayType<?>) ObjectUuidArrayType.create(idType, objectUuidType);
-            typeContributions.contributeType(objectUuidArrayType);
-            typeConfiguration.getBasicTypeRegistry().register(objectUuidArrayType, objectUuidArrayType.getRegistrationKeys());
         }
     }
 

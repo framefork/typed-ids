@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(project(":typed-ids"))
     api(libs.hibernate.orm.v62)
-    api(libs.hypersistence.utils.hibernate62)
 
     compileOnly(libs.jetbrains.annotations)
 
