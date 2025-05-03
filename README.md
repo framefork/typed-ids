@@ -291,6 +291,10 @@ This also simplifies usage on every other place, where Hibernate might need to r
 
 This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
 
+## Usage: (de)serialization with Gson
+
+This library provides `ObjectBigIntIdTypeAdapterFactory` and `ObjectUuidTypeAdapterFactory`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
+
 ## Usage: (de)serialization with Kotlin Serialization
 
 This library supports two mechanism for the standard Kotlin Serialization.
