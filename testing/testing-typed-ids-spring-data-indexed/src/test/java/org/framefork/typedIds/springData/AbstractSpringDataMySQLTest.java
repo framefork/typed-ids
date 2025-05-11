@@ -35,7 +35,18 @@ public abstract class AbstractSpringDataMySQLTest
     @AfterEach
     void flushAfterEach()
     {
+        flush();
+    }
+
+    protected void flush()
+    {
         testEntityManager.flush();
+    }
+
+    protected void flushAndClear()
+    {
+        testEntityManager.flush();
+        testEntityManager.clear();
     }
 
 }

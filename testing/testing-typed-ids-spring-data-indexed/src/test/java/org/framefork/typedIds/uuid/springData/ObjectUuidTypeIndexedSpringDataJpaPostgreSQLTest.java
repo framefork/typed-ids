@@ -48,6 +48,7 @@ class ObjectUuidTypeIndexedSpringDataJpaPostgreSQLTest extends AbstractSpringDat
         );
 
         uuidAppGeneratedRepository.saveAll(articles);
+        flushAndClear();
 
         articles.forEach(article -> idsByTitle.put(article.getTitle(), article.getId()));
 
