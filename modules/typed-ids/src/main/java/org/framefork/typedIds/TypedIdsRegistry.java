@@ -1,8 +1,8 @@
 package org.framefork.typedIds;
 
 import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.common.ClassIndexLoaderUtils;
 import org.framefork.typedIds.common.LazyValue;
-import org.framefork.typedIds.common.ServiceLoaderUtils;
 import org.framefork.typedIds.uuid.ObjectUuid;
 
 import java.util.List;
@@ -21,10 +21,10 @@ public final class TypedIdsRegistry
     }
 
     private final static LazyValue<List<Class<? extends ObjectBigIntId>>> objectBigIntIdClasses = new LazyValue<>(() ->
-        ServiceLoaderUtils.getIndexedSubclassesFor(ObjectBigIntId.class));
+        ClassIndexLoaderUtils.getIndexedSubclassesFor(ObjectBigIntId.class));
 
     private final static LazyValue<List<Class<? extends ObjectUuid>>> objectUuidClasses = new LazyValue<>(() ->
-        ServiceLoaderUtils.getIndexedSubclassesFor(ObjectUuid.class));
+        ClassIndexLoaderUtils.getIndexedSubclassesFor(ObjectUuid.class));
 
     public static List<Class<? extends ObjectBigIntId>> getObjectBigIntIdClasses()
     {
