@@ -33,7 +33,7 @@ public object ObjectBigIntIdKotlinxSerializationModule {
         @Suppress("UNCHECKED_CAST")
         fun <T : Any> typedIdConstructor(javaClass: Class<T>): (Long) -> T =
             constructorByType.computeIfAbsent(javaClass.name) {
-                val mainConstructor = ReflectionHacks.getMainConstructor(javaClass, *arrayOf(Long::class.java));
+                val mainConstructor = ReflectionHacks.getConstructor(javaClass, *arrayOf(Long::class.java));
                 return@computeIfAbsent { raw -> ObjectBigIntIdTypeUtils.wrapBigIntToIdentifier(raw, mainConstructor) };
             } as (Long) -> T
 
