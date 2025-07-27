@@ -3,6 +3,7 @@ package org.framefork.typedIds.bigint.hibernate;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils;
 import org.framefork.typedIds.common.ReflectionHacks;
+import org.framefork.typedIds.common.hibernate.ParameterizedTypeUtils;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.BasicJavaType;
@@ -25,6 +26,7 @@ import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.Properties;
 
+@SuppressWarnings("removal") // DynamicParameterizedType usage
 public class ObjectBigIntIdJavaType implements BasicJavaType<ObjectBigIntId<?>>, DynamicParameterizedType, Serializable
 {
 
@@ -40,20 +42,10 @@ public class ObjectBigIntIdJavaType implements BasicJavaType<ObjectBigIntId<?>>,
         this.inner = LongJavaType.INSTANCE;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void setParameterValues(final Properties parameters)
     {
-        var parameterType = (ParameterType) parameters.get(PARAMETER_TYPE);
-        if (parameterType != null) {
-            this.identifierClass = (Class<ObjectBigIntId<?>>) parameterType.getReturnedClass();
-
-        } else {
-            String entityClass = Objects.requireNonNull(parameters.get(ENTITY), "parameters.get(ENTITY) must not be null").toString();
-            String propertyName = Objects.requireNonNull(parameters.get(PROPERTY), "parameters.get(PROPERTY) must not be null").toString();
-
-            this.identifierClass = ReflectionHacks.getFieldTypeChecked(entityClass, propertyName, ObjectBigIntId.class);
-        }
+        this.identifierClass = ParameterizedTypeUtils.getReturnedClass(parameters, ObjectBigIntId.class);
 
         if (!ObjectBigIntId.class.isAssignableFrom(identifierClass)) {
             throw new IllegalArgumentException("Type %s is not a subtype of %s".formatted(identifierClass, ObjectBigIntId.class));

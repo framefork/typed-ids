@@ -2,8 +2,7 @@ package org.framefork.typedIds.bigint.hibernate;
 
 import com.google.auto.service.AutoService;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
-import org.framefork.typedIds.bigint.hibernate.id.ObjectBigIntIdIdentityGenerator;
-import org.framefork.typedIds.bigint.hibernate.id.ObjectBigIntIdSequenceStyleGenerator;
+import org.framefork.typedIds.bigint.hibernate.id.ObjectBigIntIdGeneratorCreator;
 import org.hibernate.boot.ResourceStreamLocator;
 import org.hibernate.boot.spi.AdditionalMappingContributions;
 import org.hibernate.boot.spi.AdditionalMappingContributor;
@@ -12,6 +11,7 @@ import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.SimpleValue;
 
+@SuppressWarnings("unused")
 @AutoService(AdditionalMappingContributor.class)
 public class ObjectBigIntIdTypeGenerationMetadataContributor implements AdditionalMappingContributor
 {
@@ -40,21 +40,17 @@ public class ObjectBigIntIdTypeGenerationMetadataContributor implements Addition
                     continue;
                 }
 
-                remapIdentifierGeneratorStrategy(simpleValueIdentifier);
+                remapIdentifierCustomIdGeneratorCreator(simpleValueIdentifier);
             }
         }
     }
 
-    private void remapIdentifierGeneratorStrategy(final SimpleValue identifier)
+    private void remapIdentifierCustomIdGeneratorCreator(final SimpleValue identifier)
     {
-        var newIdentifierGeneratorStrategy = switch (identifier.getIdentifierGeneratorStrategy()) {
-            case "org.hibernate.id.enhanced.SequenceStyleGenerator" -> ObjectBigIntIdSequenceStyleGenerator.class.getName();
-            case "org.hibernate.id.IdentityGenerator" -> ObjectBigIntIdIdentityGenerator.class.getName();
-            case "identity" -> ObjectBigIntIdIdentityGenerator.class.getName();
-            default -> identifier.getIdentifierGeneratorStrategy();
-        };
-
-        identifier.setIdentifierGeneratorStrategy(newIdentifierGeneratorStrategy);
+        var currentCreator = identifier.getCustomIdGeneratorCreator();
+        if (currentCreator != null && !currentCreator.isAssigned()) {
+            identifier.setCustomIdGeneratorCreator(new ObjectBigIntIdGeneratorCreator(currentCreator));
+        }
     }
 
 }

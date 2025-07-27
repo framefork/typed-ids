@@ -1,6 +1,7 @@
 package org.framefork.typedIds.uuid.hibernate;
 
 import org.framefork.typedIds.common.ReflectionHacks;
+import org.framefork.typedIds.common.hibernate.ParameterizedTypeUtils;
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
 import org.hibernate.dialect.Dialect;
@@ -29,6 +30,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 
+@SuppressWarnings("removal") // DynamicParameterizedType usage
 public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, DynamicParameterizedType, Serializable
 {
 
@@ -50,16 +52,7 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     @Override
     public void setParameterValues(final Properties parameters)
     {
-        var parameterType = (ParameterType) parameters.get(PARAMETER_TYPE);
-        if (parameterType != null) {
-            this.identifierClass = (Class<ObjectUuid<?>>) parameterType.getReturnedClass();
-
-        } else {
-            String entityClass = Objects.requireNonNull(parameters.get(ENTITY), "parameters.get(ENTITY) must not be null").toString();
-            String propertyName = Objects.requireNonNull(parameters.get(PROPERTY), "parameters.get(PROPERTY) must not be null").toString();
-
-            this.identifierClass = ReflectionHacks.getFieldTypeChecked(entityClass, propertyName, ObjectUuid.class);
-        }
+        this.identifierClass = ParameterizedTypeUtils.getReturnedClass(parameters, ObjectUuid.class);
 
         if (!ObjectUuid.class.isAssignableFrom(identifierClass)) {
             throw new IllegalArgumentException("Type %s is not a subtype of %s".formatted(identifierClass, ObjectUuid.class));

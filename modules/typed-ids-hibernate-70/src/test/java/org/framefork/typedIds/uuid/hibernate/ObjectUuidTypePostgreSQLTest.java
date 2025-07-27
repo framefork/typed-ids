@@ -1,8 +1,8 @@
 package org.framefork.typedIds.uuid.hibernate;
 
-import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Tuple;
 import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
+import org.hibernate.id.IdentifierGenerationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -84,7 +84,7 @@ final class ObjectUuidTypePostgreSQLTest extends AbstractPostgreSQLIntegrationTe
     {
         // Test that attempting to persist an entity with null UUID ID throws appropriate exception
         var exception = assertThrows(
-            PersistenceException.class,
+            IdentifierGenerationException.class,
             () -> doInJPA(em -> {
                 var entity = new UuidNullIdEntity("test-data");
                 // ID is null by default

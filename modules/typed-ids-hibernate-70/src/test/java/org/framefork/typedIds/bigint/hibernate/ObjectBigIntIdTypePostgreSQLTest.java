@@ -49,9 +49,9 @@ final class ObjectBigIntIdTypePostgreSQLTest extends AbstractPostgreSQLIntegrati
 
             var table3 = getIdColumnInfo(em, BigIntDbIdentityGeneratedExplicitMappingEntity.TABLE_NAME);
             assertThat(table3.get("data_type", String.class)).isEqualToIgnoringCase("bigint");
-            assertThat(table3.get("column_default", String.class)).startsWith("nextval('");
-            assertThat(table3.get("is_identity", String.class)).isEqualTo("NO");
-            assertThat(table3.get("identity_generation", String.class)).isNull();
+            assertThat(table3.get("column_default", String.class)).isNull();
+            assertThat(table3.get("is_identity", String.class)).isEqualTo("YES");
+            assertThat(table3.get("identity_generation", String.class)).isEqualToIgnoringCase("BY DEFAULT");
 
             var table4 = getIdColumnInfo(em, BigIntDbSequenceGeneratedExplicitMappingEntity.TABLE_NAME);
             assertThat(table4.get("data_type", String.class)).isEqualToIgnoringCase("bigint");

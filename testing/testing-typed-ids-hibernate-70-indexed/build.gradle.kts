@@ -12,6 +12,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     constraints {
-        implementation(libs.hibernate.orm.v66)
+        implementation(libs.hibernate.orm.v70)
     }
 }

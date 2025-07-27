@@ -5,7 +5,8 @@ plugins {
 
 dependencies {
     api(project(":typed-ids"))
-    api(libs.hibernate.orm.v63)
+    api(libs.hibernate.orm.v70)
+    compileOnly(libs.hibernate.models.v70) // this is really a runtime dependency, but in runtime the version from hibernate is provided
 
     compileOnly(libs.jetbrains.annotations)
 

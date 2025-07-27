@@ -1,15 +1,15 @@
 package org.framefork.typedIds.common.hibernate;
 
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.Mapping;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.internal.util.collections.ArrayHelper;
-import org.hibernate.metamodel.model.domain.DomainType;
-import org.hibernate.query.BindableType;
 import org.hibernate.query.sqm.SqmExpressible;
+import org.hibernate.query.sqm.tree.domain.SqmDomainType;
 import org.hibernate.type.ForeignKeyDirection;
+import org.hibernate.type.MappingContext;
 import org.hibernate.type.Type;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
 import org.hibernate.type.descriptor.java.IncomparableComparator;
 import org.hibernate.type.descriptor.java.JavaType;
@@ -35,14 +35,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
+import static jakarta.persistence.metamodel.Type.PersistenceType.BASIC;
+
 @ApiStatus.Internal
+@SuppressWarnings("removal") // DynamicParameterizedType usage
 public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> implements
     UserType<T>,
     Type,
     EnhancedUserType<T>,
-    BindableType<T>,
     SqmExpressible<T>,
-    DomainType<T>,
+    SqmDomainType<T>,
     MutabilityPlanExposer<T>,
     DynamicParameterizedType,
     TypeConfigurationAware
@@ -85,7 +87,7 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
     }
 
     @Override
-    public Class<T> getBindableJavaType()
+    public Class<T> getJavaType()
     {
         return returnedClass();
     }
@@ -119,6 +121,24 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
     }
 
     @Override
+    public String getTypeName()
+    {
+        return getName();
+    }
+
+    @Override
+    public SqmDomainType<T> getSqmType()
+    {
+        return this;
+    }
+
+    @Override
+    public PersistenceType getPersistenceType()
+    {
+        return BASIC;
+    }
+
+    @Override
     public void setParameterValues(final Properties parameters)
     {
         if (javaType instanceof ParameterizedType javaTypeParametrized) {
@@ -127,45 +147,40 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
     }
 
     @Nullable
-    protected T get(final ResultSet rs, final int position, final SharedSessionContractImplementor session, final Object owner) throws SQLException
+    protected T get(final ResultSet rs, final int position, final WrapperOptions options) throws SQLException
     {
-        return getJdbcType(null).getExtractor(getExpressibleJavaType()).extract(rs, position, session);
+        return getJdbcType(null).getExtractor(getExpressibleJavaType()).extract(rs, position, options);
     }
 
-    protected void set(final PreparedStatement st, @Nullable final T value, final int index, final SharedSessionContractImplementor session) throws SQLException
+    protected void set(final PreparedStatement st, @Nullable final T value, final int index, final WrapperOptions options) throws SQLException
     {
-        getJdbcType(null).getBinder(getExpressibleJavaType()).bind(st, value, index, session);
+        getJdbcType(null).getBinder(getExpressibleJavaType()).bind(st, value, index, options);
     }
 
     @Nullable
     @Override
-    public T nullSafeGet(final ResultSet rs, final int position, final SharedSessionContractImplementor session, final Object owner) throws SQLException
+    public T nullSafeGet(final ResultSet rs, final int position, final WrapperOptions options) throws SQLException
     {
-        return get(rs, position, session, owner);
+        return get(rs, position, options);
     }
 
     @Override
-    public void nullSafeSet(final PreparedStatement st, final Object value, final int index, final SharedSessionContractImplementor session) throws SQLException
+    public void nullSafeSet(final PreparedStatement st, @Nullable final T value, final int index, final WrapperOptions options) throws SQLException
+    {
+        set(st, returnedClass().cast(value), index, options);
+    }
+
+    @Override
+    public void nullSafeSet(final PreparedStatement st, @Nullable final Object value, final int index, final boolean[] settable, final SharedSessionContractImplementor session) throws SQLException
     {
         set(st, returnedClass().cast(value), index, session);
     }
 
+    @SuppressWarnings("removal")
     @Override
-    public void nullSafeSet(final PreparedStatement st, final Object value, final int index, final boolean[] settable, final SharedSessionContractImplementor session) throws SQLException
+    public void nullSafeSet(final PreparedStatement st, @Nullable final Object value, final int index, final SharedSessionContractImplementor session) throws SQLException
     {
         set(st, returnedClass().cast(value), index, session);
-    }
-
-    @Override
-    public boolean equals(final Object x, final Object y)
-    {
-        return Objects.equals(x, y);
-    }
-
-    @Override
-    public int hashCode(final Object x)
-    {
-        return x.hashCode();
     }
 
     @Override
@@ -210,52 +225,51 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
         return false;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public int getColumnSpan(final Mapping mapping)
+    public int getColumnSpan(final MappingContext mappingContext)
     {
         return 1;
     }
 
     @Override
-    public boolean isSame(final Object x, final Object y)
+    public boolean isSame(@Nullable final Object x, @Nullable final Object y)
     {
-        return equals(x, y);
+        return Objects.equals(x, y);
     }
 
     @Override
-    public boolean isEqual(final Object x, final Object y)
+    public boolean isEqual(@Nullable final Object x, @Nullable final Object y)
     {
-        return equals(x, y);
+        return Objects.equals(x, y);
     }
 
     @Override
-    public boolean isEqual(final Object x, final Object y, final SessionFactoryImplementor factory)
+    public boolean isEqual(@Nullable final Object x, @Nullable final Object y, final SessionFactoryImplementor factory)
     {
-        return equals(x, y);
+        return Objects.equals(x, y);
     }
 
     @Override
     public int getHashCode(final Object x)
     {
-        return hashCode(x);
+        return Objects.hashCode(x);
     }
 
     @Override
     public int getHashCode(final Object x, final SessionFactoryImplementor factory)
     {
-        return hashCode(x);
+        return Objects.hashCode(x);
     }
 
     @Override
-    public int compare(final Object x, final Object y, final SessionFactoryImplementor sessionFactoryImplementor)
+    public int compare(@Nullable final Object x, @Nullable final Object y, final SessionFactoryImplementor sessionFactoryImplementor)
     {
         return compare(x, y);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public int compare(final Object x, final Object y)
+    public int compare(@Nullable final Object x, @Nullable final Object y)
     {
         if (x instanceof Comparable<?> xComparable && y instanceof Comparable<?> yComparable) {
             return ((Comparator<Object>) getComparator()).compare(xComparable, yComparable);
@@ -272,66 +286,73 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
     }
 
     @Override
-    public final boolean isDirty(final Object old, final Object current, final SharedSessionContractImplementor session)
+    public final boolean isDirty(@Nullable final Object old, @Nullable final Object current, final SharedSessionContractImplementor session)
     {
         return isDirty(old, current);
     }
 
     @Override
-    public final boolean isDirty(final Object old, final Object current, final boolean[] checkable, final SharedSessionContractImplementor session)
+    public final boolean isDirty(@Nullable final Object old, @Nullable final Object current, final boolean[] checkable, final SharedSessionContractImplementor session)
     {
         return checkable[0] && isDirty(old, current);
     }
 
-    protected final boolean isDirty(final Object old, final Object current)
+    protected final boolean isDirty(@Nullable final Object old, @Nullable final Object current)
     {
         return !isSame(old, current);
     }
 
     @Override
-    public boolean isModified(final Object dbState, final Object currentState, final boolean[] checkable, final SharedSessionContractImplementor session)
+    public boolean isModified(@Nullable final Object dbState, @Nullable final Object currentState, final boolean[] checkable, final SharedSessionContractImplementor session)
     {
         return isDirty(dbState, currentState);
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     @Override
-    public T deepCopy(final Object value)
+    public T deepCopy(@Nullable final Object value)
     {
         return (T) value;
     }
 
+    @Nullable
     @Override
-    public Object deepCopy(final Object value, final SessionFactoryImplementor factory)
+    public Object deepCopy(@Nullable final Object value, final SessionFactoryImplementor factory)
     {
         return deepCopy(value);
     }
 
+    @Nullable
     @Override
-    public Serializable disassemble(final Object o)
+    public Serializable disassemble(@Nullable final Object o)
     {
         return (Serializable) o;
     }
 
+    @Nullable
     @Override
-    public Serializable disassemble(final Object value, final SharedSessionContractImplementor session, final Object owner)
+    public Serializable disassemble(@Nullable final Object value, @Nullable final SharedSessionContractImplementor session, @Nullable final Object owner)
     {
         return disassemble(value);
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     @Override
-    public T assemble(final Serializable cached, final Object owner)
+    public T assemble(@Nullable final Serializable cached, final Object owner)
     {
         return (T) cached;
     }
 
+    @Nullable
     @Override
-    public Object assemble(final Serializable cached, final SharedSessionContractImplementor session, final Object owner)
+    public Object assemble(@Nullable final Serializable cached, final SharedSessionContractImplementor session, final Object owner)
     {
         return assemble(cached, session);
     }
 
+    @SuppressWarnings("removal")
     @Override
     public void beforeAssemble(final Serializable cached, final SharedSessionContractImplementor session)
     {
@@ -339,29 +360,38 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     @Override
-    public T replace(final Object o, final Object target, final Object owner)
+    public T replace(@Nullable final Object o, @Nullable final Object target, @Nullable final Object owner)
     {
         return (T) o;
     }
 
     @SuppressWarnings("rawtypes")
+    @Nullable
     @Override
-    public Object replace(final Object original, final Object target, final SharedSessionContractImplementor session, final Object owner, final Map copyCache)
+    public Object replace(@Nullable final Object original, @Nullable final Object target, final SharedSessionContractImplementor session, @Nullable final Object owner, final Map copyCache)
     {
         return replace(original, target, owner);
     }
 
     @SuppressWarnings("rawtypes")
+    @Nullable
     @Override
-    public Object replace(final Object original, final Object target, final SharedSessionContractImplementor session, final Object owner, final Map copyCache, final ForeignKeyDirection foreignKeyDirection)
+    public Object replace(
+        @Nullable final Object original,
+        @Nullable final Object target,
+        final SharedSessionContractImplementor session,
+        @Nullable final Object owner,
+        final Map copyCache,
+        final ForeignKeyDirection foreignKeyDirection
+    )
     {
         return replace(original, target, owner);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean[] toColumnNullness(final Object value, final Mapping mapping)
+    public boolean[] toColumnNullness(@Nullable final Object value, final MappingContext mappingContext)
     {
         return value == null ? ArrayHelper.FALSE : ArrayHelper.TRUE;
     }
@@ -384,9 +414,8 @@ public abstract class ImmutableType<T, JavaTypeType extends JavaType<T>> impleme
         return javaType.getDefaultSqlScale(dialect, jdbcType);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public int[] getSqlTypeCodes(final Mapping mapping)
+    public int[] getSqlTypeCodes(final MappingContext mappingContext)
     {
         return new int[]{getSqlType()};
     }

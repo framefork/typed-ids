@@ -1,10 +1,12 @@
 package org.framefork.typedIds.bigint.hibernate.id;
 
 import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
+import org.framefork.typedIds.common.hibernate.TypeOverrideGeneratorCreationContext;
 import org.hibernate.HibernateException;
+import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.generator.GeneratorCreationContext;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.CustomType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.spi.JavaTypeBasicAdaptor;
@@ -33,17 +35,24 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
     }
 
     @Override
-    public void configure(final Type type, final Properties parameters, final ServiceRegistry serviceRegistry)
+    public void configure(final GeneratorCreationContext creationContext, final Properties parameters)
     {
-        this.objectBigIntIdType = toObjectBigIntIdType(type);
+        this.objectBigIntIdType = toObjectBigIntIdType(creationContext.getType());
 
         var primitiveType = new ImmutableNamedBasicTypeImpl<>(
-            new JavaTypeBasicAdaptor<Long>(Long.class),
+            new JavaTypeBasicAdaptor<>(Long.class),
             toJdbcType(objectBigIntIdType),
             "bigint"
         );
 
-        super.configure(primitiveType, parameters, serviceRegistry);
+        super.configure(new TypeOverrideGeneratorCreationContext(creationContext, primitiveType), parameters);
+    }
+
+    @Override
+    public void initialize(final SqlStringGenerationContext context)
+    {
+        // Initialize the parent to set up the database structure
+        super.initialize(context);
     }
 
     private ObjectBigIntIdType toObjectBigIntIdType(final Type type)
