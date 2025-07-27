@@ -30,7 +30,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
 
     protected ObjectUuid(final UUID inner)
     {
-        Objects.requireNonNull(inner, "inner must not be null");
+        Objects.requireNonNull(inner, "given UUID must not be null");
 
         int version = inner.version();
         if (ALLOWED_LEGACY_VERSION != version && ALLOWED_CURRENT_VERSION != version) {
