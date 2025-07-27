@@ -22,7 +22,7 @@ public class ObjectUuidDeserializer extends JsonDeserializer<ObjectUuid<?>>
             throw new IllegalArgumentException("Type %s is not a subtype of %s".formatted(identifierClass, ObjectUuid.class));
         }
 
-        this.constructor = ReflectionHacks.getMainConstructor(identifierClass, UUID.class);
+        this.constructor = ReflectionHacks.getConstructor(identifierClass, UUID.class);
     }
 
     @Override

@@ -34,7 +34,7 @@ public object ObjectUuidKotlinxSerializationModule {
         @Suppress("UNCHECKED_CAST")
         fun <T : Any> typedIdConstructor(javaClass: Class<T>): (UUID) -> T =
             constructorByType.computeIfAbsent(javaClass.name) {
-                val mainConstructor = ReflectionHacks.getMainConstructor(javaClass, *arrayOf(UUID::class.java));
+                val mainConstructor = ReflectionHacks.getConstructor(javaClass, *arrayOf(UUID::class.java));
                 return@computeIfAbsent { raw -> ObjectUuidTypeUtils.wrapUuidToIdentifier(raw, mainConstructor) };
             } as (UUID) -> T
 

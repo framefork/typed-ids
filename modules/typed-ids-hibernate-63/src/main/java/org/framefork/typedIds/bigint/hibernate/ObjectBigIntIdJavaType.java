@@ -59,7 +59,7 @@ public class ObjectBigIntIdJavaType implements BasicJavaType<ObjectBigIntId<?>>,
             throw new IllegalArgumentException("Type %s is not a subtype of %s".formatted(identifierClass, ObjectBigIntId.class));
         }
 
-        this.constructor = ReflectionHacks.getMainConstructor(identifierClass, long.class);
+        this.constructor = ReflectionHacks.getConstructor(identifierClass, long.class);
     }
 
     @Override

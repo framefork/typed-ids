@@ -71,7 +71,7 @@ public final class ReflectionHacks
         return (Class<ExpectedType>) declaredFieldType;
     }
 
-    public static MethodHandle getMainConstructor(final Class<?> type, final Class<?>... parameterTypes)
+    public static MethodHandle getConstructor(final Class<?> type, final Class<?>... parameterTypes)
     {
         try {
             Constructor<?> constructor = type.getDeclaredConstructor(parameterTypes);
