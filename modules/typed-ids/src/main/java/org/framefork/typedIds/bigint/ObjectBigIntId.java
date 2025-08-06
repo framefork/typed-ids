@@ -137,7 +137,7 @@ public abstract class ObjectBigIntId<SelfType extends ObjectBigIntId<SelfType>> 
         /**
          * Replaces the factory with provided implementation and throws away any pre-existing generators.
          */
-        static void setFactory(final BigIntGenerator.Factory factory)
+        public static void setFactory(final BigIntGenerator.Factory factory)
         {
             FACTORY.set(factory);
             GENERATORS.clear();
