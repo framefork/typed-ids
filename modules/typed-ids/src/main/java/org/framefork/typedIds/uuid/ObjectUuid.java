@@ -181,7 +181,7 @@ public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implemen
         /**
          * Replaces the factory with provided implementation and throws away any pre-existing generators.
          */
-        static void setFactory(final UuidGenerator.Factory factory)
+        public static void setFactory(final UuidGenerator.Factory factory)
         {
             FACTORY.set(factory);
             GENERATORS.clear();
