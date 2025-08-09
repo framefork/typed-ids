@@ -291,6 +291,17 @@ This also simplifies usage on every other place, where Hibernate might need to r
 
 This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
 
+Please note that in Spring, the instance of Jackson's `ObjectMapper` used for (de)serializing requests and responses of controllers by default ignores the modules provided via `ServiceLoader`,
+so to make it work, you have to either register the modules as beans, or add the following customizer:
+
+```java
+@Bean
+public Jackson2ObjectMapperBuilderCustomizer enableServiceLoaderModules()
+{
+    return builder -> builder.findModulesViaServiceLoader(true);
+}
+```
+
 ## Usage: (de)serialization with Gson
 
 This library provides `ObjectBigIntIdTypeAdapterFactory` and `ObjectUuidTypeAdapterFactory`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
