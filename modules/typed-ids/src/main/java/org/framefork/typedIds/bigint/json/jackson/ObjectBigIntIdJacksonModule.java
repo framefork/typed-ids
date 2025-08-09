@@ -30,11 +30,11 @@ public class ObjectBigIntIdJacksonModule extends Module
     @Override
     public void setupModule(final SetupContext context)
     {
-        context.addSerializers(new ObjectUuidSerializers());
+        context.addSerializers(new ObjectBigIntIdSerializers());
         // Jackson is capable of deserializing the long, and then using the primary constructor without any additional help
     }
 
-    private static final class ObjectUuidSerializers extends Serializers.Base
+    private static final class ObjectBigIntIdSerializers extends Serializers.Base
     {
 
         @Nullable
