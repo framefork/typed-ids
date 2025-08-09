@@ -38,3 +38,6 @@ hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersis
 hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.9.9" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
+swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }
+springdoc-openapi-starter-common = { module = "org.springdoc:springdoc-openapi-starter-common", version = "2.1.0" }
+springdoc-openapi-spring-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version = "3.0.5" }

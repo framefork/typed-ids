@@ -1,0 +1,30 @@
+management:
+  endpoints:
+    web:
+      base-path: /_system
+      exposure:
+        include: '*'
+
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+  cache:
+    disabled: true
+
+spring:
+  main:
+    banner-mode: off
+
+logging:
+  level:
+    org:
+      springframework: INFO
+      framefork: DEBUG
+
+framefork:
+  typed-ids:
+    openapi:
+      strategy: typed
