@@ -291,6 +291,17 @@ This also simplifies usage on every other place, where Hibernate might need to r
 
 This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
 
+Please note that in Spring, the instance of Jackson's `ObjectMapper` used for (de)serializing requests and responses of controllers by default ignores the modules provided via `ServiceLoader`,
+so to make it work, you have to either register the modules as beans, or add the following customizer:
+
+```java
+@Bean
+public Jackson2ObjectMapperBuilderCustomizer enableServiceLoaderModules()
+{
+    return builder -> builder.findModulesViaServiceLoader(true);
+}
+```
+
 ## Usage: (de)serialization with Gson
 
 This library provides `ObjectBigIntIdTypeAdapterFactory` and `ObjectUuidTypeAdapterFactory`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
@@ -335,6 +346,34 @@ and then mark the type as `@Contextual` on every usage
 @Serializable
 data class UserDto(@Contextual val id: UserId)
 ```
+
+## Usage: OpenAPI schema
+
+This library provides support for OpenAPI schema generation, so that you don't have to annotate the types with `@Schema` manually (you still can, if you want to).
+
+### OpenAPI - generic Swagger v3 Jakarta
+
+The [org.framefork:typed-ids-openapi-swagger-jakarta](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger-jakarta) artifact
+provides a `TypedIdsModelConverter`, which should be automatically picked up by the standard Swagger v3 Jakarta implementation,
+because it's exposed via the standard `java.util.ServiceLoader` mechanism.
+
+There is a single configurable property - `idsAsRef`, which is the equivalent of `enumsAsRef` in the standard Swagger v3 implementation.
+You can set override it via `TypedIdsModelConverter.idsAsRef`, or using a system property `framefork.typed-ids.openapi.as-ref`.
+
+Providing a non-jakarta variant would be straightforward, but given that javax has been deprecated for a long time, I decided to not bother with it.
+
+### OpenAPI - SpringDoc
+
+The [org.framefork:typed-ids-openapi-springdoc](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-springdoc) artifact
+builds on the Swagger v3 Jakarta integration, and registers it as a standard Spring bean.
+
+With SpringDoc, you shouldn't configure the converter explicitly,
+and instead you should use the standard spring configuration to set it via the `framefork.typed-ids.openapi.as-ref` property in config/ENV/etc.
+
+You may notice that the artifact depends on a quite old version of the SpringDoc. That is because I needed compatibility with Spring Boot 3.0.x. However, it works seamlessly with newer Spring Boot versions.
+
+You may want to check the working example in [testing/testing-typed-ids-springdoc-openapi](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-springdoc-openapi),
+with a recent Spring Boot version, and also with a working OpenApi spec generation, and TypeScript client generation.
 
 ## More examples
 
