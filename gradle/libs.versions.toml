@@ -16,7 +16,7 @@ autoService-annotations = { group = "com.google.auto.service", name = "auto-serv
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
 ateoClassindex = { group = "org.atteo.classindex", name = "classindex", version = "3.13" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
-assertj = { module = "org.assertj:assertj-core", version = "3.11.1" }
+assertj-core = { module = "org.assertj:assertj-core", version = "3.27.4" }
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
 testcontainers-base = { module = "org.testcontainers:testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
