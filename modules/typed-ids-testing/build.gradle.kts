@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(libs.junit.jupiter)
-    api(libs.assertj)
+    api(libs.assertj.core)
 
     api(libs.uuidGenerator)
     api(libs.hypersistence.tsid)

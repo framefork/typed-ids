@@ -8,6 +8,6 @@ dependencies {
     testImplementation(libs.uuidGenerator)
     testImplementation(libs.logback.classic)
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.assertj)
+    testImplementation(libs.assertj.core)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
