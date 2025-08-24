@@ -29,7 +29,7 @@ The `framefork/typed-ids` library provides a comprehensive solution for strongly
 
 ## Alternative Approaches Analysis
 
-### 1. @EmbeddedId with Java Records
+### 1. @EmbeddedId with Java Records (Not viable with Hibernate 7.0+)
 
 **What it solves:**
 - ✅ Compile-time Type Safety
@@ -52,7 +52,7 @@ The `framefork/typed-ids` library provides a comprehensive solution for strongly
 - ✅ JPQL Querying: Both `WHERE e.id = :embeddableObject` and `WHERE e.id.value = :primitiveValue` work
 - ✅ SELECT NEW Constructor: Supports both direct embedded object mapping and inline constructor calls
 
-### 2. @IdClass with Java Records
+### 2. @IdClass with Java Records (Not viable with Hibernate 7.0+)
 
 **What it solves:**
 - ✅ Compile-time Type Safety
@@ -109,6 +109,11 @@ Hibernate treats both approaches as **composite identifiers** even when using si
 - `@IdClass`: Any use of `@IdClass` signals composite identity to Hibernate
 
 The error message is identical: `"Identity generation isn't supported for composite ids"`
+
+### Hibernate Version Regression
+**Note:** These native approaches that previously worked with Hibernate 6.6.x now fail consistently with Hibernate 7.0+ due to stricter composite identifier validation.
+This represents a regression in functionality where previously working code now fails at runtime,
+further emphasizing the value of the `framefork/typed-ids` library which maintains consistent behavior across Hibernate versions.
 
 ## Conclusion
 

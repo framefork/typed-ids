@@ -33,9 +33,12 @@ hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hibernate-orm-v64 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.4.10.Final" }
 hibernate-orm-v65 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.3.Final" }
 hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.26.Final" }
+hibernate-orm-v70 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.0.10.Final" }
+hibernate-orm-v71 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.1.0.Final" }
 hypersistence-utils-hibernate61 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.9.4" }
 hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.9.4" }
 hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.10.3" }
+hypersistence-utils-hibernate70 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-70", version = "3.10.3" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }
