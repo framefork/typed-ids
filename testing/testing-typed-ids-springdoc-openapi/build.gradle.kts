@@ -10,7 +10,7 @@ dependencies {
     implementation(project(":typed-ids"))
     implementation(project(":typed-ids-openapi-springdoc"))
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:3.4.5"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:3.4.10"))
     api("org.springframework.boot:spring-boot-starter-web")
     api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
 
