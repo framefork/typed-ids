@@ -230,3 +230,55 @@ configurations.all {
             )
     }
 }
+
+// This is the custom task to unpack the source JARs
+tasks.register("unpackAllDependencySources") {
+    group = "Build Setup"
+    description = "Unpacks the source JAR for each dependency into build/dependencies/"
+
+    doLast {
+        // Define the target directory for all unpacked sources and ensure it's clean.
+        val outputDir = project.layout.buildDirectory.dir("dependencies")
+        delete(outputDir)
+        mkdir(outputDir)
+
+        // 1. Get the component identifiers for all dependencies in the 'runtimeClasspath' configuration.
+        // This gives us a list of all libraries we need to find sources for.
+        val componentIds: List<ComponentIdentifier> = configurations.runtimeClasspath.get()
+            .incoming
+            .resolutionResult
+            .allComponents
+            .map { it.id }
+
+        // 2. Create and execute an artifact query.
+        // We ask Gradle to find all artifacts of type 'SourcesArtifact' for Java libraries.
+        val result = dependencies.createArtifactResolutionQuery()
+            .forComponents(componentIds)
+            .withArtifacts(JvmLibrary::class.java, SourcesArtifact::class.java)
+            .execute()
+
+        // 3. Iterate over the results and unpack each source JAR found.
+        println("Unpacking dependency sources...")
+        result.resolvedComponents.forEach { component ->
+            component.getArtifacts(SourcesArtifact::class.java).forEach { artifact ->
+                // Ensure the artifact was successfully resolved and is the type we expect.
+                if (artifact is ResolvedArtifactResult) {
+                    val sourceJarFile = artifact.file
+
+                    // Create a unique directory name from the source JAR's filename.
+                    // e.g., 'guava-31.1-jre-sources.jar' -> 'guava-31.1-jre'
+                    val artifactDirName = sourceJarFile.name.removeSuffix("-sources.jar")
+                    val targetDir = outputDir.get().dir(artifactDirName)
+
+                    // Perform the unzip operation.
+                    copy {
+                        from(zipTree(sourceJarFile))
+                        into(targetDir)
+                    }
+                    println(" -> Unpacked ${sourceJarFile.name} to ${targetDir}")
+                }
+            }
+        }
+        println("Finished unpacking all dependency sources.")
+    }
+}
