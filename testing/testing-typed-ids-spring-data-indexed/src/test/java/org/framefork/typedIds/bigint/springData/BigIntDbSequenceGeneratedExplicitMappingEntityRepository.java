@@ -1,5 +1,6 @@
 package org.framefork.typedIds.bigint.springData;
 
+import org.framefork.typedIds.bigint.hibernate.basic.BigIntDbSequenceGeneratedExplicitMappingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

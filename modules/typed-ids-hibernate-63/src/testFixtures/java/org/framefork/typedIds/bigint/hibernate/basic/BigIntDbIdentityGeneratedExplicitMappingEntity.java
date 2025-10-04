@@ -1,4 +1,4 @@
-package org.framefork.typedIds.bigint.hibernate.v64;
+package org.framefork.typedIds.bigint.hibernate.basic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,31 +6,34 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
+import org.hibernate.annotations.Type;
 import org.jspecify.annotations.Nullable;
 
 @Entity
-@Table(name = BigIntDbSequenceGeneratedExplicitMappingEntity.TABLE_NAME)
-public class BigIntDbSequenceGeneratedExplicitMappingEntity
+@Table(name = BigIntDbIdentityGeneratedExplicitMappingEntity.TABLE_NAME)
+public class BigIntDbIdentityGeneratedExplicitMappingEntity
 {
 
-    public static final String TABLE_NAME = "bigint_db_sequence_generated_explicit_mapping";
+    public static final String TABLE_NAME = "bigint_db_identity_generated_explicit_mapping";
 
     @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
+    @Type(ObjectBigIntIdType.class)
     @Nullable
     private Id id;
 
     @Column(nullable = false)
     private String title;
 
-    public BigIntDbSequenceGeneratedExplicitMappingEntity(final String title)
+    public BigIntDbIdentityGeneratedExplicitMappingEntity(final String title)
     {
         this.title = title;
     }
 
     @SuppressWarnings("NullAway")
-    protected BigIntDbSequenceGeneratedExplicitMappingEntity()
+    protected BigIntDbIdentityGeneratedExplicitMappingEntity()
     {
     }
 
