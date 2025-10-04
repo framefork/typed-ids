@@ -180,7 +180,7 @@ tasks.named("test") {
     description = "Runs the tests against the default JDK"
 }
 
-for (javaVersion in listOf(21, 23, 24)) {
+for (javaVersion in listOf(21, 25)) {
     val testTask = tasks.register<Test>("test-jdk${javaVersion}") {
         group = "Verification"
         description = "Runs the tests against JDK $javaVersion"
