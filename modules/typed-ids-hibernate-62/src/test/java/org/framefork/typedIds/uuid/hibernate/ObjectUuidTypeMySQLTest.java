@@ -2,6 +2,7 @@ package org.framefork.typedIds.uuid.hibernate;
 
 import jakarta.persistence.Tuple;
 import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.hibernate.id.IdentifierGenerationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final class ObjectUuidTypeMySQLTest extends AbstractMySQLIntegrationTest
 {
@@ -20,6 +22,7 @@ final class ObjectUuidTypeMySQLTest extends AbstractMySQLIntegrationTest
     {
         return new Class<?>[]{
             UuidAppGeneratedExplicitMappingEntity.class,
+            UuidNullIdEntity.class,
         };
     }
 
@@ -74,6 +77,52 @@ final class ObjectUuidTypeMySQLTest extends AbstractMySQLIntegrationTest
                 .setParameter("ids", List.copyOf(idsByTitle.values()))
                 .getResultList();
             Assertions.assertEquals(3, articles.size());
+        });
+    }
+
+    @Test
+    public void testNullIdRejectionForAssignedStrategy()
+    {
+        // Test that attempting to persist an entity with null UUID ID throws appropriate exception
+        var exception = assertThrows(
+            IdentifierGenerationException.class,
+            () -> doInJPA(em -> {
+                var entity = new UuidNullIdEntity("test-data");
+                // ID is null by default
+                Assertions.assertNull(entity.getId());
+
+                em.persist(entity);
+                em.flush(); // This should trigger the exception
+            })
+        );
+
+        // Verify the exception message indicates the problem
+        assertThat(exception.getMessage()).contains("id");
+    }
+
+    @Test
+    public void testAssignedStrategyWithValidUuidId()
+    {
+        // Test successful persistence when UUID ID is properly assigned
+        var assignedId = UuidNullIdEntity.Id.random();
+
+        doInJPA(em -> {
+            var entity = new UuidNullIdEntity("test-data");
+            entity.setId(assignedId);
+
+            em.persist(entity);
+            em.flush();
+
+            // Verify ID was preserved
+            Assertions.assertEquals(assignedId, entity.getId());
+        });
+
+        // Verify entity can be retrieved by assigned UUID ID
+        doInJPA(em -> {
+            var retrieved = em.find(UuidNullIdEntity.class, assignedId);
+            Assertions.assertNotNull(retrieved);
+            Assertions.assertEquals("test-data", retrieved.getData());
+            Assertions.assertEquals(assignedId, retrieved.getId());
         });
     }
 
