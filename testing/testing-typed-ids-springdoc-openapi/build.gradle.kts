@@ -2,8 +2,9 @@ import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 
 plugins {
     id("framefork.java")
+    id("org.springframework.boot") version "3.4.10" apply false
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-    id("org.openapi.generator") version "7.14.0"
+    id("org.openapi.generator") version "7.16.0"
 }
 
 dependencies {
@@ -40,4 +41,8 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("gen
 
 tasks.named("build") {
     dependsOn("generateOpenApiDocs", "generateTypeScriptClient")
+}
+
+tasks.named("forkedSpringBootRun") {
+    dependsOn(":typed-ids-openapi-springdoc:jar", ":typed-ids-openapi-swagger-jakarta:jar")
 }
