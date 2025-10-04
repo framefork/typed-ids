@@ -1,5 +1,6 @@
 plugins {
     id("framefork.java-public")
+    id("java-test-fixtures")
 }
 
 dependencies {
