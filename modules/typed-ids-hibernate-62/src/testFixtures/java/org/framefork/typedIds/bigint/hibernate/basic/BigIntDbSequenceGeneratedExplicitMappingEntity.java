@@ -1,4 +1,4 @@
-package org.framefork.typedIds.bigint.hibernate.v62;
+package org.framefork.typedIds.bigint.hibernate.basic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
+import org.hibernate.annotations.Type;
 import org.jspecify.annotations.Nullable;
 
 @Entity
@@ -18,6 +20,7 @@ public class BigIntDbSequenceGeneratedExplicitMappingEntity
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
+    @Type(ObjectBigIntIdType.class)
     @Nullable
     private Id id;
 

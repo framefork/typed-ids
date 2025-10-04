@@ -1,40 +1,38 @@
-package org.framefork.typedIds.bigint.hibernate.v62;
+package org.framefork.typedIds.bigint.hibernate.basic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
-import org.jspecify.annotations.Nullable;
+import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
+import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = BigIntDbIdentityGeneratedExplicitMappingEntity.TABLE_NAME)
-public class BigIntDbIdentityGeneratedExplicitMappingEntity
+@Table(name = BigIntAppGeneratedExplicitMappingEntity.TABLE_NAME)
+public class BigIntAppGeneratedExplicitMappingEntity
 {
 
-    public static final String TABLE_NAME = "bigint_db_identity_generated_explicit_mapping";
+    public static final String TABLE_NAME = "bigint_app_generated_explicit_mapping";
 
     @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    @Nullable
+    @Type(ObjectBigIntIdType.class)
     private Id id;
 
     @Column(nullable = false)
     private String title;
 
-    public BigIntDbIdentityGeneratedExplicitMappingEntity(final String title)
+    public BigIntAppGeneratedExplicitMappingEntity(final String title)
     {
+        this.id = Id.random();
         this.title = title;
     }
 
     @SuppressWarnings("NullAway")
-    protected BigIntDbIdentityGeneratedExplicitMappingEntity()
+    protected BigIntAppGeneratedExplicitMappingEntity()
     {
     }
 
-    @Nullable
     public Id getId()
     {
         return id;
