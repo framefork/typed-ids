@@ -3,6 +3,7 @@ package org.framefork.typedIds.uuid.springData;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
 import org.framefork.typedIds.springData.AbstractSpringDataMySQLTest;
+import org.framefork.typedIds.uuid.hibernate.UuidAppGeneratedExplicitMappingEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

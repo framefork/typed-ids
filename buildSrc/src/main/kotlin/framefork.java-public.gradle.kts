@@ -8,6 +8,19 @@ java {
     withSourcesJar()
 }
 
+project.pluginManager.withPlugin("java-test-fixtures") {
+    // Since this code runs only when the plugin is present, it's safe to access the component and configurations created by it.
+    val javaComponent = project.components["java"] as AdhocComponentWithVariants
+    // Disable publication of the test fixtures API variant
+    javaComponent.withVariantsFromConfiguration(project.configurations.named("testFixturesApiElements").get()) {
+        skip()
+    }
+    // Disable publication of the test fixtures runtime variant
+    javaComponent.withVariantsFromConfiguration(project.configurations.named("testFixturesRuntimeElements").get()) {
+        skip()
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenStaging") {
