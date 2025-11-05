@@ -1,5 +1,6 @@
 package org.framefork.typedIds.bigint.hibernate.id;
 
+import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
 import org.framefork.typedIds.common.ReflectionHacks;
 import org.hibernate.HibernateException;
@@ -7,6 +8,7 @@ import org.hibernate.id.IdentityGenerator;
 import org.hibernate.id.PostInsertIdentityPersister;
 import org.hibernate.id.insert.InsertGeneratedIdentifierDelegate;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.BasicType;
 import org.hibernate.type.CustomType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.spi.JavaTypeBasicAdaptor;
@@ -52,7 +54,14 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
             }
         }
 
-        throw new HibernateException("The given type is expected to be a CustomType wrapper over a %s, but was '%s' instead".formatted(ObjectBigIntIdType.class.getSimpleName(), type));
+        if (type instanceof BasicType<?> basicType) {
+            var javaTypeClass = basicType.getExpressibleJavaType().getJavaTypeClass();
+            if (ObjectBigIntId.class.isAssignableFrom(javaTypeClass)) {
+                return new ObjectBigIntIdType(javaTypeClass, basicType.getJdbcType());
+            }
+        }
+
+        throw new HibernateException("The given type is expected to be ObjectBigIntIdType or a wrapper containing an ObjectBigIntId subclass, but was '%s' instead".formatted(type));
     }
 
     private JdbcType toJdbcType(final ObjectBigIntIdType objectBigIntIdType)
