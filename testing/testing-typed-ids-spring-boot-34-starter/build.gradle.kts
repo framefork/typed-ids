@@ -9,7 +9,7 @@ dependencies {
 
     api(platform("org.springframework.boot:spring-boot-dependencies:3.4.13"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
-    api("org.springframework:spring-web") // provides Jackson2ObjectMapperBuilder for the ServiceLoader-modules customizer
+    api("org.springframework.boot:spring-boot-starter-web") // Jackson2ObjectMapperBuilder for the ServiceLoader-modules customizer, and typed-id binding of request parameters through typed-ids-spring-6
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(platform(libs.testcontainers.bom))

@@ -10,8 +10,10 @@ dependencies {
     api(platform("org.springframework.boot:spring-boot-dependencies:4.0.9"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
     api("org.springframework.boot:spring-boot-starter-json") // Boot 4 autoconfigures the tools.jackson ObjectMapper from this starter
+    api("org.springframework.boot:spring-boot-starter-web") // request parameters and path variables bind to typed ids through typed-ids-spring-7
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test") // Boot 4 moved MockMvc test support into a per-slice module
     testImplementation(platform(libs.testcontainers.bom))
     testImplementation(libs.testcontainers.postgresql)
     testImplementation("org.testcontainers:jdbc")

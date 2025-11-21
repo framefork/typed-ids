@@ -49,7 +49,7 @@ Minimum supported Java is 17.
 
 ### Spring Boot starters
 
-If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-minor starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger2` on Boot 3 or both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3` on Boot 4) for your Boot version:
+If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-minor starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, the Spring converters `typed-ids-spring-6` or `typed-ids-spring-7`, and `typed-ids-openapi-swagger2` on Boot 3 or both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3` on Boot 4) for your Boot version:
 
 | Spring Boot range | Starter                                                                                                                             | Hibernate module         | Hibernate floor | Jackson |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------|---------|
@@ -418,6 +418,32 @@ and then mark the type as `@Contextual` on every usage
 @Serializable
 data class UserDto(@Contextual val id: UserId)
 ```
+
+## Usage: Spring request parameters, path variables and configuration properties
+
+The Spring converters let Spring bind typed ids wherever it converts a value: `@RequestParam`, `@PathVariable`, `@RequestHeader`, configuration properties and the `ConversionService` itself.
+They convert a `String` or a `UUID` to any `ObjectUuid` subtype, and a `String` or a whole `Number` to any `ObjectBigIntId` subtype.
+
+| Spring Framework | Spring Boot | Artifact                                                                                                         |
+|------------------|-------------|------------------------------------------------------------------------------------------------------------------|
+| 6.x              | 3.x         | [org.framefork:typed-ids-spring-6](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-6)        |
+| 7.x              | 4.x         | [org.framefork:typed-ids-spring-7](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-7)        |
+
+The Spring Boot starters already include the right one. Under Spring Boot, an auto-configuration registers a `TypedIdsGenericConverter` bean,
+which Boot adds to the Spring MVC and WebFlux conversion services and, through `@ConfigurationPropertiesBinding`, to configuration-properties binding.
+Define your own `TypedIdsGenericConverter` bean to replace it.
+
+```java
+@GetMapping("/users/{id}")
+public UserDto user(@PathVariable UserId id) { ... }
+```
+
+Without Spring Boot, register the converter yourself, for example `conversionService.addConverter(new TypedIdsGenericConverter())`,
+or one of the four `ConverterFactory` implementations (`StringToObjectUuidConverterFactory`, `UuidToObjectUuidConverterFactory`, `StringToObjectBigIntIdConverterFactory`, `NumberToObjectBigIntIdConverterFactory`).
+
+A blank string converts to `null`. Input that cannot become the id (a malformed UUID, a UUID version the id rejects, a number with a fraction or outside the `long` range)
+fails the conversion with an `IllegalArgumentException`, which Spring MVC answers with `400 Bad Request`. An id class without the private single-argument constructor
+every typed id has fails with an `IllegalStateException`, because that is a programming error, not bad input.
 
 ## Usage: OpenAPI schema
 
