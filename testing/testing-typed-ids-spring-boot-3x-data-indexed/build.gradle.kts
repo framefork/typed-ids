@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(project(":typed-ids-hibernate-63"))
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:3.4.10"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:3.5.8"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
 
     annotationProcessor(project(":typed-ids-index-java-classes-processor"))

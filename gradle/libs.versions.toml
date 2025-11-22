@@ -4,9 +4,10 @@ errorProne = "2.35.1"
 junit-jupiter = "5.10.3"
 jackson = "2.18.1"
 testcontainers = "1.20.3"
+springBoot = "3.5.8"
 
 [libraries]
-uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "5.1.0" }
+uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "5.1.1" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
@@ -32,17 +33,17 @@ hibernate-orm-v62 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.3.2.Final" }
 hibernate-orm-v64 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.4.10.Final" }
 hibernate-orm-v65 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.3.Final" }
-hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.31.Final" }
+hibernate-orm-v66 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.36.Final" }
 hibernate-orm-v70 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.0.10.Final" }
-hibernate-orm-v71 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.1.2.Final" }
+hibernate-orm-v71 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.1.9.Final" }
 hibernate-models-v70 = { group = "org.hibernate.models", name = "hibernate-models", version = "1.0.0" }
 hypersistence-utils-hibernate61 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.9.4" }
 hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.9.4" }
-hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.11.0" }
-hypersistence-utils-hibernate70 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-70", version = "3.11.0" }
-hypersistence-utils-hibernate71 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-71", version = "3.11.0" }
+hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.12.0" }
+hypersistence-utils-hibernate70 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-70", version = "3.12.0" }
+hypersistence-utils-hibernate71 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-71", version = "3.12.0" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }
 springdoc-openapi-starter-common = { module = "org.springdoc:springdoc-openapi-starter-common", version = "2.1.0" }
-springdoc-openapi-spring-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version = "3.0.5" }
+springdoc-openapi-spring-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springBoot" }
