@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":typed-ids"))
+    implementation(project(":typed-ids-jackson2"))
     implementation(project(":typed-ids-openapi-springdoc"))
 
     api(platform("org.springframework.boot:spring-boot-dependencies:3.5.8"))
