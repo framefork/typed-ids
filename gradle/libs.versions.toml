@@ -3,6 +3,7 @@ googleAutoService = "1.1.1"
 errorProne = "2.35.1"
 junit-jupiter = "5.10.3"
 jackson2 = "2.18.1"
+jackson3 = "3.0.2"
 testcontainers = "1.20.3"
 springBoot = "3.5.8"
 
@@ -10,6 +11,7 @@ springBoot = "3.5.8"
 uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "5.1.1" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 jackson2-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson2" }
+jackson3-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson3" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref = "googleAutoService" }
 autoService-annotations = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "googleAutoService" }
