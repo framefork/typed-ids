@@ -3,16 +3,18 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":typed-ids-hibernate-63"))
+    implementation(project(":typed-ids-hibernate-70"))
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:3.4.10"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:4.0.0"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
 
     annotationProcessor(project(":typed-ids-index-java-classes-processor"))
     testAnnotationProcessor(project(":typed-ids-index-java-classes-processor"))
 
-    testImplementation(project(":typed-ids-hibernate-63-testing"))
+    testImplementation(project(":typed-ids-hibernate-70-testing"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
