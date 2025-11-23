@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(project(":typed-ids"))
+    api(project(":typed-ids-jackson2"))
     api(project(":typed-ids-openapi-swagger-jakarta"))
     api(libs.springdoc.openapi.starter.common)
 
