@@ -8,7 +8,7 @@ plugins {
 dependencies {
     implementation(project(":typed-ids"))
     implementation(project(":typed-ids-jackson2"))
-    implementation(project(":typed-ids-openapi-springdoc"))
+    implementation(project(":typed-ids-openapi-springdoc2"))
 
     api(platform("org.springframework.boot:spring-boot-dependencies:3.5.8"))
     api("org.springframework.boot:spring-boot-starter-web")
@@ -43,5 +43,5 @@ tasks.named("build") {
 }
 
 tasks.named("forkedSpringBootRun") {
-    dependsOn(":typed-ids-openapi-springdoc:jar", ":typed-ids-openapi-swagger-jakarta:jar")
+    dependsOn(":typed-ids-openapi-springdoc2:jar", ":typed-ids-openapi-swagger-jakarta:jar")
 }

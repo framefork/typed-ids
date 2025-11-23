@@ -18,4 +18,4 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-project.description = "TypeIds seamless integration with SpringDoc OpenAPI"
+project.description = "TypeIds seamless integration with SpringDoc OpenAPI 2.x"
