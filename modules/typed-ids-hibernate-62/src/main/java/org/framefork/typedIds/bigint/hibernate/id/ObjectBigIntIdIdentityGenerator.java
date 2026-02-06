@@ -25,6 +25,7 @@ import org.hibernate.type.internal.ImmutableNamedBasicTypeImpl;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.PreparedStatement;
@@ -98,7 +99,11 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
                     }
 
                     // For all other methods, delegate to the original persister
-                    return method.invoke(persister, args);
+                    try {
+                        return method.invoke(persister, args);
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
                 }
             }
         );

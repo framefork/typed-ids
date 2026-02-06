@@ -15,6 +15,7 @@ import org.hibernate.type.internal.ImmutableNamedBasicTypeImpl;
 import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
@@ -87,7 +88,11 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
                     }
 
                     // For all other methods, delegate to the original persister
-                    return method.invoke(persister, args);
+                    try {
+                        return method.invoke(persister, args);
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
                 }
             }
         );
@@ -103,8 +108,13 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
                 {
-                    // For all other methods, delegate to the original persister
-                    Object result = method.invoke(delegate, args);
+                    // For all other methods, delegate to the original delegate
+                    Object result;
+                    try {
+                        result = method.invoke(delegate, args);
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
 
                     if ("performInsert".equals(method.getName())) {
                         var idType = Objects.requireNonNull(objectBigIntIdType, "objectBigIntIdType must not be null");
