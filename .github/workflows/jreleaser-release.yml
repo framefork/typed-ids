@@ -37,9 +37,14 @@ jobs:
       - name: Gradle build and publish to local
         run: ./gradlew publish -Pversion=${{ github.event.inputs.version }}
 
+      - name: Read JReleaser version from .sdkmanrc
+        id: jreleaser-version
+        run: echo "version=$(grep '^jreleaser=' .sdkmanrc | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+
       - name: JReleaser full-release
         uses: jreleaser/release-action@v2
         with:
+          version: ${{ steps.jreleaser-version.outputs.version }}
           setup-java: false
         env:
           JRELEASER_STRICT: "true"

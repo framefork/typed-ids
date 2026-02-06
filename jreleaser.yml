@@ -11,9 +11,10 @@ checksum:
 
 signing:
   active: ALWAYS
-  mode: MEMORY
-  armored: true
-  checksums: false
+  pgp:
+    mode: MEMORY
+    armored: true
+    checksums: false
 
 deploy:
   maven:
