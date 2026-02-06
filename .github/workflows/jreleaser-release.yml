@@ -24,6 +24,25 @@ jobs:
           token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
           fetch-depth: 0
 
+      - name: Check Maven Central availability
+        run: |
+          COMPONENTS_JSON=$(curl -sf https://status.maven.org/api/v2/components.json)
+
+          check_component() {
+            local name="$1"
+            local component_status
+            component_status=$(echo "$COMPONENTS_JSON" | jq -r --arg name "$name" '.components[] | select(.name == $name) | .status')
+            if [ "$component_status" != "operational" ]; then
+              echo "::error::Maven Central component '$name' is $component_status"
+              return 1
+            fi
+            echo "  $name: $component_status"
+          }
+
+          echo "Maven Central status:"
+          check_component "Portal - central.sonatype.com"
+          check_component "Cloudflare CDN/Cache"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
