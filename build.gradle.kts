@@ -1,7 +1,7 @@
 plugins {
     id("base")
     id("idea")
-    id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree publish
+    id("org.barfuin.gradle.taskinfo") version ("3.0.2") // ./gradlew tiTree publish
 }
 
 repositories {
@@ -10,7 +10,7 @@ repositories {
 }
 
 group = "org.framefork"
-version = (properties["version"] as String).trim()
+version = providers.gradleProperty("version").get().trim()
 
 allprojects {
     group = rootProject.group
