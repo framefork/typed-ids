@@ -55,6 +55,19 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
         super.initialize(context);
     }
 
+    /**
+     * Hibernate 7.4+ validates up-front that a generator's declared generated type is assignable to the id attribute,
+     * and the parent reports the surrogate {@code Long} type this class feeds it. This module compiles against Hibernate 7.2,
+     * where {@code Generator.getGeneratedType()} does not exist yet, so there is no {@code @Override} — on 7.4+ this method
+     * becomes the effective override via virtual dispatch (and is never called on older versions), reporting the concrete
+     * id type that this generator actually produces.
+     */
+    @Nullable
+    public Class<?> getGeneratedType()
+    {
+        return objectBigIntIdType != null ? objectBigIntIdType.getReturnedClass() : null;
+    }
+
     private ObjectBigIntIdType toObjectBigIntIdType(final Type type)
     {
         if (type instanceof CustomType<?> customType) {
