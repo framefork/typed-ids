@@ -14,7 +14,7 @@ For seamless type support in Hibernate ORM, you should pick one of the following
 
 | Hibernate Version             | Artifact                                                                                                             |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| 7.2                           | [org.framefork:typed-ids-hibernate-72](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-72)   |
+| 7.2, 7.3, 7.4                 | [org.framefork:typed-ids-hibernate-72](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-72)   |
 | 7.0, 7.1                      | [org.framefork:typed-ids-hibernate-70](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-70)   |
 | 6.6, 6.5, 6.4, and 6.3        | [org.framefork:typed-ids-hibernate-63](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-63)   |
 | 6.2                           | [org.framefork:typed-ids-hibernate-62](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-62)   |
@@ -29,6 +29,7 @@ For JSON (de)serialization, pick the artifact matching your serialization librar
 | Serialization library | Artifact                                                                                                                                         |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
 | Jackson 2.x           | [org.framefork:typed-ids-jackson2](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson2)                                        |
+| Jackson 3.x           | [org.framefork:typed-ids-jackson3](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson3)                                        |
 | Gson                  | [org.framefork:typed-ids-gson](https://central.sonatype.com/artifact/org.framefork/typed-ids-gson)                                                |
 | Kotlin Serialization  | [org.framefork:typed-ids-kotlinx-serialization](https://central.sonatype.com/artifact/org.framefork/typed-ids-kotlinx-serialization)              |
 
@@ -44,6 +45,21 @@ Minimum supported Java is 17.
 | the Gson type adapters (bundled in core)                             | `org.framefork:typed-ids-gson`                                                                                                                           |
 | the Kotlin Serialization support (bundled in core)                   | `org.framefork:typed-ids-kotlinx-serialization`                                                                                                          |
 | `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger-jakarta` (the Spring Boot auto-config is now folded into it) — the `typed-ids-openapi-springdoc` artifact is gone |
+
+### Spring Boot starters
+
+If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-range starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger-jakarta`) for your Boot version:
+
+| Spring Boot range | Starter                                                                                                                             | Hibernate | Jackson |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------|---------|
+| 3.0.x             | [org.framefork:typed-ids-spring-30](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-30)                         | 6.1       | 2.x     |
+| 3.1.x             | [org.framefork:typed-ids-spring-31](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-31)                         | 6.2       | 2.x     |
+| 3.2.x – 3.5.x     | [org.framefork:typed-ids-spring-32](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-32)                         | 6.3       | 2.x     |
+| 4.0.1 – 4.1.x     | [org.framefork:typed-ids-spring-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-40)                         | 7.2       | 3.x     |
+
+There is deliberately no starter for the Spring Boot **4.0.0** orphan patch (its dependency management pins an older Jackson 3 / Hibernate 7 combination). On Boot 4.0.0 either bump to **≥ 4.0.1** and use `typed-ids-spring-40`, or hand-assemble `typed-ids-hibernate-70` + `typed-ids-jackson3` yourself.
+
+The starters pull neither SpringDoc nor a JSON library themselves — you keep bringing your own Spring Boot starters (`spring-boot-starter-data-jpa`, `spring-boot-starter-web`, a SpringDoc starter, etc.); under Boot 3.x you still need to enable ServiceLoader-based Jackson module discovery (`builder.findModulesViaServiceLoader(true)` via a `Jackson2ObjectMapperBuilderCustomizer`), while Boot 4.x discovers the Jackson 3 module automatically.
 
 ## Hibernate type mapping
 
@@ -324,6 +340,10 @@ public Jackson2ObjectMapperBuilderCustomizer enableServiceLoaderModules()
     return builder -> builder.findModulesViaServiceLoader(true);
 }
 ```
+
+### Jackson 3
+
+For Jackson 3 (the `tools.jackson` line, the default under Spring Boot 4) use the [org.framefork:typed-ids-jackson3](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson3) artifact instead. It ships the same two modules in a distinct `…json.jackson3` package (so both flavors can coexist on one classpath). Spring Boot 4 auto-registers it via `find-and-add-modules` (on by default), so no customizer is needed; outside Boot, register it explicitly with `JsonMapper.builder().addModule(new ObjectUuidJacksonModule()).build()`.
 
 ## Usage: (de)serialization with Gson
 
