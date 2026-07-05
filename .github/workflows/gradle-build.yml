@@ -11,7 +11,12 @@ env:
 
 jobs:
   gradle:
+    name: JDK ${{ matrix.jdk }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk: [17, 21, 25]
     steps:
       - uses: actions/checkout@v4
 
@@ -19,9 +24,8 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: | # the last one is default
-            25
-            21
+          java-version: | # the last one is default: Gradle itself runs on 17, the matrix JDK is consumed as a toolchain via -Pjdk.version
+            ${{ matrix.jdk }}
             17
           cache: gradle
 
@@ -31,21 +35,20 @@ jobs:
           add-job-summary-as-pr-comment: on-failure
 
       - name: Gradle toolchains info
-        run: ./gradlew -q javaToolchains
+        run: ./gradlew -q javaToolchains -Pjdk.version=${{ matrix.jdk }}
 
       - name: Gradle build environment info
         run: ./gradlew -q buildEnvironment
 
       - name: Execute Gradle build
-        run: ./gradlew --continue build
+        run: ./gradlew --continue build -Pjdk.version=${{ matrix.jdk }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
         if: always() # always run even if the previous step fails
         with:
-          name: junit-test-results
+          name: junit-test-results-jdk${{ matrix.jdk }}
           path: |
             **/build/test-results/test/TEST-*.xml
-            **/build/test-results/test-jdk*/TEST-*.xml
           retention-days: 1
           overwrite: true

@@ -19,12 +19,15 @@ repositories {
     mavenLocal()
 }
 
+// bytecode target stays at the minimal supported Java; the toolchain JDK is parametrized so CI can run the same build on newer JDKs
+val jdkVersion = (findProperty("jdk.version") as String?)?.toInt() ?: 17
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(jdkVersion)
     }
 }
 
@@ -177,25 +180,7 @@ tasks.withType<Javadoc> {
 }
 
 tasks.named("test") {
-    description = "Runs the tests against the default JDK"
-}
-
-for (javaVersion in listOf(21, 25)) {
-    val testTask = tasks.register<Test>("test-jdk${javaVersion}") {
-        group = "Verification"
-        description = "Runs the tests against JDK $javaVersion"
-
-        javaLauncher.set(javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(javaVersion))
-        })
-
-        testClassesDirs = sourceSets.test.get().output.classesDirs
-        classpath = sourceSets.test.get().runtimeClasspath
-    }
-
-    tasks.named("check") {
-        dependsOn(testTask)
-    }
+    description = "Runs the tests against the configured JDK toolchain"
 }
 
 tasks.withType<Test>() {
