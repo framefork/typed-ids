@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     `kotlin-dsl`
 }
@@ -8,7 +10,9 @@ repositories {
 }
 
 dependencies {
-    val kotlinVersion = "2.2.21"
+    // included builds do not inherit the composite root's gradle.properties, so the single-source version is loaded from the parent file explicitly
+    val parentProperties = Properties().apply { rootDir.resolve("../gradle.properties").inputStream().use { load(it) } }
+    val kotlinVersion = checkNotNull(parentProperties.getProperty("kotlinVersion")) { "kotlinVersion missing in root gradle.properties" }
 
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
