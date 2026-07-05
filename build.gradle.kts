@@ -9,6 +9,12 @@ repositories {
     mavenLocal()
 }
 
+// the root project has no resolvable configurations, so this generates no lockfile and enforces nothing today;
+// it is here so any future resolvable configuration added to the root is locked by default rather than silently unlocked
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 group = "org.framefork"
 version = providers.gradleProperty("version").get().trim()
 

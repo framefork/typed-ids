@@ -19,6 +19,22 @@ repositories {
     mavenLocal()
 }
 
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+// canonical re-lock entry point: a root `./gradlew dependencies --write-locks` re-locks nothing in a multi-module build
+// because the root has no resolvable configurations, so each project resolves its own configurations here instead
+tasks.register("resolveAndLockAll") {
+    notCompatibleWithConfigurationCache("Filters configurations at execution time")
+    doFirst {
+        require(gradle.startParameter.isWriteDependencyLocks) { "$path must be run with --write-locks" }
+    }
+    doLast {
+        configurations.filter { it.isCanBeResolved }.forEach { it.resolve() }
+    }
+}
+
 // bytecode target stays at the minimal supported Java; the toolchain JDK is parametrized so CI can run the same build on newer JDKs
 val jdkVersion = (findProperty("jdk.version") as String?)?.toInt() ?: 17
 

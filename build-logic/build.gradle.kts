@@ -9,6 +9,22 @@ repositories {
     mavenCentral()
 }
 
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+// included builds are not covered by the root `resolveAndLockAll` invocation, so build-logic re-locks itself:
+//   ./gradlew -p build-logic resolveAndLockAll --write-locks
+tasks.register("resolveAndLockAll") {
+    notCompatibleWithConfigurationCache("Filters configurations at execution time")
+    doFirst {
+        require(gradle.startParameter.isWriteDependencyLocks) { "$path must be run with --write-locks" }
+    }
+    doLast {
+        configurations.filter { it.isCanBeResolved }.forEach { it.resolve() }
+    }
+}
+
 dependencies {
     // included builds do not inherit the composite root's gradle.properties, so the single-source version is loaded from the parent file explicitly
     val parentProperties = Properties().apply { rootDir.resolve("../gradle.properties").inputStream().use { load(it) } }
