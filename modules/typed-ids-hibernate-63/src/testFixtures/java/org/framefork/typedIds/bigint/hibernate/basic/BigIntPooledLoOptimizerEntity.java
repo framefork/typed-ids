@@ -11,7 +11,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.jspecify.annotations.Nullable;
 
-@SuppressWarnings({"removal","UnnecessarilyFullyQualified"})
+@SuppressWarnings({"deprecation","removal","UnnecessarilyFullyQualified"})
 @Entity
 @Table(name = BigIntPooledLoOptimizerEntity.TABLE_NAME)
 public class BigIntPooledLoOptimizerEntity
