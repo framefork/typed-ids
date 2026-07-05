@@ -1,7 +1,7 @@
 plugins {
     id("base")
     id("idea")
-    id("org.barfuin.gradle.taskinfo") version ("2.2.0") // ./gradlew tiTree publish
+    id("org.barfuin.gradle.taskinfo") version ("3.0.2") // ./gradlew tiTree publish
 }
 
 repositories {
@@ -9,8 +9,14 @@ repositories {
     mavenLocal()
 }
 
+// the root project has no resolvable configurations, so this generates no lockfile and enforces nothing today;
+// it is here so any future resolvable configuration added to the root is locked by default rather than silently unlocked
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 group = "org.framefork"
-version = (properties["version"] as String).trim()
+version = providers.gradleProperty("version").get().trim()
 
 allprojects {
     group = rootProject.group

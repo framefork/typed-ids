@@ -52,3 +52,30 @@ jobs:
             **/build/test-results/test/TEST-*.xml
           retention-days: 1
           overwrite: true
+
+  lockfiles:
+    name: Dependency lockfiles are fresh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # strict locking already fails normal builds when a declared version is bumped above the lock; this job
+      # catches the silent remainder (declared-lower-than-locked, removed-but-still-locked) by regenerating and diffing.
+      - name: Regenerate all lockfiles
+        run: |
+          ./gradlew resolveAndLockAll --write-locks
+          ./gradlew -p build-logic resolveAndLockAll --write-locks
+
+      # '*.lockfile' matches at any depth, including the root settings-gradle.lockfile that '**/*.lockfile' misses
+      - name: Verify lockfiles are up to date
+        run: git diff --exit-code -- '*.lockfile'

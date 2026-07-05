@@ -1,0 +1,51 @@
+import java.util.Properties
+
+plugins {
+    `kotlin-dsl`
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+// included builds are not covered by the root `resolveAndLockAll` invocation, so build-logic re-locks itself:
+//   ./gradlew -p build-logic resolveAndLockAll --write-locks
+tasks.register("resolveAndLockAll") {
+    notCompatibleWithConfigurationCache("Filters configurations at execution time")
+    doFirst {
+        require(gradle.startParameter.isWriteDependencyLocks) { "$path must be run with --write-locks" }
+    }
+    doLast {
+        configurations.filter { it.isCanBeResolved }.forEach { it.resolve() }
+    }
+}
+
+dependencies {
+    // included builds do not inherit the composite root's gradle.properties, so the single-source version is loaded from the parent file explicitly
+    val parentProperties = Properties().apply { rootDir.resolve("../gradle.properties").inputStream().use { load(it) } }
+    val kotlinVersion = checkNotNull(parentProperties.getProperty("kotlinVersion")) { "kotlinVersion missing in root gradle.properties" }
+
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
+
+    implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
+    implementation("io.github.joselion:strict-null-check:3.5.0")
+    implementation("net.ltgt.gradle:gradle-errorprone-plugin:4.2.0")
+    implementation("net.ltgt.gradle:gradle-nullaway-plugin:2.3.0")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17 // This option specifies the target version of the generated JVM bytecode
+    }
+}
