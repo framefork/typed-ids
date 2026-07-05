@@ -24,7 +24,26 @@ Find the latest version in this project's GitHub releases or on Maven Central.
 
 If you want just the plain base classes without ORM support, you can install just the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).
 
+For JSON (de)serialization, pick the artifact matching your serialization library. The core `typed-ids` artifact no longer bundles any of these, so you have to add the one you need explicitly:
+
+| Serialization library | Artifact                                                                                                                                         |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jackson 2.x           | [org.framefork:typed-ids-jackson2](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson2)                                        |
+| Gson                  | [org.framefork:typed-ids-gson](https://central.sonatype.com/artifact/org.framefork/typed-ids-gson)                                                |
+| Kotlin Serialization  | [org.framefork:typed-ids-kotlinx-serialization](https://central.sonatype.com/artifact/org.framefork/typed-ids-kotlinx-serialization)              |
+
 Minimum supported Java is 17.
+
+### Migrating from 0.11 to 0.12
+
+0.12 splits the JSON integrations and the SpringDoc/OpenAPI wiring into dedicated artifacts. The change is build-file-only — no code, package, or class name changed — but if you relied on the integrations that core used to bundle, you have to add the new artifact, otherwise the integration silently disappears:
+
+| If in 0.11 you relied on…                                            | In 0.12 add…                                                                                                                                             |
+|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Jackson auto-registration via `ServiceLoader` (bundled in core)      | `org.framefork:typed-ids-jackson2` — **without it the Jackson module is no longer on the classpath and auto-registration stops working**                 |
+| the Gson type adapters (bundled in core)                             | `org.framefork:typed-ids-gson`                                                                                                                           |
+| the Kotlin Serialization support (bundled in core)                   | `org.framefork:typed-ids-kotlinx-serialization`                                                                                                          |
+| `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger-jakarta` (the Spring Boot auto-config is now folded into it) — the `typed-ids-openapi-springdoc` artifact is gone |
 
 ## Hibernate type mapping
 
@@ -291,6 +310,8 @@ This also simplifies usage on every other place, where Hibernate might need to r
 
 ## Usage: (de)serialization with Jackson
 
+Provided by the [org.framefork:typed-ids-jackson2](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson2) artifact.
+
 This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
 
 Please note that in Spring, the instance of Jackson's `ObjectMapper` used for (de)serializing requests and responses of controllers by default ignores the modules provided via `ServiceLoader`,
@@ -306,9 +327,20 @@ public Jackson2ObjectMapperBuilderCustomizer enableServiceLoaderModules()
 
 ## Usage: (de)serialization with Gson
 
-This library provides `ObjectBigIntIdTypeAdapterFactory` and `ObjectUuidTypeAdapterFactory`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
+Provided by the [org.framefork:typed-ids-gson](https://central.sonatype.com/artifact/org.framefork/typed-ids-gson) artifact.
+
+This library provides `ObjectBigIntIdTypeAdapterFactory` and `ObjectUuidTypeAdapterFactory`. Gson has no `ServiceLoader`-based discovery, so you have to register them explicitly on your `GsonBuilder`:
+
+```java
+Gson gson = new GsonBuilder()
+    .registerTypeAdapterFactory(new ObjectUuidTypeAdapterFactory())
+    .registerTypeAdapterFactory(new ObjectBigIntIdTypeAdapterFactory())
+    .create();
+```
 
 ## Usage: (de)serialization with Kotlin Serialization
+
+Provided by the [org.framefork:typed-ids-kotlinx-serialization](https://central.sonatype.com/artifact/org.framefork/typed-ids-kotlinx-serialization) artifact.
 
 This library supports two mechanism for the standard Kotlin Serialization.
 
@@ -353,28 +385,23 @@ data class UserDto(@Contextual val id: UserId)
 
 This library provides support for OpenAPI schema generation, so that you don't have to annotate the types with `@Schema` manually (you still can, if you want to).
 
-### OpenAPI - generic Swagger v3 Jakarta
+The single [org.framefork:typed-ids-openapi-swagger-jakarta](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger-jakarta) artifact
+covers both plain Swagger v3 Jakarta usage and SpringDoc-under-Spring-Boot.
 
-The [org.framefork:typed-ids-openapi-swagger-jakarta](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger-jakarta) artifact
-provides a `TypedIdsModelConverter`, which should be automatically picked up by the standard Swagger v3 Jakarta implementation,
-because it's exposed via the standard `java.util.ServiceLoader` mechanism.
+It provides a `TypedIdsModelConverter`, which is automatically picked up by the standard Swagger v3 Jakarta implementation,
+because it's exposed via the standard `java.util.ServiceLoader` mechanism. This works with zero Spring on the classpath.
 
 There is a single configurable property - `idsAsRef`, which is the equivalent of `enumsAsRef` in the standard Swagger v3 implementation.
-You can set override it via `TypedIdsModelConverter.idsAsRef`, or using a system property `framefork.typed-ids.openapi.as-ref`.
+You can override it via `TypedIdsModelConverter.idsAsRef`, or using a system property `framefork.typed-ids.openapi.as-ref`.
+
+Under Spring Boot, the artifact additionally ships a dormant `@AutoConfiguration` that registers the converter as a Spring bean and binds
+the `framefork.typed-ids.openapi.as-ref` property through the standard Spring configuration (config/ENV/etc.) - so with SpringDoc you shouldn't
+configure the converter explicitly. This auto-config only activates under Spring Boot (it's gated on the Boot classes being present); non-Spring
+consumers are unaffected. The same artifact works across the SpringDoc 2.x / Spring Boot 3 and SpringDoc 3.x / Spring Boot 4 lines.
 
 Providing a non-jakarta variant would be straightforward, but given that javax has been deprecated for a long time, I decided to not bother with it.
 
-### OpenAPI - SpringDoc
-
-The [org.framefork:typed-ids-openapi-springdoc](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-springdoc) artifact
-builds on the Swagger v3 Jakarta integration, and registers it as a standard Spring bean.
-
-With SpringDoc, you shouldn't configure the converter explicitly,
-and instead you should use the standard spring configuration to set it via the `framefork.typed-ids.openapi.as-ref` property in config/ENV/etc.
-
-You may notice that the artifact depends on a quite old version of the SpringDoc. That is because I needed compatibility with Spring Boot 3.0.x. However, it works seamlessly with newer Spring Boot versions.
-
-You may want to check the working example in [testing/testing-typed-ids-springdoc-openapi](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-springdoc-openapi),
+You may want to check the working example in [testing/testing-typed-ids-springdoc-2x-openapi](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-springdoc-2x-openapi),
 with a recent Spring Boot version, and also with a working OpenApi spec generation, and TypeScript client generation.
 
 ## More examples

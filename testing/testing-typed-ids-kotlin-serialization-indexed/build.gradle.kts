@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(project(":typed-ids"))
+    implementation(project(":typed-ids-kotlinx-serialization"))
     implementation(libs.kotlinx.serialization)
 
     kapt(project(":typed-ids-index-java-classes-processor"))
