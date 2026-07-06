@@ -1,5 +1,5 @@
 plugins {
-    id("framefork.java-public")
+    id("org.framefork.build.library-published")
 }
 
 dependencies {

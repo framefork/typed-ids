@@ -21,7 +21,7 @@ public class TypedIdsModelConverter implements ModelConverter
 
     /**
      * Allows all VO-IDs to be resolved as a reference to a scheme added to the components section.
-     * <p/>
+     * <p>
      * This is not a very good way to configure something, but it is consistent with {@link ModelResolver#enumsAsRef}
      */
     @SuppressWarnings("NonFinalStaticField")

@@ -40,8 +40,9 @@ public final class ClassIndexLoaderUtils
 
         var classes = classNames.stream()
             .map(ReflectionHacks::classForName)
-            .filter(Objects::nonNull)
-            .map(klass -> superClass.isAssignableFrom(klass) ? (Class<? extends T>) klass : null)
+            // The explicit null guard both drops names that failed to load and lets NullAway see that a non-null,
+            // assignable class is what flows on; a bare .filter(Objects::nonNull) upstream would not narrow the type for it.
+            .map(klass -> klass != null && superClass.isAssignableFrom(klass) ? (Class<? extends T>) klass : null)
             .filter(Objects::nonNull)
             .sorted(Comparator.comparing(Class::getName))
             .toList();

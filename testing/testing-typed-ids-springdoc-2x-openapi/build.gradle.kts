@@ -1,5 +1,5 @@
 plugins {
-    id("framefork.java")
+    id("org.framefork.build.library-internal")
     id("org.springframework.boot") version "3.5.8" apply false
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
     id("org.openapi.generator") version "7.17.0"

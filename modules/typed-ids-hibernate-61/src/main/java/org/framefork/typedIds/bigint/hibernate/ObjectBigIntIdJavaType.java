@@ -93,8 +93,8 @@ public class ObjectBigIntIdJavaType implements BasicJavaType<ObjectBigIntId<?>>,
     public JdbcType getRecommendedJdbcType(final JdbcTypeIndicators indicators)
     {
         var descriptor = indicators.getTypeConfiguration().getJdbcTypeRegistry().getDescriptor(SqlTypes.BIGINT);
-        return descriptor instanceof AdjustableJdbcType
-            ? ((AdjustableJdbcType) descriptor).resolveIndicatedType(indicators, this)
+        return descriptor instanceof AdjustableJdbcType adjustableJdbcType
+            ? adjustableJdbcType.resolveIndicatedType(indicators, this)
             : descriptor;
     }
 

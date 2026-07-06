@@ -112,7 +112,7 @@ public class ObjectBigIntIdIdentityGenerator extends IdentityGenerator
 
         private final InsertGeneratedIdentifierDelegate delegate;
 
-        public InsertGeneratedIdentifierDelegateWrapper(final InsertGeneratedIdentifierDelegate delegate)
+        InsertGeneratedIdentifierDelegateWrapper(final InsertGeneratedIdentifierDelegate delegate)
         {
             this.delegate = delegate;
         }
