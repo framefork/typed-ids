@@ -13,6 +13,7 @@ framefork {
     minJavaVersion = 17
     jdkVersion = 25
     jspecifyMode = true
+    dependencyLocking = true
 }
 
 rootProject.name = "typed-ids"
