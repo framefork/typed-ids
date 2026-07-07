@@ -1,5 +1,6 @@
 plugins {
     id("org.framefork.build.library-published")
+    id("org.framefork.build.auto-service")
 }
 
 dependencies {
@@ -7,9 +8,6 @@ dependencies {
     api(libs.swagger.v3.core.jakarta)
 
     compileOnly(libs.jetbrains.annotations)
-
-    compileOnly(libs.autoService.annotations)
-    annotationProcessor(libs.autoService.processor)
 
     testImplementation(project(":typed-ids-testing"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
