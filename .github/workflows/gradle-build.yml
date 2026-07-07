@@ -24,9 +24,13 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: | # the last one is default: Gradle itself runs on 17, the matrix JDK is consumed as a toolchain via -Pjdk.version
+          # The convention plugin disables toolchain auto-download, so every JDK the build touches must be pre-installed:
+          # the compile toolchain (framefork { jdkVersion } = 25) and the matrix test-runtime launcher (-Ptests.jdk.version).
+          # The last entry is the default JAVA_HOME the outer Gradle runs on: it must be >= 21 because the
+          # org.framefork.build plugin artifact requires a JVM 21+ runtime to resolve on the buildscript classpath.
+          java-version: |
             ${{ matrix.jdk }}
-            17
+            25
           cache: gradle
 
       - name: Setup Gradle
@@ -35,13 +39,14 @@ jobs:
           add-job-summary-as-pr-comment: on-failure
 
       - name: Gradle toolchains info
-        run: ./gradlew -q javaToolchains -Pjdk.version=${{ matrix.jdk }}
+        run: ./gradlew -q javaToolchains -Ptests.jdk.version=${{ matrix.jdk }}
 
       - name: Gradle build environment info
         run: ./gradlew -q buildEnvironment
 
+      # Compile once on the standard toolchain (jdkVersion=25, --release minJavaVersion), run tests on the matrix JDK.
       - name: Execute Gradle build
-        run: ./gradlew --continue build -Pjdk.version=${{ matrix.jdk }}
+        run: ./gradlew --continue build -Ptests.jdk.version=${{ matrix.jdk }}
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
@@ -63,7 +68,8 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 17
+          # >= 21: the org.framefork.build plugin artifact requires a JVM 21+ runtime to resolve on the buildscript classpath.
+          java-version: 25
           cache: gradle
 
       - name: Setup Gradle
@@ -72,9 +78,7 @@ jobs:
       # strict locking already fails normal builds when a declared version is bumped above the lock; this job
       # catches the silent remainder (declared-lower-than-locked, removed-but-still-locked) by regenerating and diffing.
       - name: Regenerate all lockfiles
-        run: |
-          ./gradlew resolveAndLockAll --write-locks
-          ./gradlew -p build-logic resolveAndLockAll --write-locks
+        run: ./gradlew resolveAndLockAll --write-locks
 
       # '*.lockfile' matches at any depth, including the root settings-gradle.lockfile that '**/*.lockfile' misses
       - name: Verify lockfiles are up to date

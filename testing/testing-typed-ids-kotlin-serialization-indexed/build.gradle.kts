@@ -1,5 +1,5 @@
 plugins {
-    id("framefork.java")
+    id("org.framefork.build.library-internal")
     kotlin("plugin.serialization")
     kotlin("kapt")
 }

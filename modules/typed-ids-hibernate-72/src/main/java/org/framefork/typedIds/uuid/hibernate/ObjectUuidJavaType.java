@@ -92,8 +92,8 @@ public class ObjectUuidJavaType implements BasicJavaType<ObjectUuid<?>>, Dynamic
     public JdbcType getRecommendedJdbcType(final JdbcTypeIndicators indicators)
     {
         final JdbcType descriptor = indicators.getJdbcType(indicators.resolveJdbcTypeCode(SqlTypes.UUID));
-        return descriptor instanceof AdjustableJdbcType
-            ? ((AdjustableJdbcType) descriptor).resolveIndicatedType(indicators, this)
+        return descriptor instanceof AdjustableJdbcType adjustableJdbcType
+            ? adjustableJdbcType.resolveIndicatedType(indicators, this)
             : descriptor;
     }
 

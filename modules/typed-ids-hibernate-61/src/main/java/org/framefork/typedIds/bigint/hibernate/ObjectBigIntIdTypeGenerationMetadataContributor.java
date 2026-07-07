@@ -66,7 +66,7 @@ public class ObjectBigIntIdTypeGenerationMetadataContributor implements Metadata
 
         private final KeyValue identifier;
 
-        public RemapIdentifierGeneratorStrategySecondPass(final KeyValue identifier)
+        RemapIdentifierGeneratorStrategySecondPass(final KeyValue identifier)
         {
             this.identifier = identifier;
         }

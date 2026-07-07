@@ -1,5 +1,5 @@
 plugins {
-    id("framefork.java")
+    id("org.framefork.build.library-internal")
 }
 
 dependencies {
@@ -8,4 +8,5 @@ dependencies {
 
     api(libs.hibernate.orm.v70)
     api(libs.hypersistence.utils.hibernate70)
+
 }

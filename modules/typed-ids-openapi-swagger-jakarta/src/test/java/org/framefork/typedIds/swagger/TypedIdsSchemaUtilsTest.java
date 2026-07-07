@@ -38,7 +38,7 @@ class TypedIdsSchemaUtilsTest
 
     }
 
-    @io.swagger.v3.oas.annotations.media.Schema()
+    @io.swagger.v3.oas.annotations.media.Schema
     record SchemaNoName(String value)
     {
 
