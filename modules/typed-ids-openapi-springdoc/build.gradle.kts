@@ -1,5 +1,6 @@
 plugins {
     id("org.framefork.build.library-published")
+    id("org.framefork.build.auto-service")
 }
 
 dependencies {
@@ -8,9 +9,6 @@ dependencies {
     api(libs.springdoc.openapi.starter.common)
 
     compileOnly(libs.jetbrains.annotations)
-
-    compileOnly(libs.autoService.annotations)
-    annotationProcessor(libs.autoService.processor)
     annotationProcessor(libs.springdoc.openapi.spring.configuration.processor)
 
     testImplementation(project(":typed-ids-testing"))

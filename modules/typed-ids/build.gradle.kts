@@ -1,5 +1,6 @@
 plugins {
     id("org.framefork.build.library-published")
+    id("org.framefork.build.auto-service")
 }
 
 dependencies {
@@ -9,9 +10,6 @@ dependencies {
     compileOnly(libs.hypersistence.tsid)
 
     compileOnly(libs.jetbrains.annotations)
-
-    compileOnly(libs.autoService.annotations)
-    annotationProcessor(libs.autoService.processor)
 
     compileOnly(libs.jackson.databind)
     compileOnly(libs.gson)
