@@ -3,6 +3,7 @@ package org.framefork.typedIds.bigint;
 import com.google.errorprone.annotations.Immutable;
 import org.framefork.typedIds.TypedId;
 import org.framefork.typedIds.common.LazyValue;
+import org.framefork.typedIds.common.index.IndexTypedIdSubclasses;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Wraps long
  */
 @Immutable
+@IndexTypedIdSubclasses
 public abstract class ObjectBigIntId<SelfType extends ObjectBigIntId<SelfType>> implements TypedId<SelfType>
 {
 

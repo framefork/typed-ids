@@ -3,6 +3,7 @@ package org.framefork.typedIds.uuid;
 import com.google.errorprone.annotations.Immutable;
 import org.framefork.typedIds.TypedId;
 import org.framefork.typedIds.common.LazyValue;
+import org.framefork.typedIds.common.index.IndexTypedIdSubclasses;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Wraps {@link UUID}
  */
 @Immutable
+@IndexTypedIdSubclasses
 public abstract class ObjectUuid<SelfType extends ObjectUuid<SelfType>> implements TypedId<SelfType>
 {
 
