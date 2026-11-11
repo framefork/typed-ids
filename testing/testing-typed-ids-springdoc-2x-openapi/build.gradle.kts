@@ -42,5 +42,5 @@ tasks.named("build") {
 }
 
 tasks.named("forkedSpringBootRun") {
-    dependsOn(":typed-ids-openapi-springdoc:jar", ":typed-ids-openapi-swagger-jakarta:jar")
+    dependsOn(":typed-ids:jar", ":typed-ids-openapi-springdoc:jar", ":typed-ids-openapi-swagger-jakarta:jar")
 }

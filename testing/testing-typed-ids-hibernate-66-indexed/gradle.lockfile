@@ -53,7 +53,6 @@ org.antlr:antlr4-runtime:4.13.0=runtimeClasspath,testRuntimeClasspath
 org.apache.commons:commons-compress:1.24.0=testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
 org.assertj:assertj-core:3.27.4=testCompileClasspath,testRuntimeClasspath
-org.atteo.classindex:classindex:3.13=annotationProcessor,testAnnotationProcessor
 org.checkerframework:checker-qual:3.48.2=compileClasspath
 org.checkerframework:checker-qual:3.49.5=testRuntimeClasspath
 org.checkerframework:checker-qual:4.0.0=annotationProcessor,testAnnotationProcessor

@@ -211,9 +211,17 @@ This library provides a mechanism to index your ID classes at compile time, whic
 
 Set up the `org.framefork:typed-ids-index-java-classes-processor` as an annotation processor.
 
-It's based on [org.atteo.classindex:classindex](https://github.com/atteo/classindex), and when executed,
-it writes (somewhere in your build output directory) to `META-INF/services/org.framefork.typedIds.uuid.ObjectUuid` or `META-INF/services/org.framefork.typedIds.bigint.ObjectBigIntId`,
-which can be later read by the standard `java.util.ServiceLoader` mechanism.
+The processor writes the binary names of your concrete id classes to `META-INF/services/org.framefork.typedIds.uuid.ObjectUuid` and `META-INF/services/org.framefork.typedIds.bigint.ObjectBigIntId` in your build output.
+The typed-ids integrations read these files at runtime through `TypedIdsRegistry`.
+The files use the `META-INF/services/` location, but they are not service provider registrations: `java.util.ServiceLoader` cannot instantiate id classes, because their constructors are private.
+
+The processor finds id classes through the `@IndexTypedIdSubclasses` annotation, which `ObjectUuid` and `ObjectBigIntId` carry and every subclass inherits, so your id classes need no annotation of their own.
+It indexes top-level, nested and indirect subclasses, also ids nested in records, and skips abstract classes.
+Use the processor with `org.framefork:typed-ids` of the same version. The processor fails the compilation when the typed-ids on the compile classpath is too old to have the annotation.
+
+In Gradle, the processor is an incremental aggregating processor, so it does not force a full recompilation on every change.
+When a build recompiles only some of the sources, like IntelliJ's own builder or Maven without incremental compilation, the processor merges its output with the existing index files and drops the classes that are gone, abstract, or no longer ids.
+javac runs the processor only when it compiles at least one id class, so a partial compile without one leaves the index files as they are until the next compile of an id class or a full build.
 
 With Gradle, register the processor like this:
 
@@ -224,7 +232,8 @@ dependencies {
 }
 ```
 
-With Maven, you can register it as an optional dependency if annotation processors discovery works in your project
+With Maven, you can register it as an optional dependency if annotation processors discovery works in your project.
+On JDK 23 and newer, javac no longer runs processors that it discovers on the classpath by default, so this variant also needs `<proc>full</proc>` (`-proc:full`) in the `maven-compiler-plugin` configuration.
 
 ```xml
 <dependencies>

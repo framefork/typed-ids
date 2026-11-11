@@ -1,8 +1,8 @@
 package org.framefork.typedIds.uuid.hibernate.v72;
 
 import jakarta.persistence.Tuple;
+import org.framefork.typedIds.TypedIdsRegistry;
 import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
-import org.framefork.typedIds.uuid.hibernate.UuidAppGeneratedExplicitMappingEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +20,14 @@ final class ObjectUuidTypeIndexedHibernate72PostgreSQLTest extends AbstractPostg
     protected Class<?>[] entities()
     {
         return new Class<?>[]{
-            UuidAppGeneratedExplicitMappingEntity.class,
+            UuidAppGeneratedIndexedEntity.class,
         };
+    }
+
+    @Test
+    public void testIndex()
+    {
+        assertThat(TypedIdsRegistry.getObjectUuidClasses()).contains(UuidAppGeneratedIndexedEntity.Id.class);
     }
 
     @Test
@@ -29,7 +35,7 @@ final class ObjectUuidTypeIndexedHibernate72PostgreSQLTest extends AbstractPostg
     {
         doInJPA(em -> {
             var result = (Tuple) em.createNativeQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table_name AND column_name = :column_name", Tuple.class)
-                .setParameter("table_name", UuidAppGeneratedExplicitMappingEntity.TABLE_NAME)
+                .setParameter("table_name", UuidAppGeneratedIndexedEntity.TABLE_NAME)
                 .setParameter("column_name", "id")
                 .getSingleResult();
 
@@ -40,13 +46,13 @@ final class ObjectUuidTypeIndexedHibernate72PostgreSQLTest extends AbstractPostg
     @Test
     public void testUsage()
     {
-        Map<String, UuidAppGeneratedExplicitMappingEntity.Id> idsByTitle = new HashMap<>();
+        Map<String, UuidAppGeneratedIndexedEntity.Id> idsByTitle = new HashMap<>();
 
         doInJPA(em -> {
             var articles = List.of(
-                new UuidAppGeneratedExplicitMappingEntity("one"),
-                new UuidAppGeneratedExplicitMappingEntity("two"),
-                new UuidAppGeneratedExplicitMappingEntity("three")
+                new UuidAppGeneratedIndexedEntity("one"),
+                new UuidAppGeneratedIndexedEntity("two"),
+                new UuidAppGeneratedIndexedEntity("three")
             );
 
             articles.forEach(em::persist);
@@ -58,19 +64,19 @@ final class ObjectUuidTypeIndexedHibernate72PostgreSQLTest extends AbstractPostg
         var idOfTwo = Objects.requireNonNull(idsByTitle.get("two"), "id must not be null");
 
         doInJPA(em -> {
-            var article = em.find(UuidAppGeneratedExplicitMappingEntity.class, idOfTwo);
+            var article = em.find(UuidAppGeneratedIndexedEntity.class, idOfTwo);
             Assertions.assertEquals("two", article.getTitle());
         });
 
         doInJPA(em -> {
-            var article = em.createQuery("SELECT a FROM UuidAppGeneratedExplicitMappingEntity a WHERE a.id = :id", UuidAppGeneratedExplicitMappingEntity.class)
+            var article = em.createQuery("SELECT a FROM UuidAppGeneratedIndexedEntity a WHERE a.id = :id", UuidAppGeneratedIndexedEntity.class)
                 .setParameter("id", idOfTwo)
                 .getSingleResult();
             Assertions.assertEquals("two", article.getTitle());
         });
 
         doInJPA(em -> {
-            var articles = em.createQuery("SELECT a FROM UuidAppGeneratedExplicitMappingEntity a WHERE a.id IN (:ids)", UuidAppGeneratedExplicitMappingEntity.class)
+            var articles = em.createQuery("SELECT a FROM UuidAppGeneratedIndexedEntity a WHERE a.id IN (:ids)", UuidAppGeneratedIndexedEntity.class)
                 .setParameter("ids", List.copyOf(idsByTitle.values()))
                 .getResultList();
             Assertions.assertEquals(3, articles.size());
