@@ -25,6 +25,8 @@ jobs:
       id: dependency-submission
       uses: gradle/actions/dependency-submission@v6
       with:
+        # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
+        cache-provider: basic
         dependency-graph-exclude-projects: '^:(.*-testing|testing-.*)'
         dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
 

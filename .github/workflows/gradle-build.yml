@@ -36,6 +36,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
+          # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
+          cache-provider: basic
           add-job-summary-as-pr-comment: on-failure
 
       - name: Gradle toolchains info
@@ -74,6 +76,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
+        with:
+          # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
+          cache-provider: basic
 
       # strict locking already fails normal builds when a declared version is bumped above the lock; this job
       # catches the silent remainder (declared-lower-than-locked, removed-but-still-locked) by regenerating and diffing.
