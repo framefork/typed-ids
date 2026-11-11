@@ -54,7 +54,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Gradle build and publish to local
-        run: ./gradlew publish -Pversion=${{ github.event.inputs.version }}
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.version }}
+        run: ./gradlew publish -Pversion="${RELEASE_VERSION}"
 
       - name: Read JReleaser version from .sdkmanrc
         id: jreleaser-version
@@ -87,14 +89,17 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Update version in properties
-        run: sed -i 's/^version=.*/version=${{ github.event.inputs.nextVersion }}-SNAPSHOT/g' gradle.properties
+        env:
+          NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
+        run: sed -i "s/^version=.*/version=${NEXT_VERSION}-SNAPSHOT/" gradle.properties
 
+      # Plain git instead of a third-party action, so no extra code handles the release token. The checkout step above
+      # persisted JRELEASER_GITHUB_TOKEN as the git credential, so do not set persist-credentials: false on it.
       - name: Commit & Push version update
-        uses: actions-js/push@968f4695ca558093eadb24ad83cc5891f47e0cdc # v1.6
-        with:
-          github_token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-          message: "chore: bump version to ${{ github.event.inputs.nextVersion }}-SNAPSHOT"
-          author_email: 'bot@framefork.org'
-          author_name: 'Framefork BOT'
-          branch: master
-          tags: false
+        env:
+          NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
+        run: |
+          git config user.name 'Framefork BOT'
+          git config user.email 'bot@framefork.org'
+          git commit -m "chore: bump version to ${NEXT_VERSION}-SNAPSHOT" -- gradle.properties
+          git push origin HEAD:master
