@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.framefork.build") version "0.4.0"
+    id("org.framefork.build") version "0.5.0"
 }
 
 framefork {
