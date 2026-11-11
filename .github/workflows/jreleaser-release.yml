@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
           fetch-depth: 0
@@ -44,14 +44,14 @@ jobs:
           check_component "Cloudflare CDN/Cache"
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 25
           cache: gradle
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Gradle build and publish to local
         run: ./gradlew publish -Pversion=${{ github.event.inputs.version }}
@@ -61,7 +61,7 @@ jobs:
         run: echo "version=$(grep '^jreleaser=' .sdkmanrc | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
       - name: JReleaser full-release
-        uses: jreleaser/release-action@v2
+        uses: jreleaser/release-action@90ac653bb9c79d11179e65d81499f3f34527dcd5 # 2.5.0
         with:
           version: ${{ steps.jreleaser-version.outputs.version }}
           setup-java: false
@@ -79,7 +79,7 @@ jobs:
 
       - name: JReleaser upload output
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jreleaser-release
           path: |
@@ -90,7 +90,7 @@ jobs:
         run: sed -i 's/^version=.*/version=${{ github.event.inputs.nextVersion }}-SNAPSHOT/g' gradle.properties
 
       - name: Commit & Push version update
-        uses: actions-js/push@master
+        uses: actions-js/push@968f4695ca558093eadb24ad83cc5891f47e0cdc # v1.6
         with:
           github_token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
           message: "chore: bump version to ${{ github.event.inputs.nextVersion }}-SNAPSHOT"
