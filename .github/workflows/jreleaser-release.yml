@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
           fetch-depth: 0
@@ -44,24 +44,29 @@ jobs:
           check_component "Cloudflare CDN/Cache"
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 25
           cache: gradle
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
+          cache-provider: basic
 
       - name: Gradle build and publish to local
-        run: ./gradlew publish -Pversion=${{ github.event.inputs.version }}
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.version }}
+        run: ./gradlew publish -Pversion="${RELEASE_VERSION}"
 
       - name: Read JReleaser version from .sdkmanrc
         id: jreleaser-version
         run: echo "version=$(grep '^jreleaser=' .sdkmanrc | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
       - name: JReleaser full-release
-        uses: jreleaser/release-action@v2
+        uses: jreleaser/release-action@90ac653bb9c79d11179e65d81499f3f34527dcd5 # 2.5.0
         with:
           version: ${{ steps.jreleaser-version.outputs.version }}
           setup-java: false
@@ -79,7 +84,7 @@ jobs:
 
       - name: JReleaser upload output
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jreleaser-release
           path: |
@@ -87,14 +92,17 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Update version in properties
-        run: sed -i 's/^version=.*/version=${{ github.event.inputs.nextVersion }}-SNAPSHOT/g' gradle.properties
+        env:
+          NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
+        run: sed -i "s/^version=.*/version=${NEXT_VERSION}-SNAPSHOT/" gradle.properties
 
+      # Plain git instead of a third-party action, so no extra code handles the release token. The checkout step above
+      # persisted JRELEASER_GITHUB_TOKEN as the git credential, so do not set persist-credentials: false on it.
       - name: Commit & Push version update
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-          message: "chore: bump version to ${{ github.event.inputs.nextVersion }}-SNAPSHOT"
-          author_email: 'bot@framefork.org'
-          author_name: 'Framefork BOT'
-          branch: master
-          tags: false
+        env:
+          NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
+        run: |
+          git config user.name 'Framefork BOT'
+          git config user.email 'bot@framefork.org'
+          git commit -m "chore: bump version to ${NEXT_VERSION}-SNAPSHOT" -- gradle.properties
+          git push origin HEAD:master
