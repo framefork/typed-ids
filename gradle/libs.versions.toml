@@ -12,7 +12,7 @@ jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-datab
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
-ateoClassindex = { group = "org.atteo.classindex", name = "classindex", version = "3.13" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.46" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 assertj-core = { module = "org.assertj:assertj-core", version = "3.27.4" }
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
@@ -25,6 +25,7 @@ datasource-proxy = { module = "net.ttddyy:datasource-proxy", version = "1.10" }
 postgresql = { module = "org.postgresql:postgresql", version = "42.7.8" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "9.4.0" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version = "1.7.36" }
 hibernate-orm-v61 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.1.7.Final" }
 hibernate-orm-v62 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.2.46.Final" }
 hibernate-orm-v63 = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.3.2.Final" }

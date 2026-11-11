@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(libs.errorprone.annotations)
+    implementation(libs.slf4j.api)
 
     compileOnly(libs.uuidGenerator)
     compileOnly(libs.hypersistence.tsid)
