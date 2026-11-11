@@ -60,6 +60,48 @@ jobs:
           retention-days: 1
           overwrite: true
 
+  maven-index-processor:
+    name: Index processor in Maven builds
+    runs-on: ubuntu-24.04
+    env:
+      # Any version works, as long as both steps use the same one.
+      TYPED_IDS_VERSION: 0.0.0-maven-check-SNAPSHOT
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          # >= 21: the org.framefork.build plugin artifact requires a JVM 21+ runtime to resolve on the buildscript classpath.
+          # The Maven builds run on it too, so the classpath-discovery wiring needs the proc=full that the README documents for JDK 23+.
+          java-version: 25
+          # setup-gradle caches the Gradle User Home; this caches ~/.m2/repository for the Maven builds.
+          cache: maven
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
+          cache-provider: basic
+
+      - name: Publish typed-ids and the index processor to the local Maven repository
+        run: ./gradlew :typed-ids:publishToMavenLocal :typed-ids-index-java-classes-processor:publishToMavenLocal -Pversion="$TYPED_IDS_VERSION"
+
+      # Uses the Maven version pinned by the project's Maven wrapper, not the Maven of the runner image.
+      - name: Check the index in Maven builds
+        run: testing/testing-typed-ids-index-java-classes-processor-maven/run-maven-index-check.sh "$TYPED_IDS_VERSION"
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v7
+        if: always() # always run even if the previous step fails
+        with:
+          name: junit-test-results-maven
+          path: |
+            testing/testing-typed-ids-index-java-classes-processor-maven/build/test-results/test/TEST-*.xml
+          retention-days: 1
+          overwrite: true
+
   lockfiles:
     name: Dependency lockfiles are fresh
     runs-on: ubuntu-24.04
