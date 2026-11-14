@@ -27,6 +27,12 @@ dependencies {
 openApi {
     outputDir.set(project.layout.buildDirectory.dir("generated/openapi"))
     outputFileName.set("openapi.json")
+    // Each springdoc test module runs its forked app on its own port: the forked app outlives forkedSpringBootRun
+    // and nothing serializes these tasks across modules, so a shared port lets one module fetch the other's document.
+    apiDocsUrl.set("http://localhost:8081/v3/api-docs")
+    customBootRun {
+        systemProperties.put("server.port", "8081") // a system property, because Application.main doesn't pass its args to Spring
+    }
 }
 
 tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("generateTypeScriptClient") {
