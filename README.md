@@ -44,11 +44,12 @@ Minimum supported Java is 17.
 | Jackson auto-registration via `ServiceLoader` (bundled in core)      | `org.framefork:typed-ids-jackson2` — **without it the Jackson module is no longer on the classpath and auto-registration stops working**                 |
 | the Gson type adapters (bundled in core)                             | `org.framefork:typed-ids-gson`                                                                                                                           |
 | the Kotlin Serialization support (bundled in core)                   | `org.framefork:typed-ids-kotlinx-serialization`                                                                                                          |
-| `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger-jakarta` (the Spring Boot auto-config is now folded into it) — the `typed-ids-openapi-springdoc` artifact is gone |
+| `org.framefork:typed-ids-openapi-swagger-jakarta`                    | `org.framefork:typed-ids-openapi-swagger2` (renamed; same packages and classes)                                                                         |
+| `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger2` (the Spring Boot auto-config is now folded into it) — the `typed-ids-openapi-springdoc` artifact is gone |
 
 ### Spring Boot starters
 
-If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-range starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger-jakarta`) for your Boot version:
+If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-range starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger2`) for your Boot version:
 
 | Spring Boot range | Starter                                                                                                                             | Hibernate | Jackson |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------|---------|
@@ -414,7 +415,7 @@ data class UserDto(@Contextual val id: UserId)
 
 This library provides support for OpenAPI schema generation, so that you don't have to annotate the types with `@Schema` manually (you still can, if you want to).
 
-The single [org.framefork:typed-ids-openapi-swagger-jakarta](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger-jakarta) artifact
+The single [org.framefork:typed-ids-openapi-swagger2](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger2) artifact
 covers both plain Swagger v3 Jakarta usage and SpringDoc-under-Spring-Boot.
 
 It provides a `TypedIdsModelConverter`, which is automatically picked up by the standard Swagger v3 Jakarta implementation,

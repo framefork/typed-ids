@@ -8,7 +8,7 @@ plugins {
 dependencies {
     implementation(project(":typed-ids"))
     implementation(project(":typed-ids-jackson3"))
-    implementation(project(":typed-ids-openapi-swagger-jakarta"))
+    implementation(project(":typed-ids-openapi-swagger2"))
 
     api(platform("org.springframework.boot:spring-boot-dependencies:4.0.7"))
     api("org.springframework.boot:spring-boot-starter-web")
@@ -50,5 +50,5 @@ tasks.named("build") {
 }
 
 tasks.named("forkedSpringBootRun") {
-    dependsOn(":typed-ids:jar", ":typed-ids-jackson3:jar", ":typed-ids-openapi-swagger-jakarta:jar")
+    dependsOn(":typed-ids:jar", ":typed-ids-jackson3:jar", ":typed-ids-openapi-swagger2:jar")
 }
