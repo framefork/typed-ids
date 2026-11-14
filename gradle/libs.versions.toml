@@ -5,6 +5,7 @@ jackson = "2.18.1"
 testcontainers = "1.21.4"
 springBoot = "3.5.8"
 springBoot30 = "3.0.0"
+springBoot401 = "4.0.1"
 
 [libraries]
 uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "5.1.1" }
@@ -54,6 +55,11 @@ hypersistence-utils-hibernate73 = { group = "io.hypersistence", name = "hypersis
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }
+swagger-v3-core = { module = "io.swagger.core.v3:swagger-core", version = "3.0.0" }
 spring-boot-v300 = { group = "org.springframework.boot", name = "spring-boot", version.ref = "springBoot30" }
 spring-boot-autoconfigure-v300 = { group = "org.springframework.boot", name = "spring-boot-autoconfigure", version.ref = "springBoot30" }
+spring-boot-test-v300 = { group = "org.springframework.boot", name = "spring-boot-test", version.ref = "springBoot30" }
+spring-boot-v401 = { group = "org.springframework.boot", name = "spring-boot", version.ref = "springBoot401" }
+spring-boot-autoconfigure-v401 = { group = "org.springframework.boot", name = "spring-boot-autoconfigure", version.ref = "springBoot401" }
+spring-boot-test-v401 = { group = "org.springframework.boot", name = "spring-boot-test", version.ref = "springBoot401" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "springBoot30" }
