@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":typed-ids"))
     implementation(project(":typed-ids-jackson3"))
     implementation(project(":typed-ids-openapi-swagger2"))
+    implementation(project(":typed-ids-openapi-swagger3")) // as a Boot 4 starter does: on springdoc 3.0.x (swagger-core 2.2.x) it must stay dormant
 
     api(platform("org.springframework.boot:spring-boot-dependencies:4.0.7"))
     api("org.springframework.boot:spring-boot-starter-web")
@@ -50,5 +51,5 @@ tasks.named("build") {
 }
 
 tasks.named("forkedSpringBootRun") {
-    dependsOn(":typed-ids:jar", ":typed-ids-jackson3:jar", ":typed-ids-openapi-swagger2:jar")
+    dependsOn(":typed-ids:jar", ":typed-ids-jackson3:jar", ":typed-ids-openapi-swagger2:jar", ":typed-ids-openapi-swagger3:jar")
 }
