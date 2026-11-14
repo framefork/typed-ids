@@ -27,12 +27,18 @@ public class TypedIdsModelConverter implements ModelConverter
     @SuppressWarnings("NonFinalStaticField")
     public static boolean idsAsRef = Objects.equals(System.getProperty(IDS_AS_REFS_PROPERTY_NAME, "true"), "true");
 
+    /**
+     * swagger-core loads every {@link ModelConverter} it finds through {@link java.util.ServiceLoader}, so with typed-ids-openapi-swagger3 next to this module,
+     * both converters get registered. Each one only acts on its own swagger-core line and passes everything else down the chain.
+     */
+    private static final boolean ACTIVE = SwaggerCoreLine.isSwaggerCore2(TypedIdsModelConverter.class.getClassLoader());
+
     @SuppressWarnings("rawtypes")
     @Nullable
     @Override
     public Schema resolve(final AnnotatedType type, final ModelConverterContext context, final Iterator<ModelConverter> chain)
     {
-        final Class<?> rawClass = TypedIdsSchemaUtils.rawClassOf(type.getType());
+        final Class<?> rawClass = ACTIVE ? TypedIdsSchemaUtils.rawClassOf(type.getType()) : null;
         if (rawClass != null && TypedId.class.isAssignableFrom(rawClass)) {
             var schema = TypedIdsSchemaUtils.createSchema(rawClass);
 

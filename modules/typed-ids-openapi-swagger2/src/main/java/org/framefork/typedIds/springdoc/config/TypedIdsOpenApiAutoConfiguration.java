@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 
 @AutoConfiguration
 @ConditionalOnClass(ModelConverter.class)
+@Conditional(OnSwaggerCore2Condition.class)
 @EnableConfigurationProperties(TypedIdsOpenApiProperties.class)
 public class TypedIdsOpenApiAutoConfiguration
 {

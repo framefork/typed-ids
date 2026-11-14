@@ -44,7 +44,7 @@ Minimum supported Java is 17.
 | Jackson auto-registration via `ServiceLoader` (bundled in core)      | `org.framefork:typed-ids-jackson2` — **without it the Jackson module is no longer on the classpath and auto-registration stops working**                 |
 | the Gson type adapters (bundled in core)                             | `org.framefork:typed-ids-gson`                                                                                                                           |
 | the Kotlin Serialization support (bundled in core)                   | `org.framefork:typed-ids-kotlinx-serialization`                                                                                                          |
-| `org.framefork:typed-ids-openapi-swagger-jakarta`                    | `org.framefork:typed-ids-openapi-swagger2` (renamed; same packages and classes)                                                                         |
+| `org.framefork:typed-ids-openapi-swagger-jakarta`                    | `org.framefork:typed-ids-openapi-swagger2` (renamed; same packages and classes) — it no longer brings swagger-core, so declare it yourself unless SpringDoc brings it |
 | `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger2` (the Spring Boot auto-config is now folded into it) — the `typed-ids-openapi-springdoc` artifact is gone |
 
 ### Spring Boot starters
@@ -415,8 +415,11 @@ data class UserDto(@Contextual val id: UserId)
 
 This library provides support for OpenAPI schema generation, so that you don't have to annotate the types with `@Schema` manually (you still can, if you want to).
 
-The single [org.framefork:typed-ids-openapi-swagger2](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger2) artifact
-covers both plain Swagger v3 Jakarta usage and SpringDoc-under-Spring-Boot.
+The [org.framefork:typed-ids-openapi-swagger2](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger2) artifact
+covers both plain swagger-core 2.x (`io.swagger.core.v3:swagger-core-jakarta`, built on Jackson 2) usage and SpringDoc-under-Spring-Boot.
+
+The artifact does not bring swagger-core itself, it uses the one your application has: SpringDoc brings it, and without SpringDoc you declare
+`io.swagger.core.v3:swagger-core-jakarta` yourself. Its converter and its auto-config act only when the swagger-core on the classpath is the 2.x line.
 
 It provides a `TypedIdsModelConverter`, which is automatically picked up by the standard Swagger v3 Jakarta implementation,
 because it's exposed via the standard `java.util.ServiceLoader` mechanism. This works with zero Spring on the classpath.
@@ -427,7 +430,7 @@ You can override it via `TypedIdsModelConverter.idsAsRef`, or using a system pro
 Under Spring Boot, the artifact additionally ships a dormant `@AutoConfiguration` that registers the converter as a Spring bean and binds
 the `framefork.typed-ids.openapi.as-ref` property through the standard Spring configuration (config/ENV/etc.) - so with SpringDoc you shouldn't
 configure the converter explicitly. This auto-config only activates under Spring Boot (it's gated on the Boot classes being present); non-Spring
-consumers are unaffected. The same artifact works across the SpringDoc 2.x / Spring Boot 3 and SpringDoc 3.x / Spring Boot 4 lines.
+consumers are unaffected. The same artifact works with SpringDoc 2.x on Spring Boot 3 and with SpringDoc 3.0.x – 3.2.0 on Spring Boot 4, which all use swagger-core 2.x.
 
 Providing a non-jakarta variant would be straightforward, but given that javax has been deprecated for a long time, I decided to not bother with it.
 
