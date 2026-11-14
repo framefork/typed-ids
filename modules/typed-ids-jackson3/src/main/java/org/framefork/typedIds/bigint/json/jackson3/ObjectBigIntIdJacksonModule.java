@@ -35,8 +35,9 @@ public class ObjectBigIntIdJacksonModule extends JacksonModule
     public void setupModule(final SetupContext context)
     {
         context.addSerializers(new ObjectBigIntIdSerializers());
-        // Unlike Jackson 2.x, Jackson 3.x no longer auto-detects the single-arg long constructor as a creator
-        // (databind#5318), so an explicit deserializer is required here.
+        // Jackson 2.x finds the private single-arg long constructor by itself, Jackson 3.x does not: its VisibilityChecker.DEFAULT
+        // sees only public creators and non-private scalar constructors, and typed ids keep that constructor private.
+        // So an explicit deserializer is required here.
         context.addDeserializers(new ObjectBigIntIdDeserializers());
     }
 
