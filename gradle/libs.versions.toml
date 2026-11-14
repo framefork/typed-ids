@@ -17,6 +17,7 @@ jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-an
 jackson3-databind = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.2" }
 jackson3-databind-v303 = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.3" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+gson-v2150 = { module = "com.google.code.gson:gson", version = "2.15.0" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
 lombok = { module = "org.projectlombok:lombok", version = "1.18.46" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
