@@ -56,6 +56,7 @@ org.checkerframework:dataflow-nullaway:4.0.0=annotationProcessor,testAnnotationP
 org.eclipse.angus:angus-activation:2.0.2=runtimeClasspath,testRuntimeClasspath
 org.framefork.testing:hibernate-orm-testing-70:0.1.0=testCompileClasspath,testRuntimeClasspath
 org.framefork.testing:hibernate-orm-testing-database:0.1.0=testCompileClasspath,testRuntimeClasspath
+org.framefork:hibernate-orm-types-70:0.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-core:4.0.5=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-runtime:4.0.5=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:txw2:4.0.5=runtimeClasspath,testRuntimeClasspath

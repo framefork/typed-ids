@@ -7,6 +7,7 @@ plugins {
 dependencies {
     api(project(":typed-ids"))
     api(libs.hibernate.orm.v61)
+    api(libs.hibernate.orm.types.v61)
 
     compileOnly("org.jboss:jandex") {
         version {

@@ -1,9 +1,9 @@
 package org.framefork.typedIds.bigint.hibernate;
 
+import org.framefork.hibernate.orm.types.ParameterizedTypeUtils;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils;
 import org.framefork.typedIds.common.ReflectionHacks;
-import org.framefork.typedIds.common.hibernate.ParameterizedTypeUtils;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.BasicJavaType;

@@ -61,6 +61,7 @@ org.checkerframework:checker-qual:3.43.0=swiftExportClasspathResolvable
 org.checkerframework:checker-qual:3.48.2=compileClasspath,compileOnlyDependenciesMetadata
 org.checkerframework:checker-qual:4.0.0=annotationProcessor,testAnnotationProcessor
 org.checkerframework:dataflow-nullaway:4.0.0=annotationProcessor,testAnnotationProcessor
+org.framefork:hibernate-orm-types-61:0.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-core:3.0.2=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-runtime:3.0.2=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:txw2:3.0.2=runtimeClasspath,testRuntimeClasspath

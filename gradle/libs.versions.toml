@@ -4,6 +4,7 @@ junit-jupiter = "5.10.3"
 jackson = "2.18.1"
 testcontainers = "1.21.4"
 hibernateOrmTesting = "0.1.0"
+hibernateOrmTypes = "0.1.0"
 springBoot = "3.5.8"
 springBoot30 = "3.0.0"
 springBoot401 = "4.0.1"
@@ -51,6 +52,12 @@ hibernate-orm-testing-v63 = { group = "org.framefork.testing", name = "hibernate
 hibernate-orm-testing-v70 = { group = "org.framefork.testing", name = "hibernate-orm-testing-70", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v72 = { group = "org.framefork.testing", name = "hibernate-orm-testing-72", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v80 = { group = "org.framefork.testing", name = "hibernate-orm-testing-80", version.ref = "hibernateOrmTesting" }
+hibernate-orm-types-v61 = { group = "org.framefork", name = "hibernate-orm-types-61", version.ref = "hibernateOrmTypes" }
+hibernate-orm-types-v62 = { group = "org.framefork", name = "hibernate-orm-types-62", version.ref = "hibernateOrmTypes" }
+hibernate-orm-types-v63 = { group = "org.framefork", name = "hibernate-orm-types-63", version.ref = "hibernateOrmTypes" }
+hibernate-orm-types-v70 = { group = "org.framefork", name = "hibernate-orm-types-70", version.ref = "hibernateOrmTypes" }
+hibernate-orm-types-v72 = { group = "org.framefork", name = "hibernate-orm-types-72", version.ref = "hibernateOrmTypes" }
+hibernate-orm-types-v80 = { group = "org.framefork", name = "hibernate-orm-types-80", version.ref = "hibernateOrmTypes" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }

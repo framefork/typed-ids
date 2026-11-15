@@ -1,7 +1,7 @@
 package org.framefork.typedIds.uuid.hibernate;
 
+import org.framefork.hibernate.orm.types.ParameterizedTypeUtils;
 import org.framefork.typedIds.common.ReflectionHacks;
-import org.framefork.typedIds.common.hibernate.ParameterizedTypeUtils;
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
 import org.hibernate.dialect.Dialect;
