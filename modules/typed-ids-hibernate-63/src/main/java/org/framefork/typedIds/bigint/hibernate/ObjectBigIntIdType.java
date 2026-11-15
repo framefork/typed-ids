@@ -1,8 +1,8 @@
 package org.framefork.typedIds.bigint.hibernate;
 
+import org.framefork.hibernate.orm.types.ImmutableType;
+import org.framefork.hibernate.orm.types.ParameterizedTypeUtils;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
-import org.framefork.typedIds.common.hibernate.ImmutableType;
-import org.framefork.typedIds.common.hibernate.ParameterizedTypeUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.jdbc.JdbcType;

@@ -55,6 +55,7 @@ org.checkerframework:checker-qual:4.0.0=annotationProcessor,testAnnotationProces
 org.checkerframework:dataflow-nullaway:4.0.0=annotationProcessor,testAnnotationProcessor
 org.framefork.testing:hibernate-orm-testing-61:0.1.0=testCompileClasspath,testRuntimeClasspath
 org.framefork.testing:hibernate-orm-testing-database:0.1.0=testCompileClasspath,testRuntimeClasspath
+org.framefork:hibernate-orm-types-61:0.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-core:3.0.2=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:jaxb-runtime:3.0.2=runtimeClasspath,testRuntimeClasspath
 org.glassfish.jaxb:txw2:3.0.2=runtimeClasspath,testRuntimeClasspath

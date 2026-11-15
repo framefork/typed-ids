@@ -7,6 +7,7 @@ plugins {
 dependencies {
     api(project(":typed-ids"))
     api(libs.hibernate.orm.v63)
+    api(libs.hibernate.orm.types.v63)
 
     compileOnly(libs.jetbrains.annotations)
 
