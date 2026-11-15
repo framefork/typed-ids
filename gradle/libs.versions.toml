@@ -14,7 +14,6 @@ jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-datab
 jackson-databind-v2141 = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.14.1" }
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
 jackson3-databind = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.2" }
-jackson3-databind-v303 = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.3" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 gson-v2150 = { module = "com.google.code.gson:gson", version = "2.15.0" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
@@ -83,3 +82,12 @@ starter-floor-boot34-spring = { group = "org.springframework", name = "spring-co
 starter-floor-boot35-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.15.Final" }
 starter-floor-boot35-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.19.0" }
 starter-floor-boot35-spring = { group = "org.springframework", name = "spring-core", version = "6.2.7" }
+starter-floor-boot40-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.2.0.Final" } # Boot 4.0.1 and typed-ids-hibernate-72 agree
+starter-floor-boot40-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.3" }
+starter-floor-boot40-spring = { group = "org.springframework", name = "spring-core", version = "7.0.2" }
+starter-floor-boot41-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.1.Final" }
+starter-floor-boot41-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.1.4" }
+starter-floor-boot41-spring = { group = "org.springframework", name = "spring-core", version = "7.0.8" }
+starter-floor-boot42-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.5.Final" }
+starter-floor-boot42-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.1.5" }
+starter-floor-boot42-spring = { group = "org.springframework", name = "spring-core", version = "7.1.0-M1" }

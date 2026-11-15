@@ -59,7 +59,10 @@ If you are on Spring Boot, you can skip picking the individual Hibernate / Jacks
 | 3.3.x             | [org.framefork:typed-ids-spring-boot-33](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-33)              | `typed-ids-hibernate-63` | 6.5.2           | 2.x     |
 | 3.4.x             | [org.framefork:typed-ids-spring-boot-34](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-34)              | `typed-ids-hibernate-63` | 6.6.2           | 2.x     |
 | 3.5.x             | [org.framefork:typed-ids-spring-boot-35](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-35)              | `typed-ids-hibernate-63` | 6.6.15          | 2.x     |
-| 4.0.1 – 4.1.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)              | `typed-ids-hibernate-72` | 7.2.0           | 3.x     |
+| 4.0.1 – 4.0.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)              | `typed-ids-hibernate-72` | 7.2.0           | 3.x     |
+| 4.1.x             | [org.framefork:typed-ids-spring-boot-41](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-41)              | `typed-ids-hibernate-72` | 7.4.1           | 3.x     |
+
+Spring Boot 4.2 gets `typed-ids-spring-boot-42` (Hibernate 7.4, Jackson 3.x) once Spring Boot 4.2.0 is GA; until then it is in the repository, tested against the 4.2 release candidates, but not published.
 
 The Hibernate module column is the typed-ids module the starter pulls; the Hibernate floor is the `hibernate-core` version the starter pins. Each starter also pins Hibernate, Jackson and Spring Framework floors, so a build without the Spring Boot BOM still gets at least those: the versions the first release of its Boot minor manages, or the version the typed-ids modules it pulls declare when that one is higher.
 
