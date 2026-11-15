@@ -118,6 +118,7 @@ org.rnorth.duct-tape:duct-tape:1.0.8=testCompileClasspath,testImplementationDepe
 org.slf4j:slf4j-api:1.7.36=runtimeClasspath
 org.slf4j:slf4j-api:2.0.15=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 org.slf4j:slf4j-api:2.0.9=apiDependenciesMetadata,compileClasspath,implementationDependenciesMetadata
+org.springdoc:springdoc-openapi-starter-common:2.0.0=compileClasspath
 org.springframework.boot:spring-boot-autoconfigure:3.0.0=compileClasspath,compileOnlyDependenciesMetadata,testCompileClasspath,testRuntimeClasspath
 org.springframework.boot:spring-boot-configuration-processor:3.0.0=annotationProcessor
 org.springframework.boot:spring-boot-test:3.0.0=testCompileClasspath,testRuntimeClasspath

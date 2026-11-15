@@ -16,6 +16,12 @@ dependencies {
     compileOnly(libs.spring.boot.autoconfigure.v401)
     annotationProcessor(libs.spring.boot.configuration.processor)
 
+    // Only SpringDocUtils, to register typed ids as simple types for @ParameterObject; the registration is skipped without SpringDoc on the classpath.
+    // Not transitive: SpringDoc's own swagger-core and Spring Boot dependencies must not reach this module's compile classpath.
+    compileOnly(libs.springdoc.openapi.starter.common.v300) {
+        isTransitive = false
+    }
+
     compileOnly(libs.jetbrains.annotations)
 
     testImplementation(project(":typed-ids-testing"))

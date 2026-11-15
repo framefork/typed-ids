@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Lazy;
 
 @AutoConfiguration
 @ConditionalOnClass(ModelConverter.class)
@@ -27,6 +28,17 @@ public class TypedIdsOpenApiAutoConfiguration
     {
         TypedIdsModelConverter.idsAsRef = this.properties.getAsRef();
         return new TypedIdsModelConverter();
+    }
+
+    /**
+     * Registers typed ids as simple types for SpringDoc's {@code @ParameterObject} expansion, when SpringDoc is on the classpath.
+     */
+    @Bean
+    @ConditionalOnClass(name = "org.springdoc.core.utils.SpringDocUtils")
+    @Lazy(false) // nothing injects this bean, so under spring.main.lazy-initialization it would never be created and the registration would never run
+    static TypedIdsParameterObjectSupport typedIdsSwagger2ParameterObjectSupport()
+    {
+        return TypedIdsParameterObjectSupport.registerTypedIdsAsSimpleTypes();
     }
 
 }
