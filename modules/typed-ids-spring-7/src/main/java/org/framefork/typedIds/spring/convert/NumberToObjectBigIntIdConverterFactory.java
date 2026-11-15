@@ -1,11 +1,10 @@
 package org.framefork.typedIds.spring.convert;
 
 import org.framefork.typedIds.bigint.ObjectBigIntId;
+import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
-
-import java.lang.invoke.MethodHandle;
 
 /**
  * Converts a whole {@link Number} within the long range to any {@link ObjectBigIntId} subtype, through the private constructor every typed id has.
@@ -23,19 +22,18 @@ public final class NumberToObjectBigIntIdConverterFactory implements ConverterFa
     @Override
     public <T extends ObjectBigIntId<?>> Converter<Number, T> getConverter(final Class<T> targetType)
     {
-        return new TypedIdConverter<>(targetType, TypedIdConversions.bigIntConstructor(targetType));
+        ObjectBigIntIdTypeUtils.getMainConstructor(targetType); // an id class without the constructor fails here, when Spring asks for the converter
+        return new TypedIdConverter<>(targetType);
     }
 
     private static final class TypedIdConverter<T extends ObjectBigIntId<?>> implements Converter<Number, @Nullable T>
     {
 
         private final Class<T> targetType;
-        private final MethodHandle constructor;
 
-        private TypedIdConverter(final Class<T> targetType, final MethodHandle constructor)
+        private TypedIdConverter(final Class<T> targetType)
         {
             this.targetType = targetType;
-            this.constructor = constructor;
         }
 
         @Nullable
@@ -46,7 +44,7 @@ public final class NumberToObjectBigIntIdConverterFactory implements ConverterFa
                 return null;
             }
 
-            return TypedIdConversions.bigIntId(targetType, constructor, TypedIdConversions.toLong(targetType, source));
+            return ObjectBigIntIdTypeUtils.convert(targetType, source);
         }
 
     }

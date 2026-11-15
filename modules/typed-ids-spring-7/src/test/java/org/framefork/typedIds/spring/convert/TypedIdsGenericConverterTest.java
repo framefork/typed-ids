@@ -56,6 +56,14 @@ final class TypedIdsGenericConverterTest
     }
 
     @Test
+    void reportsIdTypeWithoutConstructorAsIllegalStateEvenForBlankInput()
+    {
+        assertThatThrownBy(() -> conversionService.convert(" ", InvalidBigIntId.class))
+            .isInstanceOf(ConversionFailedException.class)
+            .hasCauseInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
     void reportsIdTypeWithoutConstructorAsIllegalState()
     {
         assertThatThrownBy(() -> conversionService.convert("42", InvalidBigIntId.class))
