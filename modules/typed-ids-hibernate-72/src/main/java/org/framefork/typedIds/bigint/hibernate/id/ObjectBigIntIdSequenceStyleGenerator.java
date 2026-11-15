@@ -3,14 +3,16 @@ package org.framefork.typedIds.bigint.hibernate.id;
 import org.framefork.typedIds.bigint.hibernate.ObjectBigIntIdType;
 import org.framefork.typedIds.common.hibernate.TypeOverrideGeneratorCreationContext;
 import org.hibernate.HibernateException;
+import org.hibernate.boot.model.relational.Database;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.generator.GeneratorCreationContext;
+import org.hibernate.id.enhanced.DatabaseStructure;
+import org.hibernate.id.enhanced.Optimizer;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.type.CustomType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.spi.JavaTypeBasicAdaptor;
-import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.internal.ImmutableNamedBasicTypeImpl;
 import org.jspecify.annotations.Nullable;
 
@@ -18,8 +20,16 @@ import java.util.Objects;
 import java.util.Properties;
 
 /**
- * This class handles making Hibernate think it's generating a primitive long type instead of a custom type,
- * and once Hibernate internals do their job, it then handles wrapping the generated long value in an ObjectBigIntId.
+ * Generates {@link org.framefork.typedIds.bigint.ObjectBigIntId} ids from a sequence (or the table Hibernate falls back to without sequence support).
+ * <p>
+ * The sequence machinery only produces integral values, so the actual work is done by a plain {@link SequenceStyleGenerator} configured against
+ * a surrogate {@code Long} type, and this class wraps every generated value in the id type. {@link ObjectBigIntIdGeneratorCreator} hands it the delegate
+ * that Hibernate's own generator creator configured, so the sequence name, increment, initial value and optimizer of {@code @SequenceGenerator} or
+ * {@code @GenericGenerator} apply. When Hibernate instantiates this class itself, {@link #configure} configures the delegate from the given parameters.
+ * <p>
+ * It extends {@link SequenceStyleGenerator} so that Hibernate keeps treating it as one, but {@code super} is never configured: the delegate is a plain
+ * {@link SequenceStyleGenerator}, so overriding its protected hooks ({@code determineSequenceName}, {@code buildDatabaseStructure}, ...) in a subclass
+ * of this class has no effect.
  */
 public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
 {
@@ -27,11 +37,44 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
     @Nullable
     private ObjectBigIntIdType objectBigIntIdType;
 
-    @Override
-    public Object generate(final SharedSessionContractImplementor session, final Object object)
+    @Nullable
+    private SequenceStyleGenerator delegate;
+
+    public ObjectBigIntIdSequenceStyleGenerator()
     {
-        var idType = Objects.requireNonNull(objectBigIntIdType, "objectBigIntIdType must not be null");
-        return idType.wrapJdbcValue(super.generate(session, object));
+    }
+
+    /**
+     * Wraps a generator that Hibernate already configured against {@link #surrogateTypeContext(GeneratorCreationContext)}.
+     */
+    public ObjectBigIntIdSequenceStyleGenerator(final SequenceStyleGenerator delegate, final ObjectBigIntIdType objectBigIntIdType)
+    {
+        this.delegate = Objects.requireNonNull(delegate, "delegate must not be null");
+        this.objectBigIntIdType = Objects.requireNonNull(objectBigIntIdType, "objectBigIntIdType must not be null");
+    }
+
+    /**
+     * Returns the creation context with the id's {@link ObjectBigIntIdType} replaced by a surrogate {@code Long} type with the same JDBC type,
+     * which a plain {@link SequenceStyleGenerator} can be configured against.
+     */
+    public static GeneratorCreationContext surrogateTypeContext(final GeneratorCreationContext creationContext)
+    {
+        var objectBigIntIdType = toObjectBigIntIdType(creationContext.getType());
+        var surrogateType = new ImmutableNamedBasicTypeImpl<>(
+            new JavaTypeBasicAdaptor<>(Long.class),
+            objectBigIntIdType.getJdbcType(),
+            "bigint"
+        );
+        return new TypeOverrideGeneratorCreationContext(creationContext, surrogateType);
+    }
+
+    public static ObjectBigIntIdType toObjectBigIntIdType(final Type type)
+    {
+        if (type instanceof CustomType<?> customType && customType.getUserType() instanceof ObjectBigIntIdType objectBigIntIdType) {
+            return objectBigIntIdType;
+        }
+
+        throw new HibernateException("The given type is expected to be a CustomType wrapper over a %s, but was '%s' instead".formatted(ObjectBigIntIdType.class.getSimpleName(), type));
     }
 
     @Override
@@ -39,25 +82,63 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
     {
         this.objectBigIntIdType = toObjectBigIntIdType(creationContext.getType());
 
-        var primitiveType = new ImmutableNamedBasicTypeImpl<>(
-            new JavaTypeBasicAdaptor<>(Long.class),
-            toJdbcType(objectBigIntIdType),
-            "bigint"
-        );
+        var newDelegate = new SequenceStyleGenerator();
+        newDelegate.configure(surrogateTypeContext(creationContext), parameters);
+        this.delegate = newDelegate;
+    }
 
-        super.configure(new TypeOverrideGeneratorCreationContext(creationContext, primitiveType), parameters);
+    @Override
+    public Object generate(final SharedSessionContractImplementor session, final Object object)
+    {
+        var idType = Objects.requireNonNull(objectBigIntIdType, "objectBigIntIdType must not be null");
+        return idType.wrapJdbcValue(delegate().generate(session, object));
+    }
+
+    @Override
+    public void registerExportables(final Database database)
+    {
+        delegate().registerExportables(database);
     }
 
     @Override
     public void initialize(final SqlStringGenerationContext context)
     {
-        // Initialize the parent to set up the database structure
-        super.initialize(context);
+        delegate().initialize(context);
+    }
+
+    @Override
+    public DatabaseStructure getDatabaseStructure()
+    {
+        return delegate().getDatabaseStructure();
+    }
+
+    @Override
+    public Optimizer getOptimizer()
+    {
+        return delegate().getOptimizer();
+    }
+
+    @Override
+    public Type getIdentifierType()
+    {
+        return delegate().getIdentifierType();
+    }
+
+    @Override
+    public boolean supportsBulkInsertionIdentifierGeneration()
+    {
+        return delegate().supportsBulkInsertionIdentifierGeneration();
+    }
+
+    @Override
+    public String determineBulkInsertionIdentifierGenerationSelectFragment(final SqlStringGenerationContext context)
+    {
+        return delegate().determineBulkInsertionIdentifierGenerationSelectFragment(context);
     }
 
     /**
      * Hibernate 7.4+ validates up-front that a generator's declared generated type is assignable to the id attribute,
-     * and the parent reports the surrogate {@code Long} type this class feeds it. This module compiles against Hibernate 7.2,
+     * and the parent would report the surrogate {@code Long} type. This module compiles against Hibernate 7.2,
      * where {@code Generator.getGeneratedType()} does not exist yet, so there is no {@code @Override} — on 7.4+ this method
      * becomes the effective override via virtual dispatch (and is never called on older versions), reporting the concrete
      * id type that this generator actually produces.
@@ -68,21 +149,9 @@ public class ObjectBigIntIdSequenceStyleGenerator extends SequenceStyleGenerator
         return objectBigIntIdType != null ? objectBigIntIdType.getReturnedClass() : null;
     }
 
-    private ObjectBigIntIdType toObjectBigIntIdType(final Type type)
+    private SequenceStyleGenerator delegate()
     {
-        if (type instanceof CustomType<?> customType) {
-            var userType = customType.getUserType();
-            if (userType instanceof ObjectBigIntIdType objectBigIntIdType) {
-                return objectBigIntIdType;
-            }
-        }
-
-        throw new HibernateException("The given type is expected to be a CustomType wrapper over a %s, but was '%s' instead".formatted(ObjectBigIntIdType.class.getSimpleName(), type));
-    }
-
-    private JdbcType toJdbcType(final ObjectBigIntIdType objectBigIntIdType)
-    {
-        return objectBigIntIdType.getJdbcType();
+        return Objects.requireNonNull(delegate, "the generator must be configured before use");
     }
 
 }
