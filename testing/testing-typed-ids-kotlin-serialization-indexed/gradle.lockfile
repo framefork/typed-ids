@@ -41,7 +41,6 @@ io.quarkus:quarkus-junit4-mock:3.0.0.Final=testCompileClasspath,testImplementati
 javax.inject:javax.inject:1=annotationProcessor,testAnnotationProcessor
 net.bytebuddy:byte-buddy:1.15.11=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 net.java.dev.jna:jna:5.13.0=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
-net.ttddyy:datasource-proxy:1.10=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 org.apache.commons:commons-compress:1.24.0=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath,testImplementationDependenciesMetadata
 org.assertj:assertj-core:3.27.4=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath

@@ -1,7 +1,7 @@
 package org.framefork.typedIds.bigint.hibernate;
 
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntDbIdentityGeneratedUniqueTitleEntity;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 

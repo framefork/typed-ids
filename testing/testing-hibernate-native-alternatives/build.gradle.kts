@@ -8,6 +8,6 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
 
     // Only the testing infrastructure, not the actual typed-ids implementations
-    testImplementation(project(":typed-ids-hibernate-70-testing"))
+    testImplementation(testFixtures(project(":typed-ids-hibernate-70")))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

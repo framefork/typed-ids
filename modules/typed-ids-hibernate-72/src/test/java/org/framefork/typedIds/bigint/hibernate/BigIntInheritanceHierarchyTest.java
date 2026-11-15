@@ -9,7 +9,7 @@ import org.framefork.typedIds.bigint.hibernate.inheritance.singletable.BigIntVeh
 import org.framefork.typedIds.bigint.hibernate.inheritance.tableperclass.BigIntBook;
 import org.framefork.typedIds.bigint.hibernate.inheritance.tableperclass.BigIntMagazine;
 import org.framefork.typedIds.bigint.hibernate.inheritance.tableperclass.BigIntPublication;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

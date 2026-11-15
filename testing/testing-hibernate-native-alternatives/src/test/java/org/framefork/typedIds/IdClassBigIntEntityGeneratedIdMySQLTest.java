@@ -2,7 +2,7 @@ package org.framefork.typedIds;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.framefork.typedIds.idclass.IdClassBigInt;
 import org.framefork.typedIds.idclass.IdClassBigIntEntityGeneratedId;
 import org.hibernate.id.IdentifierGenerationException;

@@ -11,7 +11,7 @@ dependencies {
     annotationProcessor(project(":typed-ids-index-java-classes-processor"))
     testAnnotationProcessor(project(":typed-ids-index-java-classes-processor"))
 
-    testImplementation(project(":typed-ids-hibernate-63-testing"))
+    testImplementation(testFixtures(project(":typed-ids-hibernate-63")))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")

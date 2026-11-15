@@ -5,7 +5,7 @@ import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntDbIdentityGeneratedExplicitMappingEntity;
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntNullIdEntity;
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntPooledLoOptimizerEntity;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

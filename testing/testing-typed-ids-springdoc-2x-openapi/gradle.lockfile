@@ -58,7 +58,6 @@ net.bytebuddy:byte-buddy:1.17.8=testCompileClasspath,testRuntimeClasspath
 net.java.dev.jna:jna:5.13.0=testCompileClasspath,testRuntimeClasspath
 net.minidev:accessors-smart:2.5.2=testCompileClasspath,testRuntimeClasspath
 net.minidev:json-smart:2.5.2=testCompileClasspath,testRuntimeClasspath
-net.ttddyy:datasource-proxy:1.10=testCompileClasspath,testRuntimeClasspath
 org.apache.commons:commons-compress:1.24.0=testCompileClasspath,testRuntimeClasspath
 org.apache.commons:commons-lang3:3.18.0=compileClasspath,productionRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.apache.logging.log4j:log4j-api:2.24.3=compileClasspath,productionRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
