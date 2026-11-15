@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.uuidGenerator) // the app supplies the UUID generator; core keeps it compileOnly by design
     implementation(libs.hypersistence.tsid) // the app supplies the BigInt (TSID) generator; core keeps it compileOnly by design
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:3.5.16"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:3.2.12"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
     api("org.springframework:spring-web") // provides Jackson2ObjectMapperBuilder for the ServiceLoader-modules customizer
 

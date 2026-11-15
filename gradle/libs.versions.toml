@@ -12,11 +12,8 @@ uuidGenerator = { module = "com.fasterxml.uuid:java-uuid-generator", version = "
 jetbrains-annotations = { module = "org.jetbrains:annotations", version = "26.0.2" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 jackson-databind-v2141 = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.14.1" }
-jackson-databind-v2150 = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.15.0" }
-jackson-databind-v2153 = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.15.3" }
 jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
 jackson3-databind = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.2" }
-jackson3-databind-v303 = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.3" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 gson-v2150 = { module = "com.google.code.gson:gson", version = "2.15.0" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProne" }
@@ -63,3 +60,34 @@ spring-boot-v401 = { group = "org.springframework.boot", name = "spring-boot", v
 spring-boot-autoconfigure-v401 = { group = "org.springframework.boot", name = "spring-boot-autoconfigure", version.ref = "springBoot401" }
 spring-boot-test-v401 = { group = "org.springframework.boot", name = "spring-boot-test", version.ref = "springBoot401" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "springBoot30" }
+
+# Floors the Spring Boot starters pin, so a build without the Boot BOM still resolves at least these versions. Each floor is the higher of
+# what the first release of the starter's Boot minor manages (docs/spring-boot-compat-matrix.md §5) and what the typed-ids modules the starter
+# pulls declare for that library: a lower pin would be an untested version that Maven's nearest-wins hands to users without the Boot BOM.
+starter-floor-boot30-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.1.7.Final" } # typed-ids-hibernate-61; Boot 3.0.0 manages 6.1.5
+starter-floor-boot30-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.14.1" }
+starter-floor-boot30-spring = { group = "org.springframework", name = "spring-core", version = "6.0.2" }
+starter-floor-boot31-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.2.46.Final" } # typed-ids-hibernate-62; Boot 3.1.0 manages 6.2.2
+starter-floor-boot31-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.15.0" }
+starter-floor-boot31-spring = { group = "org.springframework", name = "spring-core", version = "6.0.9" }
+starter-floor-boot32-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.3.2.Final" } # typed-ids-hibernate-63; Boot 3.2.0 manages 6.3.1
+starter-floor-boot32-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.15.3" }
+starter-floor-boot32-spring = { group = "org.springframework", name = "spring-core", version = "6.1.1" }
+starter-floor-boot33-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.5.2.Final" }
+starter-floor-boot33-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.17.1" }
+starter-floor-boot33-spring = { group = "org.springframework", name = "spring-core", version = "6.1.8" }
+starter-floor-boot34-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.2.Final" }
+starter-floor-boot34-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.18.1" }
+starter-floor-boot34-spring = { group = "org.springframework", name = "spring-core", version = "6.2.0" }
+starter-floor-boot35-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "6.6.15.Final" }
+starter-floor-boot35-jackson = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.19.0" }
+starter-floor-boot35-spring = { group = "org.springframework", name = "spring-core", version = "6.2.7" }
+starter-floor-boot40-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.2.0.Final" } # Boot 4.0.1 and typed-ids-hibernate-72 agree
+starter-floor-boot40-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.0.3" }
+starter-floor-boot40-spring = { group = "org.springframework", name = "spring-core", version = "7.0.2" }
+starter-floor-boot41-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.1.Final" }
+starter-floor-boot41-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.1.4" }
+starter-floor-boot41-spring = { group = "org.springframework", name = "spring-core", version = "7.0.8" }
+starter-floor-boot42-hibernate = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.5.Final" }
+starter-floor-boot42-jackson = { group = "tools.jackson.core", name = "jackson-databind", version = "3.1.5" }
+starter-floor-boot42-spring = { group = "org.springframework", name = "spring-core", version = "7.1.0-M1" }

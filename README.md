@@ -49,14 +49,22 @@ Minimum supported Java is 17.
 
 ### Spring Boot starters
 
-If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-range starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger2` on Boot 3 or both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3` on Boot 4) for your Boot version:
+If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-minor starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, and `typed-ids-openapi-swagger2` on Boot 3 or both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3` on Boot 4) for your Boot version:
 
-| Spring Boot range | Starter                                                                                                                             | Hibernate | Jackson |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|-----------|---------|
-| 3.0.x             | [org.framefork:typed-ids-spring-boot-30](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-30)                | 6.1       | 2.x     |
-| 3.1.x             | [org.framefork:typed-ids-spring-boot-31](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-31)                | 6.2       | 2.x     |
-| 3.2.x – 3.5.x     | [org.framefork:typed-ids-spring-boot-32](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-32)                | 6.3       | 2.x     |
-| 4.0.1 – 4.1.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)                | 7.2       | 3.x     |
+| Spring Boot range | Starter                                                                                                                             | Hibernate module         | Hibernate floor | Jackson |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------|---------|
+| 3.0.x             | [org.framefork:typed-ids-spring-boot-30](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-30)              | `typed-ids-hibernate-61` | 6.1.7           | 2.x     |
+| 3.1.x             | [org.framefork:typed-ids-spring-boot-31](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-31)              | `typed-ids-hibernate-62` | 6.2.46          | 2.x     |
+| 3.2.x             | [org.framefork:typed-ids-spring-boot-32](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-32)              | `typed-ids-hibernate-63` | 6.3.2           | 2.x     |
+| 3.3.x             | [org.framefork:typed-ids-spring-boot-33](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-33)              | `typed-ids-hibernate-63` | 6.5.2           | 2.x     |
+| 3.4.x             | [org.framefork:typed-ids-spring-boot-34](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-34)              | `typed-ids-hibernate-63` | 6.6.2           | 2.x     |
+| 3.5.x             | [org.framefork:typed-ids-spring-boot-35](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-35)              | `typed-ids-hibernate-63` | 6.6.15          | 2.x     |
+| 4.0.1 – 4.0.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)              | `typed-ids-hibernate-72` | 7.2.0           | 3.x     |
+| 4.1.x             | [org.framefork:typed-ids-spring-boot-41](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-41)              | `typed-ids-hibernate-72` | 7.4.1           | 3.x     |
+
+Spring Boot 4.2 gets `typed-ids-spring-boot-42` (Hibernate 7.4, Jackson 3.x) once Spring Boot 4.2.0 is GA; until then it is in the repository, tested against the 4.2 release candidates, but not published.
+
+The Hibernate module column is the typed-ids module the starter pulls; the Hibernate floor is the `hibernate-core` version the starter pins. Each starter also pins Hibernate, Jackson and Spring Framework floors, so a build without the Spring Boot BOM still gets at least those: the versions the first release of its Boot minor manages, or the version the typed-ids modules it pulls declare when that one is higher.
 
 There is deliberately no starter for the Spring Boot **4.0.0** orphan patch (its dependency management pins an older Jackson 3 / Hibernate 7 combination). On Boot 4.0.0 either bump to **≥ 4.0.1** and use `typed-ids-spring-boot-40`, or hand-assemble `typed-ids-hibernate-70` + `typed-ids-jackson3` yourself.
 

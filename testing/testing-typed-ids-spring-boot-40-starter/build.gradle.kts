@@ -7,7 +7,7 @@ dependencies {
     implementation(libs.uuidGenerator) // the app supplies the UUID generator; core keeps it compileOnly by design
     implementation(libs.hypersistence.tsid) // the app supplies the BigInt (TSID) generator; core keeps it compileOnly by design
 
-    api(platform("org.springframework.boot:spring-boot-dependencies:4.1.0"))
+    api(platform("org.springframework.boot:spring-boot-dependencies:4.0.9"))
     api("org.springframework.boot:spring-boot-starter-data-jpa")
     api("org.springframework.boot:spring-boot-starter-json") // Boot 4 autoconfigures the tools.jackson ObjectMapper from this starter
 
