@@ -47,7 +47,7 @@ Minimum supported Java is 17.
 | the Gson type adapters (bundled in core)                             | `org.framefork:typed-ids-gson`                                                                                                                           |
 | the Kotlin Serialization support (bundled in core)                   | `org.framefork:typed-ids-kotlinx-serialization`                                                                                                          |
 | `org.framefork:typed-ids-openapi-swagger-jakarta`                    | `org.framefork:typed-ids-openapi-swagger2` (renamed; same packages and classes), or `org.framefork:typed-ids-openapi-swagger3` once you are on swagger-core 3.x — neither brings swagger-core any more, so declare it yourself unless SpringDoc brings it |
-| `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger2`, or `org.framefork:typed-ids-openapi-swagger3` on swagger-core 3.x (the Spring Boot auto-config is now folded into them) — the `typed-ids-openapi-springdoc` artifact is gone |
+| `org.framefork:typed-ids-openapi-springdoc`                          | `org.framefork:typed-ids-openapi-swagger2`, or `org.framefork:typed-ids-openapi-swagger3` on swagger-core 3.x (the Spring Boot auto-config is now folded into them) — the `typed-ids-openapi-springdoc` artifact is gone; it brought SpringDoc transitively, so also declare your SpringDoc starter yourself |
 
 ### Spring Boot starters
 
@@ -64,7 +64,7 @@ If you are on Spring Boot, you can skip picking the individual Hibernate / Jacks
 | 4.0.1 – 4.0.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)              | `typed-ids-hibernate-72` | 7.2.0           | 3.x     |
 | 4.1.x             | [org.framefork:typed-ids-spring-boot-41](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-41)              | `typed-ids-hibernate-72` | 7.4.1           | 3.x     |
 
-Spring Boot 4.2 gets `typed-ids-spring-boot-42` (Hibernate 7.4, Jackson 3.x) once Spring Boot 4.2.0 is GA; until then it is in the repository, tested against the 4.2 release candidates, but not published.
+`typed-ids-spring-boot-42` (Hibernate 7.4, Jackson 3.x) is in the repository and tested against the Spring Boot 4.2 release candidates, but not published while Spring Boot 4.2.0 is not GA.
 
 The Hibernate module column is the typed-ids module the starter pulls; the Hibernate floor is the `hibernate-core` version the starter pins. Each starter also pins Hibernate, Jackson and Spring Framework floors, so a build without the Spring Boot BOM still gets at least those: the versions the first release of its Boot minor manages, or the version the typed-ids modules it pulls declare when that one is higher.
 
