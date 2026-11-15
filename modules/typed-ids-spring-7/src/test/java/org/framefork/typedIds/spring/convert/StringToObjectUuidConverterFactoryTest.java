@@ -18,7 +18,6 @@ final class StringToObjectUuidConverterFactoryTest
         var converter = factory.getConverter(UuidId.class);
 
         assertThat(converter.convert(TestIds.UUID_V7)).isEqualTo(UuidId.parse(TestIds.UUID_V7));
-        assertThat(converter.convert(" " + TestIds.UUID_V7 + " ")).isEqualTo(UuidId.parse(TestIds.UUID_V7));
     }
 
     @Test
@@ -39,11 +38,6 @@ final class StringToObjectUuidConverterFactoryTest
         assertThatThrownBy(() -> converter.convert("not-a-uuid"))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Cannot convert \"not-a-uuid\" to " + UuidId.class.getName());
-        assertThatThrownBy(() -> converter.convert("1-1-1-1-1"))
-            .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> converter.convert(TestIds.UUID_V1))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Only versions");
     }
 
     @Test

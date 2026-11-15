@@ -2,6 +2,7 @@ package org.framefork.typedIds.spring.convert;
 
 import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.ObjectBigIntIdTypeUtils;
+import org.framefork.typedIds.common.TypedIdTypeUtils;
 import org.framefork.typedIds.uuid.ObjectUuid;
 import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
 import org.jspecify.annotations.Nullable;
@@ -43,43 +44,22 @@ public final class TypedIdsGenericConverter implements GenericConverter
             return null;
         }
 
+        // the target is checked first, so an id class without the expected constructor fails even for blank input, like the factories do
         Class<?> target = targetType.getObjectType();
         if (ObjectUuid.class.isAssignableFrom(target)) {
-            return convertToUuidId(source, target);
-        }
-        if (ObjectBigIntId.class.isAssignableFrom(target)) {
-            return convertToBigIntId(source, target);
-        }
-
-        throw new IllegalArgumentException("Cannot convert %s to %s".formatted(sourceType, targetType));
-    }
-
-    @Nullable
-    private static Object convertToUuidId(final Object source, final Class<?> target)
-    {
-        var constructor = TypedIdConversions.uuidConstructor(target);
-        if (source instanceof UUID uuid) {
-            return ObjectUuidTypeUtils.wrapUuidToIdentifier(uuid, constructor);
-        }
-        if (source instanceof String string) {
-            return string.isBlank() ? null : ObjectUuidTypeUtils.wrapUuidToIdentifier(TypedIdConversions.parseUuid(target, string), constructor);
+            ObjectUuidTypeUtils.getMainConstructor(target);
+        } else if (ObjectBigIntId.class.isAssignableFrom(target)) {
+            ObjectBigIntIdTypeUtils.getMainConstructor(target);
+        } else {
+            throw new IllegalArgumentException("Cannot convert %s to %s".formatted(sourceType, targetType));
         }
 
-        throw new IllegalArgumentException("Cannot convert %s to %s".formatted(source.getClass().getName(), target.getName()));
-    }
-
-    @Nullable
-    private static Object convertToBigIntId(final Object source, final Class<?> target)
-    {
-        var constructor = TypedIdConversions.bigIntConstructor(target);
-        if (source instanceof Number number) {
-            return ObjectBigIntIdTypeUtils.wrapBigIntToIdentifier(TypedIdConversions.toLong(target, number), constructor);
-        }
-        if (source instanceof String string) {
-            return string.isBlank() ? null : ObjectBigIntIdTypeUtils.wrapBigIntToIdentifier(TypedIdConversions.parseLong(target, string), constructor);
+        // a blank String converts to null, the Spring convention for an empty request parameter; core treats it as malformed
+        if (source instanceof String string && string.isBlank()) {
+            return null;
         }
 
-        throw new IllegalArgumentException("Cannot convert %s to %s".formatted(source.getClass().getName(), target.getName()));
+        return TypedIdTypeUtils.convert(target, source);
     }
 
 }

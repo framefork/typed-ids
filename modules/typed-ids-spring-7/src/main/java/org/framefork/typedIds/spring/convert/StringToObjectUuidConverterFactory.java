@@ -1,11 +1,10 @@
 package org.framefork.typedIds.spring.convert;
 
 import org.framefork.typedIds.uuid.ObjectUuid;
+import org.framefork.typedIds.uuid.ObjectUuidTypeUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
-
-import java.lang.invoke.MethodHandle;
 
 /**
  * Converts a {@link String} holding a UUID to any {@link ObjectUuid} subtype, through the private constructor every typed id has.
@@ -23,19 +22,18 @@ public final class StringToObjectUuidConverterFactory implements ConverterFactor
     @Override
     public <T extends ObjectUuid<?>> Converter<String, T> getConverter(final Class<T> targetType)
     {
-        return new TypedIdConverter<>(targetType, TypedIdConversions.uuidConstructor(targetType));
+        ObjectUuidTypeUtils.getMainConstructor(targetType); // an id class without the constructor fails here, when Spring asks for the converter
+        return new TypedIdConverter<>(targetType);
     }
 
     private static final class TypedIdConverter<T extends ObjectUuid<?>> implements Converter<String, @Nullable T>
     {
 
         private final Class<T> targetType;
-        private final MethodHandle constructor;
 
-        private TypedIdConverter(final Class<T> targetType, final MethodHandle constructor)
+        private TypedIdConverter(final Class<T> targetType)
         {
             this.targetType = targetType;
-            this.constructor = constructor;
         }
 
         @Nullable
@@ -46,7 +44,7 @@ public final class StringToObjectUuidConverterFactory implements ConverterFactor
                 return null;
             }
 
-            return TypedIdConversions.uuidId(targetType, constructor, TypedIdConversions.parseUuid(targetType, source));
+            return ObjectUuidTypeUtils.convert(targetType, source);
         }
 
     }

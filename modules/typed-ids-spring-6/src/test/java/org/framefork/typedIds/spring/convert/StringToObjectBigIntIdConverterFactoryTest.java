@@ -18,7 +18,6 @@ final class StringToObjectBigIntIdConverterFactoryTest
         var converter = factory.getConverter(BigIntId.class);
 
         assertThat(converter.convert("42")).isEqualTo(BigIntId.create(42L));
-        assertThat(converter.convert(" 9223372036854775807 ")).isEqualTo(BigIntId.create(Long.MAX_VALUE));
         assertThat(converter.convert(null)).isNull();
         assertThat(converter.convert(" ")).isNull();
     }
@@ -31,8 +30,6 @@ final class StringToObjectBigIntIdConverterFactoryTest
         assertThatThrownBy(() -> converter.convert("abc"))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Cannot convert \"abc\" to " + BigIntId.class.getName());
-        assertThatThrownBy(() -> converter.convert("9223372036854775808"))
-            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

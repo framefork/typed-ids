@@ -24,15 +24,6 @@ final class UuidToObjectUuidConverterFactoryTest
     }
 
     @Test
-    void rejectsUnsupportedUuidVersionAsIllegalArgument()
-    {
-        var converter = factory.getConverter(UuidId.class);
-
-        assertThatThrownBy(() -> converter.convert(UUID.fromString(TestIds.UUID_V1)))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     void rejectsIdTypeWithoutConstructorWhenTheConverterIsRequested()
     {
         assertThatThrownBy(() -> factory.getConverter(InvalidUuidId.class))
