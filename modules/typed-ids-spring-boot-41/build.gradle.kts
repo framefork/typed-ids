@@ -6,6 +6,7 @@ dependencies {
     api(project(":typed-ids"))
     api(project(":typed-ids-hibernate-72"))
     api(project(":typed-ids-jackson3"))
+    api(project(":typed-ids-spring-7"))
     // Both OpenAPI modules, because springdoc switches its Boot 4 line from swagger-core 2.2.x to 3.0 at 3.2.1; each activates only on its own swagger-core line.
     api(project(":typed-ids-openapi-swagger2"))
     api(project(":typed-ids-openapi-swagger3"))

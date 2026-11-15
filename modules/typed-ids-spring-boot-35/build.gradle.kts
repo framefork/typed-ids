@@ -6,6 +6,7 @@ dependencies {
     api(project(":typed-ids"))
     api(project(":typed-ids-hibernate-63"))
     api(project(":typed-ids-jackson2"))
+    api(project(":typed-ids-spring-6"))
     api(project(":typed-ids-openapi-swagger2"))
 
     // Floors, so a build without the Boot BOM resolves at least these: the higher of what Spring Boot 3.5.0 (the first release of this minor)
