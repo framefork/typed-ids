@@ -99,11 +99,13 @@ The Jackson boundary therefore coincides exactly with the `-63` → `-70` Hibern
 
 Decided 2026-11-14: one starter per Boot minor, all added during 0.x. Each starter pins the Hibernate, Jackson and Spring Framework versions that the first release of its minor manages (the "start" values in §2), so a build without the Boot BOM still gets the right floors. Without that, a Boot 4.1 user would resolve Hibernate 7.2 through `-72` instead of 7.4. Per-minor starters can also diverge later without a breaking change, and each minor gets its own starter test module at its newest patch.
 
+Each floor is the higher of what the minor's first release manages and what the typed-ids modules the starter pulls declare (decided 2026-11-15). A floor below a module's own version would be untested, and Maven's nearest-wins would hand it to users without the Boot BOM. That raises three Hibernate floors: `-30` pins 6.1.7 (`typed-ids-hibernate-61`; Boot 3.0.0 manages 6.1.5), `-31` pins 6.2.46 (`-62`; Boot 3.1.0 manages 6.2.2) and `-32` pins 6.3.2 (`-63`; Boot 3.2.0 manages 6.3.1). Every other floor is the Boot-managed version.
+
 | Starter | Boot | Block | Pulls hibernate | Floors: Hibernate / Jackson / Spring Framework | Pulls jackson | Pulls OpenAPI | Pulls converters |
 |---|---|---|---|---|---|---|---|
-| `typed-ids-spring-boot-30` | 3.0.x | A | `-61` | 6.1.5 / 2.14.1 / 6.0.2 | `jackson2` | `openapi-swagger2` | `spring-6` |
-| `typed-ids-spring-boot-31` | 3.1.x | B | `-62` | 6.2.2 / 2.15.0 / 6.0.9 | `jackson2` | `openapi-swagger2` | `spring-6` |
-| `typed-ids-spring-boot-32` | 3.2.x | C | `-63` | 6.3.1 / 2.15.3 / 6.1.1 | `jackson2` | `openapi-swagger2` | `spring-6` |
+| `typed-ids-spring-boot-30` | 3.0.x | A | `-61` | 6.1.7 / 2.14.1 / 6.0.2 | `jackson2` | `openapi-swagger2` | `spring-6` |
+| `typed-ids-spring-boot-31` | 3.1.x | B | `-62` | 6.2.46 / 2.15.0 / 6.0.9 | `jackson2` | `openapi-swagger2` | `spring-6` |
+| `typed-ids-spring-boot-32` | 3.2.x | C | `-63` | 6.3.2 / 2.15.3 / 6.1.1 | `jackson2` | `openapi-swagger2` | `spring-6` |
 | `typed-ids-spring-boot-33` | 3.3.x | C | `-63` | 6.5.2 / 2.17.1 / 6.1.8 | `jackson2` | `openapi-swagger2` | `spring-6` |
 | `typed-ids-spring-boot-34` | 3.4.x | C | `-63` | 6.6.2 / 2.18.1 / 6.2.0 | `jackson2` | `openapi-swagger2` | `spring-6` |
 | `typed-ids-spring-boot-35` | 3.5.x | C | `-63` | 6.6.15 / 2.19.0 / 6.2.7 | `jackson2` | `openapi-swagger2` | `spring-6` |
