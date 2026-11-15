@@ -2,7 +2,7 @@ package org.framefork.typedIds.uuid.hibernate;
 
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Tuple;
-import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractPostgreSQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

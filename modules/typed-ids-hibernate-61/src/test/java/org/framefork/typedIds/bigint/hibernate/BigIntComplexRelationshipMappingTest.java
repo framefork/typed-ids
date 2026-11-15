@@ -8,7 +8,7 @@ import org.framefork.typedIds.bigint.hibernate.relationships.BigIntChildEntity;
 import org.framefork.typedIds.bigint.hibernate.relationships.BigIntParentEntity;
 import org.framefork.typedIds.bigint.hibernate.relationships.BigIntPersonDetailsEntity;
 import org.framefork.typedIds.bigint.hibernate.relationships.BigIntPersonEntity;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

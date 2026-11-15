@@ -3,6 +3,7 @@ errorProne = "2.35.1"
 junit-jupiter = "5.10.3"
 jackson = "2.18.1"
 testcontainers = "1.21.4"
+hibernateOrmTesting = "0.1.0"
 springBoot = "3.5.8"
 springBoot30 = "3.0.0"
 springBoot401 = "4.0.1"
@@ -26,7 +27,6 @@ testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
 datasource-hikaricp = { module = "com.zaxxer:HikariCP", version = "5.1.0" }
-datasource-proxy = { module = "net.ttddyy:datasource-proxy", version = "1.10" }
 postgresql = { module = "org.postgresql:postgresql", version = "42.7.8" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "9.4.0" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
@@ -43,12 +43,11 @@ hibernate-orm-v72 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hibernate-orm-v73 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.3.13.Final" }
 hibernate-orm-v74 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.15.Final" }
 hibernate-models-v70 = { group = "org.hibernate.models", name = "hibernate-models", version = "1.0.0" }
-hypersistence-utils-hibernate61 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-60", version = "3.9.4" }
-hypersistence-utils-hibernate62 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-62", version = "3.9.4" }
-hypersistence-utils-hibernate63 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-63", version = "3.13.3" }
-hypersistence-utils-hibernate70 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-70", version = "3.13.3" }
-hypersistence-utils-hibernate71 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-71", version = "3.13.3" }
-hypersistence-utils-hibernate73 = { group = "io.hypersistence", name = "hypersistence-utils-hibernate-73", version = "3.15.4" }
+hibernate-orm-testing-v61 = { group = "org.framefork.testing", name = "hibernate-orm-testing-61", version.ref = "hibernateOrmTesting" }
+hibernate-orm-testing-v62 = { group = "org.framefork.testing", name = "hibernate-orm-testing-62", version.ref = "hibernateOrmTesting" }
+hibernate-orm-testing-v63 = { group = "org.framefork.testing", name = "hibernate-orm-testing-63", version.ref = "hibernateOrmTesting" }
+hibernate-orm-testing-v70 = { group = "org.framefork.testing", name = "hibernate-orm-testing-70", version.ref = "hibernateOrmTesting" }
+hibernate-orm-testing-v72 = { group = "org.framefork.testing", name = "hibernate-orm-testing-72", version.ref = "hibernateOrmTesting" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }

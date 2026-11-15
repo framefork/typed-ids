@@ -8,7 +8,7 @@ dependencies {
     annotationProcessor(project(":typed-ids-index-java-classes-processor"))
     testAnnotationProcessor(project(":typed-ids-index-java-classes-processor"))
 
-    testImplementation(project(":typed-ids-hibernate-62-testing"))
+    testImplementation(testFixtures(project(":typed-ids-hibernate-62")))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     constraints {

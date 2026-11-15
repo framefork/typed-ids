@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
 import org.framefork.typedIds.embeddable.EmbeddableBigIntWithGenerated;
 import org.framefork.typedIds.embeddable.EntityEmbeddableBigIntGeneratedId;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.hibernate.id.IdentifierGenerationException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

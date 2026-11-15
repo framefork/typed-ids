@@ -1,7 +1,7 @@
 package org.framefork.typedIds.bigint.hibernate;
 
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntDbIdentityGeneratedExplicitMappingEntity;
-import org.framefork.typedIds.hibernate.tests.AbstractMySQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractMySQLIntegrationTest;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;

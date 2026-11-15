@@ -3,7 +3,7 @@ package org.framefork.typedIds.bigint.hibernate;
 import org.framefork.typedIds.bigint.ObjectBigIntId;
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntDbSequenceGeneratedExplicitMappingEntity;
 import org.framefork.typedIds.bigint.hibernate.basic.BigIntPooledLoOptimizerEntity;
-import org.framefork.typedIds.hibernate.tests.AbstractPostgreSQLIntegrationTest;
+import org.framefork.testing.hibernate.AbstractPostgreSQLIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
