@@ -1,15 +1,22 @@
 package org.framefork.typedIds.bigint.hibernate.id;
 
-import org.hibernate.annotations.IdGeneratorType;
-import org.hibernate.boot.model.internal.GeneratorAnnotationHelper;
 import org.hibernate.generator.Generator;
 import org.hibernate.generator.GeneratorCreationContext;
 import org.hibernate.id.GenericGeneratorGeneration;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.mapping.GeneratorCreator;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
+/**
+ * Replaces the sequence generator of an {@link org.framefork.typedIds.bigint.ObjectBigIntId} id with an {@link ObjectBigIntIdSequenceStyleGenerator}.
+ * <p>
+ * Hibernate's creator configures the generator from {@code @SequenceGenerator}, {@code @GenericGenerator} or the defaults, but against the id's
+ * custom type, which the sequence machinery cannot produce values for. So when the original creator yields a {@link SequenceStyleGenerator},
+ * this asks the same creator once more, with the type replaced by a surrogate {@code Long}, and wraps the result. The second generator therefore gets
+ * exactly the sequence name, increment, initial value and optimizer Hibernate derived for the first one. Every other generator is returned as is.
+ */
 public class ObjectBigIntIdGeneratorCreator implements GeneratorCreator
 {
 
@@ -24,31 +31,36 @@ public class ObjectBigIntIdGeneratorCreator implements GeneratorCreator
     public Generator createGenerator(final GeneratorCreationContext context)
     {
         var originalGenerator = originalCreator.createGenerator(context);
-
-        if (isSequenceStyleGenerator(originalGenerator)) {
-            return prepareForUse(new ObjectBigIntIdSequenceStyleGenerator(), context);
-
-        } else {
-            // For any other generator type, return the original
-            // Note: the IdentityGenerator seems to be capable of  handling custom types now
+        var originalSequenceGenerator = sequenceStyleGenerator(originalGenerator);
+        if (originalSequenceGenerator instanceof ObjectBigIntIdSequenceStyleGenerator) {
+            // the mapping names this generator itself, so Hibernate instantiated it and configured it with the mapping's parameters already
             return originalGenerator;
         }
+        if (originalSequenceGenerator == null) {
+            // For any other generator type, return the original
+            // Note: the IdentityGenerator seems to be capable of handling custom types now
+            return originalGenerator;
+        }
+
+        var objectBigIntIdType = ObjectBigIntIdSequenceStyleGenerator.toObjectBigIntIdType(context.getType());
+        var surrogateGenerator = originalCreator.createGenerator(ObjectBigIntIdSequenceStyleGenerator.surrogateTypeContext(context));
+        var delegate = sequenceStyleGenerator(surrogateGenerator);
+        if (delegate == null) {
+            throw new IllegalStateException("Expected the generator creator to create a %s again, but it created %s".formatted(SequenceStyleGenerator.class.getName(), surrogateGenerator));
+        }
+
+        return new ObjectBigIntIdSequenceStyleGenerator(delegate, objectBigIntIdType);
     }
 
     /**
      * Since Hibernate 8.0, {@code @GenericGenerator(type = SequenceStyleGenerator.class)} is an {@code @IdGeneratorType} annotation,
      * and its creator returns a {@link GenericGeneratorGeneration} that wraps the actual generator.
      */
-    private static boolean isSequenceStyleGenerator(final Generator generator)
+    @Nullable
+    private static SequenceStyleGenerator sequenceStyleGenerator(final Generator generator)
     {
         var actualGenerator = generator instanceof GenericGeneratorGeneration genericGeneration ? genericGeneration.getDelegate() : generator;
-        return actualGenerator instanceof SequenceStyleGenerator;
-    }
-
-    private static <T extends Generator> T prepareForUse(final T generator, final GeneratorCreationContext context)
-    {
-        GeneratorAnnotationHelper.<IdGeneratorType>prepareForUse(generator, null, null, null, null, context);
-        return generator;
+        return actualGenerator instanceof SequenceStyleGenerator sequenceStyleGenerator ? sequenceStyleGenerator : null;
     }
 
     @Override

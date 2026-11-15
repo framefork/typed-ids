@@ -48,7 +48,8 @@ public class ObjectBigIntIdTypeGenerationMetadataContributor implements Addition
     private void remapIdentifierCustomIdGeneratorCreator(final SimpleValue identifier)
     {
         var currentCreator = identifier.getCustomIdGeneratorCreator();
-        if (currentCreator != null && !currentCreator.isAssigned()) {
+        // subclasses of an inheritance hierarchy share the root's identifier value, so it can be visited more than once
+        if (currentCreator != null && !currentCreator.isAssigned() && !(currentCreator instanceof ObjectBigIntIdGeneratorCreator)) {
             identifier.setCustomIdGeneratorCreator(new ObjectBigIntIdGeneratorCreator(currentCreator));
         }
     }
