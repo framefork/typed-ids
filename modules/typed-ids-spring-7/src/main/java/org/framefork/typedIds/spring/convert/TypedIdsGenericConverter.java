@@ -16,9 +16,8 @@ import java.util.UUID;
  * All typed-id conversions in one {@link GenericConverter}: {@link String} and {@link UUID} to {@link ObjectUuid} subtypes,
  * {@link String} and {@link Number} to {@link ObjectBigIntId} subtypes, with the same rules as the four converter factories in this package.
  * <p>
- * It exists because Spring Boot registers {@link GenericConverter} beans with the MVC and WebFlux conversion services and, when qualified with
- * {@code @ConfigurationPropertiesBinding}, with configuration-properties binding on every Boot version, while {@code ConverterFactory} beans are picked up
- * only since Boot 3.5.
+ * The Spring Boot auto-configuration registers this one bean instead of the four factories: Spring Boot adds {@link GenericConverter} beans to the
+ * MVC and WebFlux conversion services and, when qualified with {@code @ConfigurationPropertiesBinding}, to configuration-properties binding.
  */
 public final class TypedIdsGenericConverter implements GenericConverter
 {

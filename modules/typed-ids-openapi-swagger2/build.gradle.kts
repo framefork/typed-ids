@@ -12,13 +12,13 @@ dependencies {
 
     // The Boot auto-config folded into this module (@AutoConfiguration + @ConfigurationProperties) compiles against these,
     // but stays dormant for non-Boot consumers: the imports file is only read by Boot and the conditions gate the bean.
-    compileOnly(libs.spring.boot.v300)
-    compileOnly(libs.spring.boot.autoconfigure.v300)
+    compileOnly(libs.spring.boot.v401)
+    compileOnly(libs.spring.boot.autoconfigure.v401)
     annotationProcessor(libs.spring.boot.configuration.processor)
 
     // Only SpringDocUtils, to register typed ids as simple types for @ParameterObject; the registration is skipped without SpringDoc on the classpath.
     // Not transitive: SpringDoc's own swagger-core and Spring Boot dependencies must not reach this module's compile classpath.
-    compileOnly(libs.springdoc.openapi.starter.common.v200) {
+    compileOnly(libs.springdoc.openapi.starter.common.v300) {
         isTransitive = false
     }
 
@@ -26,9 +26,9 @@ dependencies {
 
     testImplementation(project(":typed-ids-testing"))
     testImplementation(libs.swagger.v3.core.jakarta)
-    testImplementation(libs.spring.boot.v300)
-    testImplementation(libs.spring.boot.autoconfigure.v300)
-    testImplementation(libs.spring.boot.test.v300)
+    testImplementation(libs.spring.boot.v401)
+    testImplementation(libs.spring.boot.autoconfigure.v401)
+    testImplementation(libs.spring.boot.test.v401)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
