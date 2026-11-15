@@ -15,10 +15,6 @@ For seamless type support in Hibernate ORM, you should pick one of the following
 | Hibernate Version             | Artifact                                                                                                             |
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | 7.2, 7.3, 7.4                 | [org.framefork:typed-ids-hibernate-72](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-72)   |
-| 7.0, 7.1                      | [org.framefork:typed-ids-hibernate-70](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-70)   |
-| 6.6, 6.5, 6.4, and 6.3        | [org.framefork:typed-ids-hibernate-63](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-63)   |
-| 6.2                           | [org.framefork:typed-ids-hibernate-62](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-62)   |
-| 6.1                           | [org.framefork:typed-ids-hibernate-61](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-61)   |
 
 For Hibernate ORM 8.0, the repository contains `typed-ids-hibernate-80`, built and tested against Hibernate ORM 8.0.0.CR1. It is not published, because Hibernate ORM 8.0 is not GA yet.
 
@@ -37,6 +33,15 @@ For JSON (de)serialization, pick the artifact matching your serialization librar
 
 Minimum supported Java is 17.
 
+### Supported versions
+
+typed-ids 1.x supports Spring Boot 4.0.1 – 4.1.x, Spring Framework 7 and Hibernate ORM 7.2 – 7.4.
+
+### Spring Boot 3, Spring Framework 6 and Hibernate ORM 6.x, 7.0, 7.1
+
+Older Spring Boot (3.x), Spring Framework (6.x) and Hibernate ORM (6.x, 7.0, 7.1) versions are supported by the 0.12.x line, maintained on the [`release-0.x`](https://github.com/framefork/typed-ids/tree/release-0.x) branch.
+That line receives bug fixes but no new features. Its README lists the artifacts for those versions, including `typed-ids-hibernate-61`, `-62`, `-63`, `-70`, `typed-ids-spring-6` and the starters `typed-ids-spring-boot-30` … `-35`.
+
 ### Migrating from 0.11 to 0.12
 
 0.12 splits the JSON integrations and the SpringDoc/OpenAPI wiring into dedicated artifacts. The change is build-file-only — no code, package, or class name changed — but if you relied on the integrations that core used to bundle, you have to add the new artifact, otherwise the integration silently disappears:
@@ -51,16 +56,10 @@ Minimum supported Java is 17.
 
 ### Spring Boot starters
 
-If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-minor starter that aggregates the right ones (the correct Hibernate module, the matching Jackson flavor, the Spring converters `typed-ids-spring-6` or `typed-ids-spring-7`, and `typed-ids-openapi-swagger2` on Boot 3 or both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3` on Boot 4) for your Boot version:
+If you are on Spring Boot, you can skip picking the individual Hibernate / Jackson / OpenAPI artifacts and depend on a single per-minor starter that aggregates the right ones (the Hibernate module, `typed-ids-jackson3`, the Spring converters `typed-ids-spring-7`, and both `typed-ids-openapi-swagger2` and `typed-ids-openapi-swagger3`) for your Boot version:
 
 | Spring Boot range | Starter                                                                                                                             | Hibernate module         | Hibernate floor | Jackson |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------|---------|
-| 3.0.x             | [org.framefork:typed-ids-spring-boot-30](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-30)              | `typed-ids-hibernate-61` | 6.1.7           | 2.x     |
-| 3.1.x             | [org.framefork:typed-ids-spring-boot-31](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-31)              | `typed-ids-hibernate-62` | 6.2.46          | 2.x     |
-| 3.2.x             | [org.framefork:typed-ids-spring-boot-32](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-32)              | `typed-ids-hibernate-63` | 6.3.2           | 2.x     |
-| 3.3.x             | [org.framefork:typed-ids-spring-boot-33](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-33)              | `typed-ids-hibernate-63` | 6.5.2           | 2.x     |
-| 3.4.x             | [org.framefork:typed-ids-spring-boot-34](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-34)              | `typed-ids-hibernate-63` | 6.6.2           | 2.x     |
-| 3.5.x             | [org.framefork:typed-ids-spring-boot-35](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-35)              | `typed-ids-hibernate-63` | 6.6.15          | 2.x     |
 | 4.0.1 – 4.0.x     | [org.framefork:typed-ids-spring-boot-40](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-40)              | `typed-ids-hibernate-72` | 7.2.0           | 3.x     |
 | 4.1.x             | [org.framefork:typed-ids-spring-boot-41](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-boot-41)              | `typed-ids-hibernate-72` | 7.4.1           | 3.x     |
 
@@ -68,9 +67,9 @@ If you are on Spring Boot, you can skip picking the individual Hibernate / Jacks
 
 The Hibernate module column is the typed-ids module the starter pulls; the Hibernate floor is the `hibernate-core` version the starter pins. Each starter also pins Hibernate, Jackson and Spring Framework floors, so a build without the Spring Boot BOM still gets at least those: the versions the first release of its Boot minor manages, or the version the typed-ids modules it pulls declare when that one is higher.
 
-There is deliberately no starter for the Spring Boot **4.0.0** orphan patch (its dependency management pins an older Jackson 3 / Hibernate 7 combination). On Boot 4.0.0 either bump to **≥ 4.0.1** and use `typed-ids-spring-boot-40`, or hand-assemble `typed-ids-hibernate-70` + `typed-ids-jackson3` yourself.
+There is deliberately no starter for the Spring Boot **4.0.0** orphan patch (its dependency management pins an older Jackson 3 / Hibernate 7 combination). typed-ids 1.x does not support Boot 4.0.0: bump to **≥ 4.0.1** and use `typed-ids-spring-boot-40`. The 0.12.x line still has `typed-ids-hibernate-70` for it.
 
-The starters pull neither SpringDoc nor a JSON library themselves — you keep bringing your own Spring Boot starters (`spring-boot-starter-data-jpa`, `spring-boot-starter-web`, a SpringDoc starter, etc.); under Boot 3.x you still need to enable ServiceLoader-based Jackson module discovery (`builder.findModulesViaServiceLoader(true)` via a `Jackson2ObjectMapperBuilderCustomizer`), while Boot 4.x discovers the Jackson 3 module automatically.
+The starters pull neither SpringDoc nor a JSON library themselves — you keep bringing your own Spring Boot starters (`spring-boot-starter-data-jpa`, `spring-boot-starter-web`, a SpringDoc starter, etc.). Spring Boot 4 discovers the Jackson 3 module automatically.
 
 ## Hibernate type mapping
 
@@ -346,9 +345,15 @@ This also simplifies usage on every other place, where Hibernate might need to r
 
 ## Usage: (de)serialization with Jackson
 
-Provided by the [org.framefork:typed-ids-jackson2](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson2) artifact.
+Provided by the [org.framefork:typed-ids-jackson3](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson3) artifact, for Jackson 3 (the `tools.jackson` line, the default under Spring Boot 4).
 
-This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule`, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
+This library provides `ObjectBigIntIdJacksonModule` and `ObjectUuidJacksonModule` in the `…json.jackson3` packages, which can be registered automatically via the standard `java.util.ServiceLoader` mechanism, or explicitly.
+Spring Boot 4 auto-registers them via `find-and-add-modules` (on by default), so no configuration is needed; outside Boot, register them explicitly with `JsonMapper.builder().addModule(new ObjectUuidJacksonModule()).build()`.
+
+### Jackson 2
+
+For an application on Jackson 2, for example on Spring Boot 4's deprecated Jackson 2 support, use the [org.framefork:typed-ids-jackson2](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson2) artifact instead.
+It ships the same two modules in their original packages, so both flavors can coexist on one classpath.
 
 Please note that in Spring, the instance of Jackson's `ObjectMapper` used for (de)serializing requests and responses of controllers by default ignores the modules provided via `ServiceLoader`,
 so to make it work, you have to either register the modules as beans, or add the following customizer:
@@ -360,10 +365,6 @@ public Jackson2ObjectMapperBuilderCustomizer enableServiceLoaderModules()
     return builder -> builder.findModulesViaServiceLoader(true);
 }
 ```
-
-### Jackson 3
-
-For Jackson 3 (the `tools.jackson` line, the default under Spring Boot 4) use the [org.framefork:typed-ids-jackson3](https://central.sonatype.com/artifact/org.framefork/typed-ids-jackson3) artifact instead. It ships the same two modules in a distinct `…json.jackson3` package (so both flavors can coexist on one classpath). Spring Boot 4 auto-registers it via `find-and-add-modules` (on by default), so no customizer is needed; outside Boot, register it explicitly with `JsonMapper.builder().addModule(new ObjectUuidJacksonModule()).build()`.
 
 ## Usage: (de)serialization with Gson
 
@@ -428,10 +429,9 @@ They convert a `String` or a `UUID` to any `ObjectUuid` subtype, and a `String` 
 
 | Spring Framework | Spring Boot | Artifact                                                                                                         |
 |------------------|-------------|------------------------------------------------------------------------------------------------------------------|
-| 6.x              | 3.x         | [org.framefork:typed-ids-spring-6](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-6)        |
 | 7.x              | 4.x         | [org.framefork:typed-ids-spring-7](https://central.sonatype.com/artifact/org.framefork/typed-ids-spring-7)        |
 
-The Spring Boot starters already include the right one. Under Spring Boot, an auto-configuration registers a `TypedIdsGenericConverter` bean,
+The Spring Boot starters already include it. Under Spring Boot, an auto-configuration registers a `TypedIdsGenericConverter` bean,
 which Boot adds to the Spring MVC and WebFlux conversion services and, through `@ConfigurationPropertiesBinding`, to configuration-properties binding.
 Define your own `TypedIdsGenericConverter` bean to replace it.
 
@@ -455,7 +455,7 @@ Pick the artifact matching the swagger-core line your application uses:
 
 | swagger-core                                                     | Typical stack                                            | Artifact                                                                                                                       |
 |------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| 2.x (`io.swagger.core.v3:swagger-core-jakarta`, Jackson 2)       | SpringDoc 2.x on Boot 3, SpringDoc 3.0.x – 3.2.0 on Boot 4 | [org.framefork:typed-ids-openapi-swagger2](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger2) |
+| 2.x (`io.swagger.core.v3:swagger-core-jakarta`, Jackson 2)       | SpringDoc 3.0.x – 3.2.0                                  | [org.framefork:typed-ids-openapi-swagger2](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger2) |
 | 3.x (`io.swagger.core.v3:swagger-core`, Jackson 3, Java 17)      | plain swagger-core 3.x; see below for SpringDoc         | [org.framefork:typed-ids-openapi-swagger3](https://central.sonatype.com/artifact/org.framefork/typed-ids-openapi-swagger3) |
 
 Each covers both plain swagger-core usage and SpringDoc-under-Spring-Boot. Neither brings swagger-core itself, they use the one your application has:
@@ -477,11 +477,11 @@ consumers are unaffected.
 
 Providing a non-jakarta variant would be straightforward, but given that javax has been deprecated for a long time, I decided to not bother with it.
 
-You may want to check the working example in [testing/testing-typed-ids-springdoc-2x-openapi](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-springdoc-2x-openapi),
+You may want to check the working example in [testing/testing-typed-ids-springdoc-3x-openapi](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-springdoc-3x-openapi),
 with a recent Spring Boot version, and also with a working OpenApi spec generation, and TypeScript client generation.
 
 ## More examples
 
 To learn more you can explore the `testing/` directory of this library,
-for example the [testing/testing-typed-ids-hibernate-66-indexed](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-hibernate-66-indexed/src/test/java/org/framefork/typedIds)
+for example the [testing/testing-typed-ids-hibernate-74-indexed](https://github.com/framefork/typed-ids/tree/master/testing/testing-typed-ids-hibernate-74-indexed/src/test/java/org/framefork/typedIds)
 has several working use-cases written in the form of tests that you can study for inspiration.
