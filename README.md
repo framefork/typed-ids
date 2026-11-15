@@ -20,6 +20,8 @@ For seamless type support in Hibernate ORM, you should pick one of the following
 | 6.2                           | [org.framefork:typed-ids-hibernate-62](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-62)   |
 | 6.1                           | [org.framefork:typed-ids-hibernate-61](https://central.sonatype.com/artifact/org.framefork/typed-ids-hibernate-61)   |
 
+For Hibernate ORM 8.0, the repository contains `typed-ids-hibernate-80`, built and tested against Hibernate ORM 8.0.0.CR1. It is not published, because Hibernate ORM 8.0 is not GA yet.
+
 Find the latest version in this project's GitHub releases or on Maven Central.
 
 If you want just the plain base classes without ORM support, you can install just the [org.framefork:typed-ids](https://central.sonatype.com/artifact/org.framefork/typed-ids).

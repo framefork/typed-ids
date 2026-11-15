@@ -42,12 +42,15 @@ hibernate-orm-v71 = { group = "org.hibernate.orm", name = "hibernate-core", vers
 hibernate-orm-v72 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.2.0.Final" }
 hibernate-orm-v73 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.3.13.Final" }
 hibernate-orm-v74 = { group = "org.hibernate.orm", name = "hibernate-core", version = "7.4.15.Final" }
+hibernate-orm-v80 = { group = "org.hibernate.orm", name = "hibernate-core", version = "8.0.0.CR1" }
 hibernate-models-v70 = { group = "org.hibernate.models", name = "hibernate-models", version = "1.0.0" }
+hibernate-models-v80 = { group = "org.hibernate.models", name = "hibernate-models", version = "1.3.4" }
 hibernate-orm-testing-v61 = { group = "org.framefork.testing", name = "hibernate-orm-testing-61", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v62 = { group = "org.framefork.testing", name = "hibernate-orm-testing-62", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v63 = { group = "org.framefork.testing", name = "hibernate-orm-testing-63", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v70 = { group = "org.framefork.testing", name = "hibernate-orm-testing-70", version.ref = "hibernateOrmTesting" }
 hibernate-orm-testing-v72 = { group = "org.framefork.testing", name = "hibernate-orm-testing-72", version.ref = "hibernateOrmTesting" }
+hibernate-orm-testing-v80 = { group = "org.framefork.testing", name = "hibernate-orm-testing-80", version.ref = "hibernateOrmTesting" }
 hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.0" }
 swagger-v3-core-jakarta = { module = "io.swagger.core.v3:swagger-core-jakarta", version = "2.2.35" }
