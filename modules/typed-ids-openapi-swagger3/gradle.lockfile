@@ -73,6 +73,7 @@ org.rnorth.duct-tape:duct-tape:1.0.8=testCompileClasspath,testRuntimeClasspath
 org.slf4j:slf4j-api:1.7.36=runtimeClasspath
 org.slf4j:slf4j-api:2.0.20=compileClasspath,testCompileClasspath,testRuntimeClasspath
 org.snakeyaml:snakeyaml-engine:3.0.1=compileClasspath,testCompileClasspath,testRuntimeClasspath
+org.springdoc:springdoc-openapi-starter-common:3.0.0=compileClasspath
 org.springframework.boot:spring-boot-autoconfigure:4.0.1=compileClasspath,testCompileClasspath,testRuntimeClasspath
 org.springframework.boot:spring-boot-configuration-processor:3.0.0=annotationProcessor
 org.springframework.boot:spring-boot-test:4.0.1=testCompileClasspath,testRuntimeClasspath

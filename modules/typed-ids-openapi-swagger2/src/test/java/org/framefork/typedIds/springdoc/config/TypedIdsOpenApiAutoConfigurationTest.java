@@ -22,6 +22,16 @@ final class TypedIdsOpenApiAutoConfigurationTest
     }
 
     @Test
+    void skipsTheParameterObjectRegistrationWithoutSpringDoc()
+    {
+        // this module's test classpath has no SpringDoc, as in an application that uses swagger-core without it
+        contextRunner.run(context -> {
+            assertThat(context).hasNotFailed();
+            assertThat(context).doesNotHaveBean(TypedIdsParameterObjectSupport.class);
+        });
+    }
+
+    @Test
     void staysOffWhenSwaggerCoreIsMissing()
     {
         contextRunner
