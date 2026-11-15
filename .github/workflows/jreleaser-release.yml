@@ -91,11 +91,12 @@ jobs:
             build/jreleaser/trace.log
             build/jreleaser/output.properties
 
-      # Sets gradle.properties to the next snapshot version and pushes it, retrying on top of the newest master if the push is
-      # rejected. It pushes with the credential the checkout step persisted, so do not set persist-credentials: false there.
+      # Sets gradle.properties to the next snapshot version and pushes it to the branch the release runs from (master or a release
+      # branch such as release-0.x), retrying on top of that branch's newest commit if the push is rejected.
+      # It pushes with the credential the checkout step persisted, so do not set persist-credentials: false there.
       - name: Bump to the next snapshot version
         uses: framefork/framefork-gradle-plugins/.github/actions/bump-snapshot-version@v0.6.0
         with:
           released-version: ${{ github.event.inputs.version }}
           next-version: ${{ github.event.inputs.nextVersion }}
-          branch: master
+          branch: ${{ github.ref_name }}
