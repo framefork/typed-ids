@@ -51,4 +51,74 @@ class TypedIdsWebBindingTest
             .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void bindsEmptyOptionalParameterToNull() throws Exception
+    {
+        mockMvc.perform(get("/items/optional").param("id", ""))
+            .andExpect(status().isOk())
+            .andExpect(content().string("null"));
+    }
+
+    @Test
+    public void bindsWhitespaceOnlyOptionalParameterToNull() throws Exception
+    {
+        mockMvc.perform(get("/items/optional").param("id", "  "))
+            .andExpect(status().isOk())
+            .andExpect(content().string("null"));
+    }
+
+    @Test
+    public void rejectsEmptyRequiredParameterAsBadRequest() throws Exception
+    {
+        mockMvc.perform(get("/items").param("id", ""))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void rejectsBlankPathVariableAsBadRequest() throws Exception
+    {
+        mockMvc.perform(get("/orders/{id}", " "))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void trimsPaddedBigIntId() throws Exception
+    {
+        mockMvc.perform(get("/items").param("id", " 42"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("42"));
+    }
+
+    @Test
+    public void trimsPaddedUuidId() throws Exception
+    {
+        mockMvc.perform(get("/orders/{id}", " " + ORDER_ID + " "))
+            .andExpect(status().isOk())
+            .andExpect(content().string(ORDER_ID));
+    }
+
+    @Test
+    public void bindsEmptyListElementToNull() throws Exception
+    {
+        mockMvc.perform(get("/items/list").param("ids", "1,,2"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("[1, null, 2]"));
+    }
+
+    @Test
+    public void trimsPaddedListElements() throws Exception
+    {
+        mockMvc.perform(get("/items/list").param("ids", "1, 2"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("[1, 2]"));
+    }
+
+    @Test
+    public void rejectsShortenedUuidAsBadRequest() throws Exception
+    {
+        // UUID.fromString accepts this shortened form as a version-4 UUID; the converter accepts a UUID only in the 36-character form
+        mockMvc.perform(get("/orders/1-1-4001-1-1"))
+            .andExpect(status().isBadRequest());
+    }
+
 }
