@@ -39,6 +39,8 @@ jobs:
         with:
           # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
           cache-provider: basic
+          # writable on master and release-* branches; GitHub scopes cache entries per branch, so each release branch keeps its own entries
+          cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/release-') }}
           add-job-summary-as-pr-comment: on-failure
 
       - name: Gradle toolchains info
@@ -85,6 +87,8 @@ jobs:
         with:
           # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
           cache-provider: basic
+          # writable on master and release-* branches; GitHub scopes cache entries per branch, so each release branch keeps its own entries
+          cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/release-') }}
 
       - name: Publish typed-ids and the index processor to the local Maven repository
         run: ./gradlew :typed-ids:publishToMavenLocal :typed-ids-index-java-classes-processor:publishToMavenLocal -Pversion="$TYPED_IDS_VERSION"
@@ -122,6 +126,8 @@ jobs:
         with:
           # basic: the MIT-licensed caching on the GitHub Actions cache; the default 'enhanced' loads a proprietary component under Gradle's Terms of Use
           cache-provider: basic
+          # writable on master and release-* branches; GitHub scopes cache entries per branch, so each release branch keeps its own entries
+          cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/release-') }}
 
       # strict locking already fails normal builds when a declared version is bumped above the lock; this job
       # catches the silent remainder (declared-lower-than-locked, removed-but-still-locked) by regenerating and diffing.
