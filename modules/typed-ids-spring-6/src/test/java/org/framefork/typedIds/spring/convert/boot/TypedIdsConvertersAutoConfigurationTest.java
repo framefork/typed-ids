@@ -28,6 +28,22 @@ final class TypedIdsConvertersAutoConfigurationTest
     }
 
     @Test
+    void doesNotRegisterTheConverterWhenDisabled()
+    {
+        contextRunner
+            .withPropertyValues("framefork.typed-ids.spring.converters.enabled=false")
+            .run(context -> assertThat(context).doesNotHaveBean(TypedIdsGenericConverter.class));
+    }
+
+    @Test
+    void registersTheConverterWhenExplicitlyEnabled()
+    {
+        contextRunner
+            .withPropertyValues("framefork.typed-ids.spring.converters.enabled=true")
+            .run(context -> assertThat(context).hasSingleBean(TypedIdsGenericConverter.class));
+    }
+
+    @Test
     void backsOffWhenTheApplicationDefinesItsOwn()
     {
         contextRunner
