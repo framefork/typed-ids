@@ -1,0 +1,11 @@
+{
+  "properties": [
+    {
+      "name": "framefork.typed-ids.spring.converters.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "sourceType": "org.framefork.typedIds.spring.convert.boot.TypedIdsConvertersAutoConfiguration",
+      "description": "Whether to register the converters that bind typed ids in request parameters, path variables and configuration properties."
+    }
+  ]
+}
