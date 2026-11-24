@@ -433,7 +433,8 @@ They convert a `String` or a `UUID` to any `ObjectUuid` subtype, and a `String` 
 
 The Spring Boot starters already include the right one. Under Spring Boot, an auto-configuration registers a `TypedIdsGenericConverter` bean,
 which Boot adds to the Spring MVC and WebFlux conversion services and, through `@ConfigurationPropertiesBinding`, to configuration-properties binding.
-Define your own `TypedIdsGenericConverter` bean to replace it.
+Set `framefork.typed-ids.spring.converters.enabled=false` to turn the converters off.
+To keep typed ids out of configuration-properties binding, define your own `TypedIdsGenericConverter` bean without `@ConfigurationPropertiesBinding`.
 
 ```java
 @GetMapping("/users/{id}")
@@ -443,9 +444,23 @@ public UserDto user(@PathVariable UserId id) { ... }
 Without Spring Boot, register the converter yourself, for example `conversionService.addConverter(new TypedIdsGenericConverter())`,
 or one of the four `ConverterFactory` implementations (`StringToObjectUuidConverterFactory`, `UuidToObjectUuidConverterFactory`, `StringToObjectBigIntIdConverterFactory`, `NumberToObjectBigIntIdConverterFactory`).
 
-A blank string converts to `null`. Input that cannot become the id (a malformed UUID, a UUID version the id rejects, a number with a fraction or outside the `long` range)
-fails the conversion with an `IllegalArgumentException`, which Spring MVC answers with `400 Bad Request`. An id class without the private single-argument constructor
-every typed id has fails with an `IllegalStateException`, because that is a programming error, not bad input.
+The converters bind each kind of input as follows:
+
+| Input                                                                                                                                          | Binds to                                     | Note                                                                                                                                                                                                                 |
+|------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `null`                                                                                                                                         | `null`                                       |                                                                                                                                                                                                                      |
+| Blank or whitespace-only string                                                                                                                | `null`                                       | In Spring MVC, an optional parameter gets `null`, and a required parameter or a path variable answers `400 Bad Request`. A `defaultValue` applies on Spring 6.1+; Spring 6.0 binds `null` for whitespace-only input. |
+| String with surrounding whitespace, such as `" 42"`                                                                                            | the id                                       | The converter trims the input before it parses it.                                                                                                                                                                   |
+| Comma-separated list with an empty element, such as `?ids=1,,2`                                                                                | a list with a `null` element                 | A `List<Long>` gets a `null` element the same way. Spring trims each element before it converts it, so `?ids=1, 2` binds two ids.                                                                                    |
+| A malformed UUID, a UUID version the id rejects, a shortened UUID such as `1-1-4001-1-1`, a number with a fraction or outside the `long` range | conversion fails, `IllegalArgumentException` | Spring MVC answers `400 Bad Request`. The converter accepts a UUID only in the 36-character form.                                                                                                                    |
+| Any input, for an id class without the private single-argument constructor every typed id has                                                  | conversion fails, `IllegalStateException`    | This is a programming error, not bad input.                                                                                                                                                                          |
+
+In Spring MVC on Spring 6.0.0 to 6.0.13, a path variable that converts to `null` answers `500 Internal Server Error` instead of `400 Bad Request`.
+In Spring WebFlux, a path variable that converts to `null` answers `500 Internal Server Error` on every Spring version, and a `defaultValue` applies after the conversion returns `null`.
+
+With the converters turned off, the table above does not apply: Spring falls back to a public static `valueOf`, `of` or `from` method on the id class that takes a `String`.
+A Kotlin id that declares `from` in a `companion object` without `@JvmStatic` has no such static method, so it does not bind.
+A numeric configuration value, such as `app.item-id: 42` in YAML, does not bind to an `ObjectBigIntId`, because Spring finds no factory method that takes a number.
 
 ## Usage: OpenAPI schema
 
