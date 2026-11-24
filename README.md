@@ -433,7 +433,8 @@ They convert a `String` or a `UUID` to any `ObjectUuid` subtype, and a `String` 
 
 The Spring Boot starters already include it. Under Spring Boot, an auto-configuration registers a `TypedIdsGenericConverter` bean,
 which Boot adds to the Spring MVC and WebFlux conversion services and, through `@ConfigurationPropertiesBinding`, to configuration-properties binding.
-Define your own `TypedIdsGenericConverter` bean to replace it.
+Set `framefork.typed-ids.spring.converters.enabled=false` to turn the converters off.
+To keep typed ids out of configuration-properties binding, define your own `TypedIdsGenericConverter` bean without `@ConfigurationPropertiesBinding`.
 
 ```java
 @GetMapping("/users/{id}")
@@ -455,6 +456,10 @@ The converters bind each kind of input as follows:
 | Any input, for an id class without the private single-argument constructor every typed id has                                                  | conversion fails, `IllegalStateException`    | This is a programming error, not bad input.                                                                                                        |
 
 In Spring WebFlux, a path variable that converts to `null` answers `500 Internal Server Error` on every Spring version, and a `defaultValue` applies after the conversion returns `null`.
+
+With the converters turned off, the table above does not apply: Spring falls back to a public static `valueOf`, `of` or `from` method on the id class that takes a `String`.
+A Kotlin id that declares `from` in a `companion object` without `@JvmStatic` has no such static method, so it does not bind.
+A numeric configuration value, such as `app.item-id: 42` in YAML, does not bind to an `ObjectBigIntId`, because Spring finds no factory method that takes a number.
 
 ## Usage: OpenAPI schema
 
